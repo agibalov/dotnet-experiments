@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E890A05F-BD13-46AC-B890-2061172D9B60}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EntityFrameworkExperiment</RootNamespace>
     <AssemblyName>EntityFrameworkExperiment</AssemblyName>
@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
@@ -48,10 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\Entities\Blog.cs" />
     <Compile Include="DAL\BlogContext.cs" />
+    <Compile Include="BloggingService.cs" />
     <Compile Include="DAL\Entities\Post.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="DAL\Entities\Session.cs" />
+    <Compile Include="DAL\Entities\User.cs" />
+    <Compile Include="DTO\PostDTO.cs" />
+    <Compile Include="DTO\ServiceError.cs" />
+    <Compile Include="DTO\ServiceResult.cs" />
+    <Compile Include="DTO\SessionDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

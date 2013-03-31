@@ -5,7 +5,8 @@ namespace EntityFrameworkExperiment.DAL
 {
     public class BlogContext : DbContext
     {
-        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<Post> Posts { get; set; }
     }
 }

@@ -1,0 +1,13 @@
+﻿using System.Collections.Generic;
+
+namespace EntityFrameworkExperiment.DAL.Entities
+{
+    public class User
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+
+        public virtual IList<Post> Posts { get; set; }
+    }
+}

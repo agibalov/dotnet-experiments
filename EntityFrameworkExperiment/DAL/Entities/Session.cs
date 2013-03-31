@@ -1,10 +1,9 @@
 ﻿namespace EntityFrameworkExperiment.DAL.Entities
 {
-    public class Post
+    public class Session
     {
-        public int PostId { get; set; }
-        public string Text { get; set; }
-
+        public int SessionId { get; set; }
+        public string SessionToken { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; }
     }
