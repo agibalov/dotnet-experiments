@@ -3,6 +3,7 @@ using EntityFrameworkExperiment;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DTO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Ninject;
 
 namespace EntityFrameworkTests
 {
@@ -25,7 +26,8 @@ namespace EntityFrameworkTests
                 database.Create();
             }
 
-            _service = new BloggingService();
+            var kernel = new StandardKernel();
+            _service = kernel.Get<BloggingService>();
         }
 
         [TestMethod]

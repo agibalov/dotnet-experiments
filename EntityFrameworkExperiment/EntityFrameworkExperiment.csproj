@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -40,6 +40,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,6 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TransactionScripts\AuthenticateTransactionScript.cs" />
+    <Compile Include="AuthenticationService.cs" />
+    <Compile Include="Exceptions\BlogServiceException.cs" />
+    <Compile Include="TransactionScripts\CreatePostTransactionScript.cs" />
+    <Compile Include="TransactionScripts\CreateUserTransactionScript.cs" />
     <Compile Include="DAL\BlogContext.cs" />
     <Compile Include="BloggingService.cs" />
     <Compile Include="DAL\Entities\Post.cs" />
@@ -61,7 +69,16 @@
     <Compile Include="DTO\ServiceResult.cs" />
     <Compile Include="DTO\SessionDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="TransactionScripts\GetPostTransactionScript.cs" />
+    <Compile Include="Exceptions\InvalidPasswordException.cs" />
+    <Compile Include="Exceptions\InvalidSessionException.cs" />
+    <Compile Include="Exceptions\NoSuchPostException.cs" />
+    <Compile Include="Exceptions\NoSuchUserException.cs" />
+    <Compile Include="Mappers\PostToPostDTOMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mappers\SessionToSessionDTOMapper.cs" />
+    <Compile Include="Exceptions\UserNameAlreadyRegisteredException.cs" />
+    <Compile Include="Mappers\UserToUserDTOMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
