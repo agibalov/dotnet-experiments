@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EntityFrameworkExperiment.DAL.Entities
 {
@@ -7,6 +8,8 @@ namespace EntityFrameworkExperiment.DAL.Entities
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
 
         public virtual IList<Post> Posts { get; set; }
     }

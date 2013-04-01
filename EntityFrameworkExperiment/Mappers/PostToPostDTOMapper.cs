@@ -20,6 +20,8 @@ namespace EntityFrameworkExperiment.Mappers
                 {
                     PostId = post.PostId,
                     PostText = post.Text,
+                    CreatedAt = post.CreatedAt,
+                    ModifiedAt = post.ModifiedAt,
                     Author = _userToUserDtoMapper.Map(post.User)
                 };
         }

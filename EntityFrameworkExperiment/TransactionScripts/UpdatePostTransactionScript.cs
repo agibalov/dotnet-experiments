@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DTO;
@@ -34,6 +35,8 @@ namespace EntityFrameworkExperiment.TransactionScripts
             }
 
             post.Text = postText;
+            post.ModifiedAt = DateTime.UtcNow;
+
             context.SaveChanges();
 
             return _postToPostDtoMapper.Map(post);

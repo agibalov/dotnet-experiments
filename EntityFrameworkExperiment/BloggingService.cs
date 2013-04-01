@@ -16,6 +16,7 @@ namespace EntityFrameworkExperiment
         [Inject] public UpdatePostTransactionScript UpdatePostTransactionScript { get; set; }
         [Inject] public DeletePostTransactionScript DeletePostTransactionScript { get; set; }
         [Inject] public GetPostsRequestProcessor GetPostsRequestProcessor { get; set; }
+        [Inject] public GetUserDetailsTransactionScript GetUserDetailsTransactionScript { get; set; }
 
         public ServiceResult<UserDTO> CreateUser(string userName, string password)
         {
@@ -80,6 +81,16 @@ namespace EntityFrameworkExperiment
                     context, 
                     sessionToken, 
                     postId));
+        }
+
+        public ServiceResult<UserDetailsDTO> GetUserDetails(string sessionToken, int userId, int maxNumberOfRecentPosts)
+        {
+            return ExecuteWithExceptionHandling(
+                context => GetUserDetailsTransactionScript.GetUserDetails(
+                    context, 
+                    sessionToken, 
+                    userId, 
+                    maxNumberOfRecentPosts));
         }
 
         private static ServiceResult<T> ExecuteWithExceptionHandling<T>(Func<BlogContext, T> func)

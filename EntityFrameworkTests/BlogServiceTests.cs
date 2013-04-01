@@ -226,6 +226,35 @@ namespace EntityFrameworkTests
             Assert.AreEqual(3, page2.Items.Count);
         }
 
+        [TestMethod]
+        public void CanGetUserDetailsForExistingUser()
+        {
+            var user = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+
+            ExpectOk(() => _service.CreatePost(session.SessionToken, "post 1"));
+            var post2 = ExpectOk(() => _service.CreatePost(session.SessionToken, "post 2"));
+            var post3 = ExpectOk(() => _service.CreatePost(session.SessionToken, "post 3"));
+            var post4 = ExpectOk(() => _service.CreatePost(session.SessionToken, "post 4"));
+
+            var userDetails = ExpectOk(() => _service.GetUserDetails(session.SessionToken, user.UserId, 3));
+            Assert.AreEqual(user.UserId, userDetails.UserId);
+            Assert.AreEqual(user.UserName, userDetails.UserName);
+            Assert.AreEqual(4, userDetails.NumberOfPosts);
+            Assert.AreEqual(3, userDetails.RecentPosts.Count);
+            Assert.AreEqual(post4.PostId, userDetails.RecentPosts[0].PostId);
+            Assert.AreEqual(post3.PostId, userDetails.RecentPosts[1].PostId);
+            Assert.AreEqual(post2.PostId, userDetails.RecentPosts[2].PostId);
+        }
+
+        [TestMethod]
+        public void CantGetUserDetailsForUserThatDoesNotExist()
+        {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            ExpectFail(ServiceError.NoSuchUser, () => _service.GetUserDetails(session.SessionToken, 123, 3));
+        }
+
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
         {
             var result = action();

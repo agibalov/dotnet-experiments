@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DAL.Entities;
@@ -27,7 +28,9 @@ namespace EntityFrameworkExperiment.TransactionScripts
             var user = new User
                 {
                     UserName = userName,
-                    Password = password
+                    Password = password,
+                    CreatedAt = DateTime.UtcNow,
+                    ModifiedAt = null
                 };
             user = context.Users.Add(user);
             context.SaveChanges();

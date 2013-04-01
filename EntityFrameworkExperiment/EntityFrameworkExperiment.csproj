@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\UserDetailsDTO.cs" />
     <Compile Include="Exceptions\NoPermissionsException.cs" />
     <Compile Include="DTO\Page.cs" />
     <Compile Include="TransactionScripts\GetPostsRequestProcessor.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Mappers\SessionToSessionDTOMapper.cs" />
     <Compile Include="Exceptions\UserNameAlreadyRegisteredException.cs" />
     <Compile Include="Mappers\UserToUserDTOMapper.cs" />
+    <Compile Include="TransactionScripts\GetUserDetailsTransactionScript.cs" />
     <Compile Include="TransactionScripts\UpdatePostTransactionScript.cs" />
   </ItemGroup>
   <ItemGroup>

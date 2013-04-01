@@ -10,7 +10,9 @@ namespace EntityFrameworkExperiment.Mappers
             return new UserDTO
                 {
                     UserId = user.UserId,
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    CreatedAt = user.CreatedAt,
+                    ModifiedAt = user.ModifiedAt
                 };
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DAL.Entities;
 using EntityFrameworkExperiment.DTO;
@@ -24,7 +25,9 @@ namespace EntityFrameworkExperiment.TransactionScripts
             var post = new Post
                 {
                     User = user,
-                    Text = postText
+                    Text = postText,
+                    CreatedAt = DateTime.UtcNow,
+                    ModifiedAt = null
                 };
 
             post = context.Posts.Add(post);
