@@ -8,6 +8,12 @@ using Ninject;
 
 namespace EntityFrameworkExperiment
 {
+    public class Page<T>
+    {
+        public int TotalItemCount { get; set; }
+        public IList<T> Items { get; set; }
+    }
+
     public class BloggingService
     {
         [Inject] public CreateUserTransactionScript CreateUserTransactionScript { get; set; }
@@ -16,6 +22,7 @@ namespace EntityFrameworkExperiment
         [Inject] public GetPostTransactionScript GetPostTransactionScript { get; set; }
         [Inject] public UpdatePostTransactionScript UpdatePostTransactionScript { get; set; }
         [Inject] public DeletePostTransactionScript DeletePostTransactionScript { get; set; }
+        [Inject] public GetPostsRequestProcessor GetPostsRequestProcessor { get; set; }
 
         public ServiceResult<UserDTO> CreateUser(string userName, string password)
         {
@@ -53,9 +60,14 @@ namespace EntityFrameworkExperiment
                     postId));
         }
 
-        public IList<PostDTO> GetPosts(string sessionToken, int itemsPerPage, int page)
+        public ServiceResult<Page<PostDTO>> GetPosts(string sessionToken, int itemsPerPage, int page)
         {
-            throw new NotImplementedException();
+            return ExecuteWithExceptionHandling(
+                context => GetPostsRequestProcessor.GetPosts(
+                    context, 
+                    sessionToken, 
+                    itemsPerPage, 
+                    page));
         }
 
         public ServiceResult<PostDTO> UpdatePost(string sessionToken, int postId, string postText)
