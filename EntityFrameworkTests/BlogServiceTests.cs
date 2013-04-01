@@ -118,6 +118,75 @@ namespace EntityFrameworkTests
             ExpectFail(ServiceError.NoSuchPost, () => _service.GetPost(session.SessionToken, 123));
         }
 
+        [TestMethod]
+        public void CanUpdatePost()
+        {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "test post"));
+            var updatedPost = ExpectOk(() => _service.UpdatePost(session.SessionToken, post.PostId, "other text"));
+            Assert.AreEqual(post.PostId, updatedPost.PostId);
+            Assert.AreEqual("other text", updatedPost.PostText);
+            Assert.AreEqual(post.Author.UserId, updatedPost.Author.UserId);
+            Assert.AreEqual(post.Author.UserName, updatedPost.Author.UserName);
+
+            var retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
+            Assert.AreEqual(post.PostId, retrievedPost.PostId);
+            Assert.AreEqual("other text", retrievedPost.PostText);
+            Assert.AreEqual(post.Author.UserId, retrievedPost.Author.UserId);
+            Assert.AreEqual(post.Author.UserName, retrievedPost.Author.UserName);
+        }
+
+        [TestMethod]
+        public void CantUpdatePostThatDoesNotExist()
+        {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            ExpectFail(ServiceError.NoSuchPost, () => _service.UpdatePost(session.SessionToken, 123, "other text"));
+        }
+
+        [TestMethod]
+        public void CantUpdatePostWithInvalidSessionToken()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void CantUpdatePostThatDoesNotBelongToTheUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void CanDeletePost()
+        {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "test post"));
+            ExpectOk(() => _service.DeletePost(session.SessionToken, post.PostId));
+            ExpectFail(ServiceError.NoSuchPost, () => _service.GetPost(session.SessionToken, post.PostId));
+        }
+
+        [TestMethod]
+        public void CantDeletePostThatDoesNotExist()
+        {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            ExpectFail(ServiceError.NoSuchPost, () => _service.DeletePost(session.SessionToken, 123));
+        }
+
+        [TestMethod]
+        public void CantDeletePostWithInvalidSessionToken()
+        {
+            throw new NotImplementedException();
+        }
+
+        [TestMethod]
+        public void CantDeletePostThatDoesNotBelongToTheUser()
+        {
+            throw new NotImplementedException();
+        }
+
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
         {
             var result = action();

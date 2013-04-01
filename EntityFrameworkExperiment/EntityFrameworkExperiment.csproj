@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\NoPermissionsException.cs" />
     <Compile Include="TransactionScripts\AuthenticateTransactionScript.cs" />
     <Compile Include="AuthenticationService.cs" />
     <Compile Include="Exceptions\BlogServiceException.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="DTO\ServiceResult.cs" />
     <Compile Include="DTO\SessionDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="TransactionScripts\DeletePostTransactionScript.cs" />
     <Compile Include="TransactionScripts\GetPostTransactionScript.cs" />
     <Compile Include="Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Exceptions\InvalidSessionException.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Mappers\SessionToSessionDTOMapper.cs" />
     <Compile Include="Exceptions\UserNameAlreadyRegisteredException.cs" />
     <Compile Include="Mappers\UserToUserDTOMapper.cs" />
+    <Compile Include="TransactionScripts\UpdatePostTransactionScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

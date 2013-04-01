@@ -6,6 +6,7 @@
         NoSuchUser,
         InvalidPassword,
         InvalidSession,
-        NoSuchPost
+        NoSuchPost,
+        NoPermissions
     }
 }

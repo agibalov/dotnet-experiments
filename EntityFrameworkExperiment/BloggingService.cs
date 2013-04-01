@@ -14,6 +14,8 @@ namespace EntityFrameworkExperiment
         [Inject] public AuthenticateTransactionScript AuthenticateTransactionScript { get; set; }
         [Inject] public CreatePostTransactionScript CreatePostTransactionScript { get; set; }
         [Inject] public GetPostTransactionScript GetPostTransactionScript { get; set; }
+        [Inject] public UpdatePostTransactionScript UpdatePostTransactionScript { get; set; }
+        [Inject] public DeletePostTransactionScript DeletePostTransactionScript { get; set; }
 
         public ServiceResult<UserDTO> CreateUser(string userName, string password)
         {
@@ -58,12 +60,21 @@ namespace EntityFrameworkExperiment
 
         public ServiceResult<PostDTO> UpdatePost(string sessionToken, int postId, string postText)
         {
-            throw new NotImplementedException();
+            return ExecuteWithExceptionHandling(
+                context => UpdatePostTransactionScript.UpdatePost(
+                    context, 
+                    sessionToken, 
+                    postId, 
+                    postText));
         }
 
         public ServiceResult<Object> DeletePost(string sessionToken, int postId)
         {
-            throw new NotImplementedException();
+            return ExecuteWithExceptionHandling(
+                context => DeletePostTransactionScript.DeletePost(
+                    context, 
+                    sessionToken, 
+                    postId));
         }
 
         private static ServiceResult<T> ExecuteWithExceptionHandling<T>(Func<BlogContext, T> func)
@@ -80,6 +91,15 @@ namespace EntityFrameworkExperiment
             {
                 return ServiceResult<T>.Failure(blogServiceException.Error);
             }
+        }
+
+        private static ServiceResult<Object> ExecuteWithExceptionHandling(Action<BlogContext> action)
+        {
+            return ExecuteWithExceptionHandling<Object>(context =>
+                {
+                    action(context);
+                    return null;
+                });
         }
     }
 }
