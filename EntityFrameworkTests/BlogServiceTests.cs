@@ -148,13 +148,22 @@ namespace EntityFrameworkTests
         [TestMethod]
         public void CantUpdatePostWithInvalidSessionToken()
         {
-            throw new NotImplementedException();
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "test post"));
+            ExpectFail(ServiceError.InvalidSession, () => _service.UpdatePost("123", post.PostId, "other text"));
         }
 
         [TestMethod]
         public void CantUpdatePostThatDoesNotBelongToTheUser()
         {
-            throw new NotImplementedException();
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session1 = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session1.SessionToken, "test post"));
+
+            ExpectOk(() => _service.CreateUser("qwerty", "qwerty"));
+            var session2 = ExpectOk(() => _service.Authenticate("qwerty", "qwerty"));
+            ExpectFail(ServiceError.NoPermissions, () => _service.UpdatePost(session2.SessionToken, post.PostId, "other text"));
         }
 
         [TestMethod]
@@ -178,13 +187,22 @@ namespace EntityFrameworkTests
         [TestMethod]
         public void CantDeletePostWithInvalidSessionToken()
         {
-            throw new NotImplementedException();
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "test post"));
+            ExpectFail(ServiceError.InvalidSession, () => _service.DeletePost("123", post.PostId));
         }
 
         [TestMethod]
         public void CantDeletePostThatDoesNotBelongToTheUser()
         {
-            throw new NotImplementedException();
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session1 = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session1.SessionToken, "test post"));
+
+            ExpectOk(() => _service.CreateUser("qwerty", "qwerty"));
+            var session2 = ExpectOk(() => _service.Authenticate("qwerty", "qwerty"));
+            ExpectFail(ServiceError.NoPermissions, () => _service.DeletePost(session2.SessionToken, post.PostId));
         }
 
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
