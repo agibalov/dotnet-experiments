@@ -255,6 +255,24 @@ namespace EntityFrameworkTests
             ExpectFail(ServiceError.NoSuchUser, () => _service.GetUserDetails(session.SessionToken, 123, 3));
         }
 
+        [TestMethod]
+        public void CanGetMostActiveUsers()
+        {
+            var user1Id = CreateUserWithPosts("loki1", 10);
+            CreateUserWithPosts("loki2", 1);
+            var user3Id = CreateUserWithPosts("loki3", 8);
+            var user4Id = CreateUserWithPosts("loki4", 3);
+            CreateUserWithPosts("loki5", 1);
+
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var mostActiveUsers = ExpectOk(() => _service.GetMostActiveUsers(session.SessionToken, 3));
+            Assert.AreEqual(3, mostActiveUsers.Count);
+            Assert.AreEqual(user1Id, mostActiveUsers[0].UserId);
+            Assert.AreEqual(user3Id, mostActiveUsers[1].UserId);
+            Assert.AreEqual(user4Id, mostActiveUsers[2].UserId);
+        }
+
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
         {
             var result = action();
@@ -267,6 +285,19 @@ namespace EntityFrameworkTests
             var result = action();
             Assert.IsFalse(result.Ok);
             Assert.AreEqual(expectedServiceError, result.ServiceError);
+        }
+
+        private int CreateUserWithPosts(string userName, int numberOfPosts)
+        {
+            var user = ExpectOk(() => _service.CreateUser(userName, "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate(userName, "qwerty"));
+
+            for (var i = 0; i < numberOfPosts; ++i)
+            {
+                ExpectOk(() => _service.CreatePost(session.SessionToken, "the post"));
+            }
+            
+            return user.UserId;
         }
     }
 }

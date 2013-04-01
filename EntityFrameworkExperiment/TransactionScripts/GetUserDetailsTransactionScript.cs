@@ -21,7 +21,7 @@ namespace EntityFrameworkExperiment.TransactionScripts
 
         public UserDetailsDTO GetUserDetails(BlogContext context, string sessionToken, int userId, int maxNumberOfRecentPosts)
         {
-            _authenticationService.GetUserBySessionToken(context, sessionToken);
+            _authenticationService.MakeSureSessionTokenIsOk(context, sessionToken);
 
             var user = context.Users.SingleOrDefault(u => u.UserId == userId);
             if (user == null)

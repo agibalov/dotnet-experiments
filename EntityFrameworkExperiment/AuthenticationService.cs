@@ -7,6 +7,11 @@ namespace EntityFrameworkExperiment
 {
     public class AuthenticationService
     {
+        public void MakeSureSessionTokenIsOk(BlogContext context, string sessionToken)
+        {
+            GetUserBySessionToken(context, sessionToken);
+        }
+
         public User GetUserBySessionToken(BlogContext context, string sessionToken)
         {
             var session = context.Sessions.SingleOrDefault(s => s.SessionToken == sessionToken);

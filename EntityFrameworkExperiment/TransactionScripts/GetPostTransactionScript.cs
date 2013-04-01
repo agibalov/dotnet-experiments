@@ -21,7 +21,8 @@ namespace EntityFrameworkExperiment.TransactionScripts
 
         public PostDTO GetPost(BlogContext context, string sessionToken, int postId)
         {
-            var user = _authenticationService.GetUserBySessionToken(context, sessionToken);
+            _authenticationService.MakeSureSessionTokenIsOk(context, sessionToken);
+
             var post = context.Posts.SingleOrDefault(p => p.PostId == postId);
             if (post == null)
             {

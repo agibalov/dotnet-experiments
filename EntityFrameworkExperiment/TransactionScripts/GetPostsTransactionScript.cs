@@ -5,12 +5,12 @@ using EntityFrameworkExperiment.Mappers;
 
 namespace EntityFrameworkExperiment.TransactionScripts
 {
-    public class GetPostsRequestProcessor
+    public class GetPostsTransactionScript
     {
         private readonly AuthenticationService _authenticationService;
         private readonly PostToPostDTOMapper _postToPostDtoMapper;
 
-        public GetPostsRequestProcessor(
+        public GetPostsTransactionScript(
             AuthenticationService authenticationService,
             PostToPostDTOMapper postToPostDtoMapper)
         {
@@ -20,7 +20,7 @@ namespace EntityFrameworkExperiment.TransactionScripts
 
         public Page<PostDTO> GetPosts(BlogContext context, string sessionToken, int itemsPerPage, int page)
         {
-            _authenticationService.GetUserBySessionToken(context, sessionToken);
+            _authenticationService.MakeSureSessionTokenIsOk(context, sessionToken);
 
             var postCount = context.Posts.Count();
             var posts = context.Posts.OrderBy(post => post.PostId).Skip(page * itemsPerPage).Take(itemsPerPage);

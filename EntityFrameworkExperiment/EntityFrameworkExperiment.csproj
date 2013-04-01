@@ -57,7 +57,9 @@
     <Compile Include="DTO\UserDetailsDTO.cs" />
     <Compile Include="Exceptions\NoPermissionsException.cs" />
     <Compile Include="DTO\Page.cs" />
-    <Compile Include="TransactionScripts\GetPostsRequestProcessor.cs" />
+    <Compile Include="DTO\ActiveUserDTO.cs" />
+    <Compile Include="TransactionScripts\GetMostActiveUsersTransactionScript.cs" />
+    <Compile Include="TransactionScripts\GetPostsTransactionScript.cs" />
     <Compile Include="TransactionScripts\AuthenticateTransactionScript.cs" />
     <Compile Include="AuthenticationService.cs" />
     <Compile Include="Exceptions\BlogServiceException.cs" />

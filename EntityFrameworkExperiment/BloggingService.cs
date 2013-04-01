@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DTO;
 using EntityFrameworkExperiment.Exceptions;
@@ -15,8 +16,9 @@ namespace EntityFrameworkExperiment
         [Inject] public GetPostTransactionScript GetPostTransactionScript { get; set; }
         [Inject] public UpdatePostTransactionScript UpdatePostTransactionScript { get; set; }
         [Inject] public DeletePostTransactionScript DeletePostTransactionScript { get; set; }
-        [Inject] public GetPostsRequestProcessor GetPostsRequestProcessor { get; set; }
+        [Inject] public GetPostsTransactionScript GetPostsTransactionScript { get; set; }
         [Inject] public GetUserDetailsTransactionScript GetUserDetailsTransactionScript { get; set; }
+        [Inject] public GetMostActiveUsersTransactionScript GetMostActiveUsersTransactionScript { get; set; }
 
         public ServiceResult<UserDTO> CreateUser(string userName, string password)
         {
@@ -57,7 +59,7 @@ namespace EntityFrameworkExperiment
         public ServiceResult<Page<PostDTO>> GetPosts(string sessionToken, int itemsPerPage, int page)
         {
             return ExecuteWithExceptionHandling(
-                context => GetPostsRequestProcessor.GetPosts(
+                context => GetPostsTransactionScript.GetPosts(
                     context, 
                     sessionToken, 
                     itemsPerPage, 
@@ -91,6 +93,15 @@ namespace EntityFrameworkExperiment
                     sessionToken, 
                     userId, 
                     maxNumberOfRecentPosts));
+        }
+
+        public ServiceResult<IList<ActiveUserDTO>> GetMostActiveUsers(string sessionToken, int maxNumberOfMostActiveUsers)
+        {
+            return ExecuteWithExceptionHandling(
+                context => GetMostActiveUsersTransactionScript.GetMostActiveUsers(
+                    context, 
+                    sessionToken, 
+                    maxNumberOfMostActiveUsers));
         }
 
         private static ServiceResult<T> ExecuteWithExceptionHandling<T>(Func<BlogContext, T> func)
