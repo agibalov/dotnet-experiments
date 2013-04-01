@@ -23,7 +23,7 @@ namespace EntityFrameworkExperiment.TransactionScripts
             _authenticationService.GetUserBySessionToken(context, sessionToken);
 
             var postCount = context.Posts.Count();
-            var posts = context.Posts.Skip(page * itemsPerPage).Take(itemsPerPage);
+            var posts = context.Posts.OrderBy(post => post.PostId).Skip(page * itemsPerPage).Take(itemsPerPage);
 
             return new Page<PostDTO>
                 {

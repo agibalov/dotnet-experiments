@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\NoPermissionsException.cs" />
+    <Compile Include="DTO\Page.cs" />
     <Compile Include="TransactionScripts\GetPostsRequestProcessor.cs" />
     <Compile Include="TransactionScripts\AuthenticateTransactionScript.cs" />
     <Compile Include="AuthenticationService.cs" />

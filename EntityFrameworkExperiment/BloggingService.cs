@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DTO;
 using EntityFrameworkExperiment.Exceptions;
@@ -8,12 +7,6 @@ using Ninject;
 
 namespace EntityFrameworkExperiment
 {
-    public class Page<T>
-    {
-        public int TotalItemCount { get; set; }
-        public IList<T> Items { get; set; }
-    }
-
     public class BloggingService
     {
         [Inject] public CreateUserTransactionScript CreateUserTransactionScript { get; set; }

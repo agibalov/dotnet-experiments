@@ -205,6 +205,27 @@ namespace EntityFrameworkTests
             ExpectFail(ServiceError.NoPermissions, () => _service.DeletePost(session2.SessionToken, post.PostId));
         }
 
+        [TestMethod]
+        public void CanGetAllPosts()
+        {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+
+            const int numberOfPosts = 7;
+            for (var i = 0; i < numberOfPosts; ++i)
+            {
+                ExpectOk(() => _service.CreatePost(session.SessionToken, "post"));
+            }
+
+            var page1 = ExpectOk(() => _service.GetPosts(session.SessionToken, 4, 0));
+            Assert.AreEqual(numberOfPosts, page1.TotalItemCount);
+            Assert.AreEqual(4, page1.Items.Count);
+
+            var page2 = ExpectOk(() => _service.GetPosts(session.SessionToken, 4, 1));
+            Assert.AreEqual(numberOfPosts, page2.TotalItemCount);
+            Assert.AreEqual(3, page2.Items.Count);
+        }
+
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
         {
             var result = action();
