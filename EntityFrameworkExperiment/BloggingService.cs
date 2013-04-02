@@ -19,6 +19,9 @@ namespace EntityFrameworkExperiment
         [Inject] public GetPostsTransactionScript GetPostsTransactionScript { get; set; }
         [Inject] public GetUserDetailsTransactionScript GetUserDetailsTransactionScript { get; set; }
         [Inject] public GetMostActiveUsersTransactionScript GetMostActiveUsersTransactionScript { get; set; }
+        [Inject] public CreateCommentTransactionScript CreateCommentTransactionScript { get; set; }
+        [Inject] public UpdateCommentTransactionScript UpdateCommentTransactionScript { get; set; }
+        [Inject] public DeleteCommentTransactionScript DeleteCommentTransactionScript { get; set; }
 
         public ServiceResult<UserDTO> CreateUser(string userName, string password)
         {
@@ -56,7 +59,7 @@ namespace EntityFrameworkExperiment
                     postId));
         }
 
-        public ServiceResult<Page<PostDTO>> GetPosts(string sessionToken, int itemsPerPage, int page)
+        public ServiceResult<Page<BriefPostDTO>> GetPosts(string sessionToken, int itemsPerPage, int page)
         {
             return ExecuteWithExceptionHandling(
                 context => GetPostsTransactionScript.GetPosts(
@@ -102,6 +105,35 @@ namespace EntityFrameworkExperiment
                     context, 
                     sessionToken, 
                     maxNumberOfMostActiveUsers));
+        }
+
+        public ServiceResult<Object> CreateComment(string sessionToken, int postId, string commentText)
+        {
+            return ExecuteWithExceptionHandling(
+                context => CreateCommentTransactionScript.CreateComment(
+                    context, 
+                    sessionToken, 
+                    postId, 
+                    commentText));
+        }
+
+        public ServiceResult<Object> UpdateComment(string sessionToken, int commentId, string commentText)
+        {
+            return ExecuteWithExceptionHandling(
+                context => UpdateCommentTransactionScript.UpdateComment(
+                    context, 
+                    sessionToken, 
+                    commentId, 
+                    commentText));
+        }
+
+        public ServiceResult<Object> DeleteComment(string sessionToken, int commentId)
+        {
+            return ExecuteWithExceptionHandling(
+                context => DeleteCommentTransactionScript.DeleteComment(
+                    context, 
+                    sessionToken, 
+                    commentId));
         }
 
         private static ServiceResult<T> ExecuteWithExceptionHandling<T>(Func<BlogContext, T> func)

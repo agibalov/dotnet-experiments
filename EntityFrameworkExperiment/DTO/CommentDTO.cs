@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EntityFrameworkExperiment.DTO
 {
-    public class PostDTO
+    public class CommentDTO
     {
-        public int PostId { get; set; }
-        public string PostText { get; set; }
+        public int CommentId { get; set; }
+        public string CommentText { get; set; }
         public UserDTO Author { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
-        public IList<CommentDTO> Comments { get; set; }
     }
 }

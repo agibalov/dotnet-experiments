@@ -8,27 +8,27 @@ namespace EntityFrameworkExperiment.TransactionScripts
     public class GetPostsTransactionScript
     {
         private readonly AuthenticationService _authenticationService;
-        private readonly PostToPostDTOMapper _postToPostDtoMapper;
+        private readonly PostToBriefPostDTOMapper _postToBriefPostDtoMapper;
 
         public GetPostsTransactionScript(
             AuthenticationService authenticationService,
-            PostToPostDTOMapper postToPostDtoMapper)
+            PostToBriefPostDTOMapper postToBriefPostDtoMapper)
         {
             _authenticationService = authenticationService;
-            _postToPostDtoMapper = postToPostDtoMapper;
+            _postToBriefPostDtoMapper = postToBriefPostDtoMapper;
         }
 
-        public Page<PostDTO> GetPosts(BlogContext context, string sessionToken, int itemsPerPage, int page)
+        public Page<BriefPostDTO> GetPosts(BlogContext context, string sessionToken, int itemsPerPage, int page)
         {
             _authenticationService.MakeSureSessionTokenIsOk(context, sessionToken);
 
             var postCount = context.Posts.Count();
             var posts = context.Posts.OrderBy(post => post.PostId).Skip(page * itemsPerPage).Take(itemsPerPage);
 
-            return new Page<PostDTO>
+            return new Page<BriefPostDTO>
                 {
                     TotalItemCount = postCount,
-                    Items = _postToPostDtoMapper.Map(posts)
+                    Items = _postToBriefPostDtoMapper.Map(posts)
                 };
         }
     }

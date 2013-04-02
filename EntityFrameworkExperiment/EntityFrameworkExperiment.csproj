@@ -54,6 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\EntityConfigurations\CommentConfiguration.cs" />
+    <Compile Include="DAL\EntityConfigurations\PostConfiguration.cs" />
+    <Compile Include="DAL\EntityConfigurations\SessionConfiguration.cs" />
+    <Compile Include="DAL\EntityConfigurations\UserConfiguration.cs" />
+    <Compile Include="DTO\BriefPostDTO.cs" />
+    <Compile Include="DTO\CommentDTO.cs" />
+    <Compile Include="Exceptions\NoSuchCommentException.cs" />
+    <Compile Include="Mappers\PostToBriefPostDTOMapper.cs" />
+    <Compile Include="TransactionScripts\CreateCommentTransactionScript.cs" />
+    <Compile Include="DAL\Entities\Comment.cs" />
+    <Compile Include="TransactionScripts\DeleteCommentTransactionScript.cs" />
     <Compile Include="DTO\UserDetailsDTO.cs" />
     <Compile Include="Exceptions\NoPermissionsException.cs" />
     <Compile Include="DTO\Page.cs" />
@@ -88,6 +99,7 @@
     <Compile Include="Mappers\UserToUserDTOMapper.cs" />
     <Compile Include="TransactionScripts\GetUserDetailsTransactionScript.cs" />
     <Compile Include="TransactionScripts\UpdatePostTransactionScript.cs" />
+    <Compile Include="TransactionScripts\UpdateCommentTransactionScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

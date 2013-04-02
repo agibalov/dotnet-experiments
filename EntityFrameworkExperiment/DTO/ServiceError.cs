@@ -7,6 +7,7 @@
         InvalidPassword,
         InvalidSession,
         NoSuchPost,
+        NoSuchComment,
         NoPermissions
     }
 }

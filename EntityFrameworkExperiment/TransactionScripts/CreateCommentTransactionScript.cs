@@ -1,38 +1,40 @@
+﻿using System;
 using System.Linq;
 using EntityFrameworkExperiment.DAL;
+using EntityFrameworkExperiment.DAL.Entities;
 using EntityFrameworkExperiment.Exceptions;
 
 namespace EntityFrameworkExperiment.TransactionScripts
 {
-    public class DeletePostTransactionScript
+    public class CreateCommentTransactionScript
     {
         private readonly AuthenticationService _authenticationService;
 
-        public DeletePostTransactionScript(AuthenticationService authenticationService)
+        public CreateCommentTransactionScript(AuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
         }
 
-        public void DeletePost(BlogContext context, string sessionToken, int postId)
+        public void CreateComment(BlogContext context, string sessionToken, int postId, string commentText)
         {
             var user = _authenticationService.GetUserBySessionToken(context, sessionToken);
+
             var post = context.Posts.SingleOrDefault(p => p.PostId == postId);
             if (post == null)
             {
                 throw new NoSuchPostException();
             }
 
-            if (post.UserId != user.UserId)
-            {
-                throw new NoPermissionsException();
-            }
+            var comment = new Comment
+                {
+                    Text = commentText,
+                    CreatedAt = DateTime.UtcNow,
+                    ModifiedAt = null,
+                    Post = post,
+                    User = user
+                };
 
-            foreach (var comment in post.Comments)
-            {
-                context.Comments.Remove(comment);
-            }
-
-            context.Posts.Remove(post);
+            context.Comments.Add(comment);
             context.SaveChanges();
         }
     }
