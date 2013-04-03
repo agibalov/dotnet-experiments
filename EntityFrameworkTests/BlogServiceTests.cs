@@ -237,7 +237,7 @@ namespace EntityFrameworkTests
             var post3 = ExpectOk(() => _service.CreatePost(session.SessionToken, "post 3"));
             var post4 = ExpectOk(() => _service.CreatePost(session.SessionToken, "post 4"));
 
-            var userDetails = ExpectOk(() => _service.GetUserDetails(session.SessionToken, user.UserId, 3));
+            var userDetails = ExpectOk(() => _service.GetUserDetails(session.SessionToken, user.UserId, 3, 3));
             Assert.AreEqual(user.UserId, userDetails.UserId);
             Assert.AreEqual(user.UserName, userDetails.UserName);
             Assert.AreEqual(4, userDetails.NumberOfPosts);
@@ -245,6 +245,7 @@ namespace EntityFrameworkTests
             Assert.AreEqual(post4.PostId, userDetails.RecentPosts[0].PostId);
             Assert.AreEqual(post3.PostId, userDetails.RecentPosts[1].PostId);
             Assert.AreEqual(post2.PostId, userDetails.RecentPosts[2].PostId);
+            Assert.AreEqual(0, userDetails.RecentComments.Count);
         }
 
         [TestMethod]
@@ -252,7 +253,7 @@ namespace EntityFrameworkTests
         {
             ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
             var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
-            ExpectFail(ServiceError.NoSuchUser, () => _service.GetUserDetails(session.SessionToken, 123, 3));
+            ExpectFail(ServiceError.NoSuchUser, () => _service.GetUserDetails(session.SessionToken, 123, 3, 3));
         }
 
         [TestMethod]

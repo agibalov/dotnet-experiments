@@ -61,6 +61,7 @@
     <Compile Include="DTO\BriefPostDTO.cs" />
     <Compile Include="DTO\CommentDTO.cs" />
     <Compile Include="Exceptions\NoSuchCommentException.cs" />
+    <Compile Include="Mappers\CommentToCommentDTOMapper.cs" />
     <Compile Include="Mappers\PostToBriefPostDTOMapper.cs" />
     <Compile Include="TransactionScripts\CreateCommentTransactionScript.cs" />
     <Compile Include="DAL\Entities\Comment.cs" />

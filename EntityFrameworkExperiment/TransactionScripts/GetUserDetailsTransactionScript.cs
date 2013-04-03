@@ -9,17 +9,25 @@ namespace EntityFrameworkExperiment.TransactionScripts
     public class GetUserDetailsTransactionScript
     {
         private readonly AuthenticationService _authenticationService;
-        private readonly PostToPostDTOMapper _postToPostDtoMapper;
+        private readonly PostToBriefPostDTOMapper _postToBriefPostDtoMapper;
+        private readonly CommentToCommentDTOMapper _commentToCommentDtoMapper;
 
         public GetUserDetailsTransactionScript(
             AuthenticationService authenticationService,
-            PostToPostDTOMapper postToPostDtoMapper)
+            PostToBriefPostDTOMapper postToBriefPostDtoMapper,
+            CommentToCommentDTOMapper commentToCommentDtoMapper)
         {
             _authenticationService = authenticationService;
-            _postToPostDtoMapper = postToPostDtoMapper;
+            _postToBriefPostDtoMapper = postToBriefPostDtoMapper;
+            _commentToCommentDtoMapper = commentToCommentDtoMapper;
         }
 
-        public UserDetailsDTO GetUserDetails(BlogContext context, string sessionToken, int userId, int maxNumberOfRecentPosts)
+        public UserDetailsDTO GetUserDetails(
+            BlogContext context, 
+            string sessionToken, 
+            int userId, 
+            int maxNumberOfRecentPosts, 
+            int maxNumberOfRecentComments)
         {
             _authenticationService.MakeSureSessionTokenIsOk(context, sessionToken);
 
@@ -31,18 +39,28 @@ namespace EntityFrameworkExperiment.TransactionScripts
 
             var numberOfPosts = context.Posts.Count(post => post.UserId == userId);
             var recentPosts = context.Posts
+                .Include("Comments")
                 .Where(post => post.UserId == userId)
                 .OrderByDescending(post => post.CreatedAt)
                 .Take(maxNumberOfRecentPosts)
+                .ToList();
+
+            var numberOfComments = context.Comments.Count(comment => comment.UserId == userId);
+            var recentComments = context.Comments
+                .Where(comment => comment.UserId == userId)
+                .OrderByDescending(comment => comment.CreatedAt)
+                .Take(maxNumberOfRecentComments)
                 .ToList();
 
             return new UserDetailsDTO
                 {
                     UserId = user.UserId,
                     UserName = user.UserName,
-                    NumberOfPosts = numberOfPosts,
                     RegisteredAt = user.CreatedAt,
-                    RecentPosts = _postToPostDtoMapper.Map(recentPosts)
+                    NumberOfPosts = numberOfPosts,
+                    RecentPosts = _postToBriefPostDtoMapper.Map(recentPosts),
+                    NumberOfComments = numberOfComments,
+                    RecentComments = _commentToCommentDtoMapper.Map(recentComments)
                 };
         }
     }

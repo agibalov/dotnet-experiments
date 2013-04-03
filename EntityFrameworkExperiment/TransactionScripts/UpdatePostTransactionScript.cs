@@ -23,7 +23,9 @@ namespace EntityFrameworkExperiment.TransactionScripts
         public PostDTO UpdatePost(BlogContext context, string sessionToken, int postId, string postText)
         {
             var user = _authenticationService.GetUserBySessionToken(context, sessionToken);
-            var post = context.Posts.SingleOrDefault(p => p.PostId == postId);
+            var post = context.Posts
+                .Include("Comments")
+                .SingleOrDefault(p => p.PostId == postId);
             if (post == null)
             {
                 throw new NoSuchPostException();

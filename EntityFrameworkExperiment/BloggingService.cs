@@ -88,14 +88,19 @@ namespace EntityFrameworkExperiment
                     postId));
         }
 
-        public ServiceResult<UserDetailsDTO> GetUserDetails(string sessionToken, int userId, int maxNumberOfRecentPosts)
+        public ServiceResult<UserDetailsDTO> GetUserDetails(
+            string sessionToken, 
+            int userId, 
+            int maxNumberOfRecentPosts,
+            int maxNumberOfRecentComments)
         {
             return ExecuteWithExceptionHandling(
                 context => GetUserDetailsTransactionScript.GetUserDetails(
                     context, 
                     sessionToken, 
                     userId, 
-                    maxNumberOfRecentPosts));
+                    maxNumberOfRecentPosts,
+                    maxNumberOfRecentComments));
         }
 
         public ServiceResult<IList<ActiveUserDTO>> GetMostActiveUsers(string sessionToken, int maxNumberOfMostActiveUsers)

@@ -23,7 +23,9 @@ namespace EntityFrameworkExperiment.TransactionScripts
         {
             _authenticationService.MakeSureSessionTokenIsOk(context, sessionToken);
 
-            var post = context.Posts.SingleOrDefault(p => p.PostId == postId);
+            var post = context.Posts
+                .Include("Comments")
+                .SingleOrDefault(p => p.PostId == postId);
             if (post == null)
             {
                 throw new NoSuchPostException();

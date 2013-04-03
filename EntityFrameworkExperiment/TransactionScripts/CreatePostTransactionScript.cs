@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DAL.Entities;
 using EntityFrameworkExperiment.DTO;
@@ -27,7 +28,8 @@ namespace EntityFrameworkExperiment.TransactionScripts
                     User = user,
                     Text = postText,
                     CreatedAt = DateTime.UtcNow,
-                    ModifiedAt = null
+                    ModifiedAt = null,
+                    Comments = new List<Comment>()
                 };
 
             post = context.Posts.Add(post);

@@ -9,6 +9,8 @@ namespace EntityFrameworkExperiment.DTO
         public string UserName { get; set; }
         public DateTime RegisteredAt { get; set; }
         public int NumberOfPosts { get; set; }
-        public IList<PostDTO> RecentPosts { get; set; }
+        public IList<BriefPostDTO> RecentPosts { get; set; }
+        public int NumberOfComments { get; set; }
+        public IList<CommentDTO> RecentComments { get; set; }
     }
 }
