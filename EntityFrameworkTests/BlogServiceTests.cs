@@ -34,8 +34,8 @@ namespace EntityFrameworkTests
         public void CanCreateUser()
         {
             var user = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
-            Assert.AreNotEqual(0, user.UserId);
-            Assert.IsFalse(string.IsNullOrEmpty(user.UserName));
+            AssertGoodId(user.UserId);
+            AssertNotEmptyString(user.UserName);
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace EntityFrameworkTests
         {
             var createdUser = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
             var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
-            Assert.IsFalse(string.IsNullOrEmpty(session.SessionToken));
+            AssertNotEmptyString(session.SessionToken);
             var authenticatedUser = session.User;
             Assert.AreEqual(createdUser.UserId, authenticatedUser.UserId);
             Assert.AreEqual(createdUser.UserName, authenticatedUser.UserName);
@@ -75,7 +75,7 @@ namespace EntityFrameworkTests
             var createdUser = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
             var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
             var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "test post"));
-            Assert.AreNotEqual(0, post.PostId);
+            AssertGoodId(post.PostId);
             Assert.AreEqual("test post", post.PostText);
             var postAuthor = post.Author;
             Assert.AreEqual(createdUser.UserId, postAuthor.UserId);
@@ -274,6 +274,22 @@ namespace EntityFrameworkTests
             Assert.AreEqual(user4Id, mostActiveUsers[2].UserId);
         }
 
+        [TestMethod]
+        public void CanCreateCommentForExistingPost()
+        {
+            var user = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "my post"));
+            ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
+            var retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
+            Assert.AreEqual(1, retrievedPost.Comments.Count);
+            var comment = retrievedPost.Comments[0];
+            AssertGoodId(comment.CommentId);
+            Assert.AreEqual("my comment", comment.CommentText);
+            Assert.AreEqual(user.UserId, comment.Author.UserId);
+            Assert.AreEqual(user.UserName, comment.Author.UserName);
+        }
+
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
         {
             var result = action();
@@ -286,6 +302,16 @@ namespace EntityFrameworkTests
             var result = action();
             Assert.IsFalse(result.Ok);
             Assert.AreEqual(expectedServiceError, result.ServiceError);
+        }
+
+        private static void AssertGoodId(int id)
+        {
+            Assert.AreNotEqual(0, id);
+        }
+
+        private static void AssertNotEmptyString(string s)
+        {
+            Assert.IsFalse(string.IsNullOrEmpty(s));
         }
 
         private int CreateUserWithPosts(string userName, int numberOfPosts)
