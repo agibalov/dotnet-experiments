@@ -11,8 +11,8 @@ namespace EntityFrameworkExperiment.DAL.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? ModifiedAt { get; set; }
 
-        public virtual IList<Session> Sessions { get; set; }
-        public virtual IList<Post> Posts { get; set; }
-        public virtual IList<Comment> Comments { get; set; }
+        public IList<Session> Sessions { get; set; }
+        public IList<Post> Posts { get; set; }
+        public IList<Comment> Comments { get; set; }
     }
 }

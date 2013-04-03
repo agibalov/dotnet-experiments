@@ -14,7 +14,9 @@ namespace EntityFrameworkExperiment
 
         public User GetUserBySessionToken(BlogContext context, string sessionToken)
         {
-            var session = context.Sessions.SingleOrDefault(s => s.SessionToken == sessionToken);
+            var session = context.Sessions
+                .Include("User")
+                .SingleOrDefault(s => s.SessionToken == sessionToken);
             if (session == null)
             {
                 throw new InvalidSessionException();

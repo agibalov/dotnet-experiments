@@ -27,7 +27,10 @@ namespace EntityFrameworkExperiment.TransactionScripts
                 throw new NoPermissionsException();
             }
 
-            foreach (var comment in post.Comments)
+            var commentsToDelete = (from comment in context.Comments
+                                    where comment.PostId == postId
+                                    select comment).ToList();
+            foreach (var comment in commentsToDelete)
             {
                 context.Comments.Remove(comment);
             }

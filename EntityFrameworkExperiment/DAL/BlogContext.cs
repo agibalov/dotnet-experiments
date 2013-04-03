@@ -11,6 +11,11 @@ namespace EntityFrameworkExperiment.DAL
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
+        public BlogContext()
+        {
+            Configuration.LazyLoadingEnabled = false;
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new UserConfiguration());

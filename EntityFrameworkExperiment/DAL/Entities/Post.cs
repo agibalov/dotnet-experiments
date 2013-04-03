@@ -11,7 +11,7 @@ namespace EntityFrameworkExperiment.DAL.Entities
         public DateTime? ModifiedAt { get; set; }
 
         public int UserId { get; set; }
-        public virtual User User { get; set; }
-        public virtual IList<Comment> Comments { get; set; }
+        public User User { get; set; }
+        public IList<Comment> Comments { get; set; }
     }
 }
