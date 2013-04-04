@@ -290,6 +290,36 @@ namespace EntityFrameworkTests
             Assert.AreEqual(user.UserName, comment.Author.UserName);
         }
 
+        [TestMethod]
+        public void CanUpdateExistingComment()
+        {
+            var user = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "my post"));
+            ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
+            var retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
+            Assert.AreEqual(1, retrievedPost.Comments.Count);
+            var comment = retrievedPost.Comments[0];
+            AssertGoodId(comment.CommentId);
+            Assert.AreEqual("my comment", comment.CommentText);
+            Assert.AreEqual(user.UserId, comment.Author.UserId);
+            Assert.AreEqual(user.UserName, comment.Author.UserName);
+
+            ExpectOk(() => _service.UpdateComment(session.SessionToken, comment.CommentId, "my other text"));
+            retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
+            Assert.AreEqual(1, retrievedPost.Comments.Count);
+            comment = retrievedPost.Comments[0];
+            AssertGoodId(comment.CommentId);
+            Assert.AreEqual("my other text", comment.CommentText);
+            Assert.AreEqual(user.UserId, comment.Author.UserId);
+            Assert.AreEqual(user.UserName, comment.Author.UserName);
+        }
+
+        [TestMethod]
+        public void CanDeleteExistingComment()
+        {
+        }
+
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
         {
             var result = action();
