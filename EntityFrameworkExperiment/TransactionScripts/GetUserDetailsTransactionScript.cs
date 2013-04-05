@@ -41,14 +41,14 @@ namespace EntityFrameworkExperiment.TransactionScripts
             var recentPosts = context.Posts
                 .Include("Comments")
                 .Where(post => post.UserId == userId)
-                .OrderByDescending(post => post.CreatedAt)
+                .OrderByDescending(post => post.PostId)
                 .Take(maxNumberOfRecentPosts)
                 .ToList();
 
             var numberOfComments = context.Comments.Count(comment => comment.UserId == userId);
             var recentComments = context.Comments
                 .Where(comment => comment.UserId == userId)
-                .OrderByDescending(comment => comment.CreatedAt)
+                .OrderByDescending(comment => comment.CommentId)
                 .Take(maxNumberOfRecentComments)
                 .ToList();
 
