@@ -280,10 +280,7 @@ namespace EntityFrameworkTests
             var user = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
             var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
             var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "my post"));
-            ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
-            var retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
-            Assert.AreEqual(1, retrievedPost.Comments.Count);
-            var comment = retrievedPost.Comments[0];
+            var comment = ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
             AssertGoodId(comment.CommentId);
             Assert.AreEqual("my comment", comment.CommentText);
             Assert.AreEqual(user.UserId, comment.Author.UserId);
@@ -293,26 +290,15 @@ namespace EntityFrameworkTests
         [TestMethod]
         public void CanUpdateExistingComment()
         {
-            var user = ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
             var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
             var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "my post"));
-            ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
-            var retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
-            Assert.AreEqual(1, retrievedPost.Comments.Count);
-            var comment = retrievedPost.Comments[0];
-            AssertGoodId(comment.CommentId);
-            Assert.AreEqual("my comment", comment.CommentText);
-            Assert.AreEqual(user.UserId, comment.Author.UserId);
-            Assert.AreEqual(user.UserName, comment.Author.UserName);
-
-            ExpectOk(() => _service.UpdateComment(session.SessionToken, comment.CommentId, "my other text"));
-            retrievedPost = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
-            Assert.AreEqual(1, retrievedPost.Comments.Count);
-            comment = retrievedPost.Comments[0];
-            AssertGoodId(comment.CommentId);
-            Assert.AreEqual("my other text", comment.CommentText);
-            Assert.AreEqual(user.UserId, comment.Author.UserId);
-            Assert.AreEqual(user.UserName, comment.Author.UserName);
+            var createdComment = ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
+            var updatedComment = ExpectOk(() => _service.UpdateComment(session.SessionToken, createdComment.CommentId, "my other text"));
+            Assert.AreEqual(createdComment.CommentId, updatedComment.CommentId);
+            Assert.AreEqual("my other text", updatedComment.CommentText);
+            Assert.AreEqual(createdComment.Author.UserId, updatedComment.Author.UserId);
+            Assert.AreEqual(createdComment.Author.UserName, updatedComment.Author.UserName);
         }
 
         [TestMethod]

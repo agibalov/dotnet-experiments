@@ -2,20 +2,26 @@
 using System.Linq;
 using EntityFrameworkExperiment.DAL;
 using EntityFrameworkExperiment.DAL.Entities;
+using EntityFrameworkExperiment.DTO;
 using EntityFrameworkExperiment.Exceptions;
+using EntityFrameworkExperiment.Mappers;
 
 namespace EntityFrameworkExperiment.TransactionScripts
 {
     public class CreateCommentTransactionScript
     {
         private readonly AuthenticationService _authenticationService;
+        private readonly CommentToCommentDTOMapper _commentToCommentDtoMapper;
 
-        public CreateCommentTransactionScript(AuthenticationService authenticationService)
+        public CreateCommentTransactionScript(
+            AuthenticationService authenticationService,
+            CommentToCommentDTOMapper commentToCommentDtoMapper)
         {
             _authenticationService = authenticationService;
+            _commentToCommentDtoMapper = commentToCommentDtoMapper;
         }
 
-        public void CreateComment(BlogContext context, string sessionToken, int postId, string commentText)
+        public CommentDTO CreateComment(BlogContext context, string sessionToken, int postId, string commentText)
         {
             var user = _authenticationService.GetUserBySessionToken(context, sessionToken);
 
@@ -36,6 +42,8 @@ namespace EntityFrameworkExperiment.TransactionScripts
 
             context.Comments.Add(comment);
             context.SaveChanges();
+
+            return _commentToCommentDtoMapper.Map(comment);
         }
     }
 }

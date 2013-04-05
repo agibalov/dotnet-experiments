@@ -112,7 +112,7 @@ namespace EntityFrameworkExperiment
                     maxNumberOfMostActiveUsers));
         }
 
-        public ServiceResult<Object> CreateComment(string sessionToken, int postId, string commentText)
+        public ServiceResult<CommentDTO> CreateComment(string sessionToken, int postId, string commentText)
         {
             return ExecuteWithExceptionHandling(
                 context => CreateCommentTransactionScript.CreateComment(
@@ -122,7 +122,7 @@ namespace EntityFrameworkExperiment
                     commentText));
         }
 
-        public ServiceResult<Object> UpdateComment(string sessionToken, int commentId, string commentText)
+        public ServiceResult<CommentDTO> UpdateComment(string sessionToken, int commentId, string commentText)
         {
             return ExecuteWithExceptionHandling(
                 context => UpdateCommentTransactionScript.UpdateComment(
