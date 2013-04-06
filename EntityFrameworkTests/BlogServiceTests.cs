@@ -304,6 +304,15 @@ namespace EntityFrameworkTests
         [TestMethod]
         public void CanDeleteExistingComment()
         {
+            ExpectOk(() => _service.CreateUser("loki2302", "qwerty"));
+            var session = ExpectOk(() => _service.Authenticate("loki2302", "qwerty"));
+            var post = ExpectOk(() => _service.CreatePost(session.SessionToken, "my post"));
+            var createdComment = ExpectOk(() => _service.CreateComment(session.SessionToken, post.PostId, "my comment"));
+            var postWithComment = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
+            Assert.AreEqual(1, postWithComment.Comments.Count);
+            ExpectOk(() => _service.DeleteComment(session.SessionToken, createdComment.CommentId));
+            var postWithoutComment = ExpectOk(() => _service.GetPost(session.SessionToken, post.PostId));
+            Assert.AreEqual(0, postWithoutComment.Comments.Count);
         }
 
         private static T ExpectOk<T>(Func<ServiceResult<T>> action)
