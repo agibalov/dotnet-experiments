@@ -43,10 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Advanced\SignUpValidationTests.cs" />
+    <Compile Include="Advanced\ValidationConfiguration.cs" />
+    <Compile Include="Advanced\SignInValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="UserValidator.cs" />
-    <Compile Include="ValidationTests.cs" />
+    <Compile Include="Advanced\Requests\SignInRequest.cs" />
+    <Compile Include="Advanced\RequestValidators\SignInRequestValidator.cs" />
+    <Compile Include="Advanced\Requests\SignUpRequest.cs" />
+    <Compile Include="Advanced\RequestValidators\SignUpRequestValidator.cs" />
+    <Compile Include="Basic\User.cs" />
+    <Compile Include="Basic\UserValidator.cs" />
+    <Compile Include="Basic\ValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace FluentValidationExperiment
+namespace FluentValidationExperiment.Basic
 {
     public class UserValidator : AbstractValidator<User>
     {

@@ -1,4 +1,4 @@
-﻿namespace FluentValidationExperiment
+﻿namespace FluentValidationExperiment.Basic
 {
     public class User
     {
