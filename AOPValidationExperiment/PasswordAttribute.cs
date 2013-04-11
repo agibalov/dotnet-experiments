@@ -4,7 +4,7 @@ namespace AOPValidationExperiment
 {
     public class PasswordAttribute : ValidationAttribute
     {
-        public override bool IsOk(object x)
+        public override bool Test(object x)
         {
             if (!(x is string))
             {
