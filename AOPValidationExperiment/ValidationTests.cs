@@ -17,7 +17,7 @@ namespace AOPValidationExperiment
         {
             // wtf? it has been working without this extra stuff before installing VS2012 Update 2
             var kernel = new StandardKernel(new NinjectSettings { LoadExtensions = false }, new LinFuModule());
-            kernel.Bind<TestApi>().ToSelf().Intercept().With<ValidatingInterceptor>();
+            kernel.Bind<TestApi>().ToSelf();
             _api = kernel.Get<TestApi>();
         }
 
