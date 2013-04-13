@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Ninject.Extensions.Interception;
 
 namespace AOPValidationExperiment.Validation
@@ -7,6 +8,8 @@ namespace AOPValidationExperiment.Validation
     {
         public void Intercept(IInvocation invocation)
         {
+            var fieldsInError = new List<string>();
+
             var targetMethod = invocation.Request.Method;
             var parameters = targetMethod.GetParameters();
             for (var i = 0; i < parameters.Length; ++i)
@@ -26,8 +29,13 @@ namespace AOPValidationExperiment.Validation
                     .Any(validator => !validator.Test(argument));
                 if (isBadArgument)
                 {
-                    throw new ValidationException();
+                    fieldsInError.Add(parameter.Name);
                 }
+            }
+
+            if (fieldsInError.Count > 0)
+            {
+                throw new ValidationException(fieldsInError);
             }
 
             invocation.Proceed();
