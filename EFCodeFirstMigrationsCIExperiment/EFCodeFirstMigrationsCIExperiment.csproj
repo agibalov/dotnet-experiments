@@ -57,6 +57,10 @@
     <Compile Include="Migrations\201305130702510_InitialCreate.Designer.cs">
       <DependentUpon>201305130702510_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201305130852443_AddFirstAndLastName.cs" />
+    <Compile Include="Migrations\201305130852443_AddFirstAndLastName.Designer.cs">
+      <DependentUpon>201305130852443_AddFirstAndLastName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +73,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201305130702510_InitialCreate.resx">
       <DependentUpon>201305130702510_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305130852443_AddFirstAndLastName.resx">
+      <DependentUpon>201305130852443_AddFirstAndLastName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

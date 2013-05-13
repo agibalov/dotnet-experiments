@@ -20,7 +20,9 @@ namespace EFCodeFirstMigrationsCIExperiment
             {
                 var user = new User
                     {
-                        UserName = string.Format("User #{0}", Guid.NewGuid().ToString())
+                        UserName = string.Format("User #{0}", Guid.NewGuid().ToString()),
+                        FirstName = "loki",
+                        LastName = "2302"
                     };
                 context.Users.Add(user);
                 context.SaveChanges();
