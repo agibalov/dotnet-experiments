@@ -1,0 +1,51 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+         ToolsVersion="4.0">
+
+  <PropertyGroup>
+    <BuildDir>$(MSBuildProjectDirectory)\Build</BuildDir>
+    
+    <AppConnectionString Condition="'$(AppConnectionString)'==''">msbuild connection string</AppConnectionString>
+    <AppConfig>$(MSBuildProjectDirectory)\EFCodeFirstMigrationsCIExperiment\App.config</AppConfig>
+
+    <ProjectFile>$(MSBuildProjectDirectory)\EFCodeFirstMigrationsCIExperiment\EFCodeFirstMigrationsCIExperiment.csproj</ProjectFile>
+    
+    <MigrateAppExecutableAtPackagesFolder>$(MSBuildProjectDirectory)\packages\EntityFramework.5.0.0\tools\migrate.exe</MigrateAppExecutableAtPackagesFolder>
+    <MigrateAppConfigAtPackagesFolder>$(MSBuildProjectDirectory)\packages\EntityFramework.5.0.0\tools\Redirect.config</MigrateAppConfigAtPackagesFolder>
+  </PropertyGroup>
+
+  <Target Name="CreateEmptyBuildDirectory">
+    <RemoveDir Directories="$(BuildDir)" Condition = "Exists('$(BuildDir)')" />
+    <MakeDir Directories = "$(BuildDir)" />
+  </Target>
+
+  <Target Name="BuildApp">
+    <MSBuild Projects="$(ProjectFile)"
+             Properties="Configuration=Release;OutDir=$(BuildDir)\;"></MSBuild>
+  </Target>
+
+  <Target Name="UpdateAppConfiguration">
+    <!-- CONNECTION STRING -->
+    <XmlUpdate Namespace="http://schemas.microsoft.com/.NetConfiguration/v4.0"
+               XmlFileName="$(AppConfig)"
+               Xpath="//configuration/connectionStrings/add[@name='MyConnectionString']/@connectionString"
+               Value="$(AppConnectionString)" />
+  </Target>
+
+  <Target Name="UpdateDatabase">
+    <ItemGroup>
+      <MigrateExeAtPackagesFolder Include="$(MigrateAppExecutableAtPackagesFolder)" />
+      <MigrateExeConfigAtPackagesFolder Include="$(MigrateAppConfigAtPackagesFolder)" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <MigrateAppFileName>migrate.exe</MigrateAppFileName>
+      <AssemblyName>EFCodeFirstMigrationsCIExperiment</AssemblyName>
+    </PropertyGroup>
+
+    <Copy SourceFiles="@(MigrateExeAtPackagesFolder)" DestinationFolder="$(BuildDir)" />
+    <Copy SourceFiles="@(MigrateExeConfigAtPackagesFolder)" DestinationFiles="$(BuildDir)\$(MigrateAppFileName).config" />
+    
+    <Exec WorkingDirectory="$(BuildDir)" 
+          Command="$(MigrateAppFileName) $(AssemblyName) /startupConfigurationFile:$(AssemblyName).dll.config" />
+  </Target>
+</Project>
