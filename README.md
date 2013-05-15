@@ -11,6 +11,7 @@ The requirements are:
 4. For every method's parameter, there should also be a description and where it comes from (body vs. URI).
 5. For every method's parameter, there should be a sample value (it's mostly useful for body parameters).
 6. For method's return value, there should also be a sample.
+7. I definitely don't want to use XML docs generation for description. I want to use `DescriptionAttribute`.
 
 ## Solution:
 
@@ -18,3 +19,4 @@ The requirements are:
 2. I use [AutoFixture](https://github.com/AutoFixture/AutoFixture) to generate sample objects (for parameters and returns).
 3. I use [Json.NET](http://james.newtonking.com/projects/json-net.aspx) to render those objects as JSON.
 4. I use [Bootstrap](http://twitter.github.io/bootstrap/) to layout the page.
+5. There's custom `IDocumentationProvider` implemented - `IDocumentationProvider`. It checks `DescriptionAttribute` to provide descriptions for methods and their parameters.
