@@ -1,0 +1,36 @@
+﻿using System.Data.SqlServerCe;
+using System.IO;
+
+namespace DapperExperiment
+{
+    public class DatabaseHelper
+    {
+        private readonly string _connectionString;
+
+        public DatabaseHelper(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public void DropDatabaseIfExistsAndCreateNewOne()
+        {
+            var builder = new SqlCeConnectionStringBuilder(_connectionString);
+            var databaseFileName = builder.DataSource;
+
+            if (File.Exists(databaseFileName))
+            {
+                File.Delete(databaseFileName);
+            }
+
+            using (var engine = new SqlCeEngine(_connectionString))
+            {
+                engine.CreateDatabase();
+            }
+        }
+
+        public SqlCeConnection MakeConnection()
+        {
+            return new SqlCeConnection(_connectionString);
+        }
+    }
+}
