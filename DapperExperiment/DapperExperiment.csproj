@@ -56,11 +56,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDatabaseTest.cs" />
+    <Compile Include="MultipleTablesTests\BlogService.cs" />
+    <Compile Include="MultipleTablesTests\BlogServiceTest.cs" />
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="MultipleTablesTests\BriefUserDTO.cs" />
+    <Compile Include="MultipleTablesTests\PostDAO.cs" />
+    <Compile Include="MultipleTablesTests\PostDTO.cs" />
+    <Compile Include="MultipleTablesTests\PostRow.cs" />
+    <Compile Include="MultipleTablesTests\UserDAO.cs" />
     <Compile Include="SingleTableTests\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleTableTests\UserDAO.cs" />
     <Compile Include="SingleTableTests\UserRow.cs" />
+    <Compile Include="MultipleTablesTests\UserDTO.cs" />
+    <Compile Include="MultipleTablesTests\UserRow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
