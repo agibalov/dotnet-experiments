@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using DapperExperiment.MultipleTablesTests.DAL;
@@ -12,15 +11,18 @@ namespace DapperExperiment.MultipleTablesTests.Service
         private readonly DatabaseHelper _databaseHelper;
         private readonly UserDAO _userDao;
         private readonly PostDAO _postDao;
+        private readonly TagDAO _tagDao;
 
         public BlogService(
             DatabaseHelper databaseHelper, 
             UserDAO userDao, 
-            PostDAO postDao)
+            PostDAO postDao,
+            TagDAO tagDao)
         {
             _databaseHelper = databaseHelper;
             _userDao = userDao;
             _postDao = postDao;
+            _tagDao = tagDao;
         }
 
         public void CreateSchema()
@@ -39,6 +41,16 @@ namespace DapperExperiment.MultipleTablesTests.Service
                     "RowGuid uniqueidentifier not null, " +
                     "PostText nvarchar(256) not null, " + 
                     "UserId int not null references Users(UserId))");
+
+                connection.Execute(
+                    "create table Tags(" + 
+                    "TagId int not null identity(1, 1) primary key, " + 
+                    "TagName nvarchar(256) not null)");
+
+                connection.Execute(
+                    "create table PostsTags(" + 
+                    "PostId int not null references Posts(PostId), " +
+                    "TagId int not null references Tags(TagId))");
             }
         }
 

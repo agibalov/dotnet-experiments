@@ -14,7 +14,8 @@ namespace DapperExperiment.MultipleTablesTests
         {
             var userDao = new UserDAO();
             var postDao = new PostDAO();
-            BlogService = new BlogService(DatabaseHelper, userDao, postDao);
+            var tagDao = new TagDAO();
+            BlogService = new BlogService(DatabaseHelper, userDao, postDao, tagDao);
             BlogService.CreateSchema();
         }
 
