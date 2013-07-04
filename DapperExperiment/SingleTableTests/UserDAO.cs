@@ -87,6 +87,38 @@ namespace DapperExperiment.SingleTableTests
             }
         }
 
+        public Page<UserRow> GetAllUsers(int itemsPerPage, int page)
+        {
+            using (var connection = _databaseHelper.MakeConnection())
+            {
+                var userCount = connection.Query<int>(
+                    "select count(*) " + 
+                    "from Users").Single();
+
+                var skip = page * itemsPerPage;
+                if (skip >= userCount)
+                {
+                    throw new Exception("No such page");
+                }
+
+                var userRows = connection.Query<UserRow>(
+                    "select UserId, UserName " + 
+                    "from Users " + 
+                    "order by UserId " +
+                    "offset @skip rows " + 
+                    "fetch next @take rows only",
+                    new { skip, take = itemsPerPage }).ToList();
+
+                return new Page<UserRow>
+                    {
+                        NumberOfItems = userCount,
+                        NumberOfPages = userCount / itemsPerPage + (userCount % itemsPerPage > 0 ? 1 : 0),
+                        CurrentPage = page,
+                        Items = userRows
+                    };
+            }
+        }
+
         public void DeleteUser(int userId)
         {
             using (var connection = _databaseHelper.MakeConnection())
@@ -140,5 +172,13 @@ namespace DapperExperiment.SingleTableTests
                 return userCount;
             }
         }
+    }
+
+    public class Page<T>
+    {
+        public int NumberOfItems { get; set; }
+        public int NumberOfPages { get; set; }
+        public int CurrentPage { get; set; }
+        public IList<T> Items { get; set; }
     }
 }

@@ -97,5 +97,50 @@ namespace DapperExperiment.SingleTableTests
             user = _dao.ChangeUserName(user.UserId, "qwerty");
             Assert.AreEqual("qwerty", user.UserName);
         }
+
+        [Test]
+        public void CanGetAllUsersWithPagination()
+        {
+            const int numberOfUsers = 10;
+            for (var i = 0; i < numberOfUsers; ++i)
+            {
+                var userName = string.Format("loki2302_{0}", i);
+                _dao.CreateUser(userName);
+            }
+
+            var page0 = _dao.GetAllUsers(3, 0);
+            Assert.AreEqual(numberOfUsers, page0.NumberOfItems);
+            Assert.AreEqual(4, page0.NumberOfPages);
+            Assert.AreEqual(0, page0.CurrentPage);
+            Assert.AreEqual(3, page0.Items.Count);
+            Assert.AreEqual("loki2302_0", page0.Items[0].UserName);
+            Assert.AreEqual("loki2302_1", page0.Items[1].UserName);
+            Assert.AreEqual("loki2302_2", page0.Items[2].UserName);
+
+            var page1 = _dao.GetAllUsers(3, 1);
+            Assert.AreEqual(numberOfUsers, page1.NumberOfItems);
+            Assert.AreEqual(4, page1.NumberOfPages);
+            Assert.AreEqual(1, page1.CurrentPage);
+            Assert.AreEqual(3, page1.Items.Count);
+            Assert.AreEqual("loki2302_3", page1.Items[0].UserName);
+            Assert.AreEqual("loki2302_4", page1.Items[1].UserName);
+            Assert.AreEqual("loki2302_5", page1.Items[2].UserName);
+
+            var page2 = _dao.GetAllUsers(3, 2);
+            Assert.AreEqual(numberOfUsers, page2.NumberOfItems);
+            Assert.AreEqual(4, page2.NumberOfPages);
+            Assert.AreEqual(2, page2.CurrentPage);
+            Assert.AreEqual(3, page2.Items.Count);
+            Assert.AreEqual("loki2302_6", page2.Items[0].UserName);
+            Assert.AreEqual("loki2302_7", page2.Items[1].UserName);
+            Assert.AreEqual("loki2302_8", page2.Items[2].UserName);
+
+            var page3 = _dao.GetAllUsers(3, 3);
+            Assert.AreEqual(numberOfUsers, page3.NumberOfItems);
+            Assert.AreEqual(4, page3.NumberOfPages);
+            Assert.AreEqual(3, page3.CurrentPage);
+            Assert.AreEqual(1, page3.Items.Count);
+            Assert.AreEqual("loki2302_9", page3.Items[0].UserName);
+        }
     }
 }
