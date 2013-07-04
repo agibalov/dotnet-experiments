@@ -2,7 +2,7 @@
 
 namespace DapperExperiment.SingleTableTests
 {
-    public class Tests : AbstractDatabaseTest
+    public class StraightforwardTests : AbstractDatabaseTest
     {
         private UserDAO _dao;
 

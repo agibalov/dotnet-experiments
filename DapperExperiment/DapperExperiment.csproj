@@ -48,6 +48,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,8 +71,9 @@
     <Compile Include="MultipleTablesTests\DAL\PostRow.cs" />
     <Compile Include="MultipleTablesTests\DAL\UserDAO.cs" />
     <Compile Include="MultipleTablesTests\UserTests.cs" />
-    <Compile Include="SingleTableTests\Tests.cs" />
+    <Compile Include="SingleTableTests\StraightforwardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleTableTests\TransactionTests.cs" />
     <Compile Include="SingleTableTests\UserDAO.cs" />
     <Compile Include="SingleTableTests\UserRow.cs" />
     <Compile Include="MultipleTablesTests\Service\DTO\UserDTO.cs" />
