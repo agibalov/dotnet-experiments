@@ -1,5 +1,4 @@
-﻿using System;
-using DapperExperiment.MultipleTablesTests.DAL;
+﻿using DapperExperiment.MultipleTablesTests.DAL;
 using DapperExperiment.MultipleTablesTests.Service.DTO;
 using NUnit.Framework;
 
@@ -149,20 +148,7 @@ namespace DapperExperiment.MultipleTablesTests
             var user2 = BlogService.CreateUser("loki2302_2");
             Assert.AreNotEqual(123, user2.UserId);
 
-            var userCountBeforeDelete = BlogService.GetUserCount();
-            Assert.AreEqual(2, userCountBeforeDelete);
-
             BlogService.DeleteUsers(new[] { user1.UserId, user2.UserId, 123 });
-
-            var userCountAfterDelete = BlogService.GetUserCount();
-            Assert.AreEqual(2, userCountAfterDelete);
-        }
-
-        private static void AssertEqualUsers(UserDTO a, UserDTO b)
-        {
-            Assert.AreEqual(a.UserId, b.UserId);
-            Assert.AreEqual(a.UserName, b.UserName);
-            Assert.AreEqual(a.Posts.Count, b.Posts.Count);
         }
     }
 }

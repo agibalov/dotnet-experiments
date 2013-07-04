@@ -70,8 +70,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
             {
                 var userRows = _userDao.GetUsersOrThrow(connection, userIds);
                 var postRows = _postDao.GetPostsForManyUsers(connection, userIds);
-                return (from userRow in userRows
-                        select MakeUserDTO(userRow, postRows)).ToList();
+                return MakeUserDTOs(userRows, postRows);
             }
         }
 
@@ -82,8 +81,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
                 var userRows = _userDao.GetAllUsers(connection);
                 var userIds = userRows.Select(userRow => userRow.UserId).ToList();
                 var postRows = _postDao.GetPostsForManyUsers(connection, userIds);
-                return (from userRow in userRows
-                        select MakeUserDTO(userRow, postRows)).ToList();
+                return MakeUserDTOs(userRows, postRows);
             }
         }
 
@@ -128,9 +126,9 @@ namespace DapperExperiment.MultipleTablesTests.Service
         {
             using (var connection = _databaseHelper.MakeConnection())
             {
-                var userRow = _userDao.GetUserOrThrow(connection, userId);
+                _userDao.GetUserOrThrow(connection, userId);
                 var postRow = _postDao.CreatePost(connection, userId, postText);
-                var postDto = MakePostDTO(postRow, userRow);
+                var postDto = MakePostDTO(postRow);
                 return postDto;
             }
         }
@@ -139,7 +137,9 @@ namespace DapperExperiment.MultipleTablesTests.Service
         {
             using (var connection = _databaseHelper.MakeConnection())
             {
-                throw new NotImplementedException();
+                var postRow = _postDao.GetPostOrThrow(connection, postId);
+                var postDto = MakePostDTO(postRow);
+                return postDto;
             }
         }
 
@@ -147,7 +147,19 @@ namespace DapperExperiment.MultipleTablesTests.Service
         {
             using (var connection = _databaseHelper.MakeConnection())
             {
-                throw new NotImplementedException();
+                var postRows = _postDao.GetPostsOrThrow(connection, postIds);
+                var postDtos = MakePostDTOs(postRows);
+                return postDtos;
+            }
+        }
+
+        public IList<PostDTO> GetAllPosts()
+        {
+            using (var connection = _databaseHelper.MakeConnection())
+            {
+                var postRows = _postDao.GetAllPosts(connection);
+                var postDtos = MakePostDTOs(postRows);
+                return postDtos;
             }
         }
 
@@ -155,7 +167,35 @@ namespace DapperExperiment.MultipleTablesTests.Service
         {
             using (var connection = _databaseHelper.MakeConnection())
             {
-                throw new NotImplementedException();
+                var postRow = _postDao.UpdatePost(connection, postId, postText);
+                return MakePostDTO(postRow);
+            }
+        }
+
+        public int GetPostCount()
+        {
+            using (var connection = _databaseHelper.MakeConnection())
+            {
+                var postCount = _postDao.GetPostCount(connection);
+                return postCount;
+            }
+        }
+
+        public void DeletePost(int postId)
+        {
+            using (var connection = _databaseHelper.MakeConnection())
+            {
+                _postDao.GetPostOrThrow(connection, postId);
+                _postDao.DeletePost(connection, postId);
+            }
+        }
+
+        public void DeletePosts(IList<int> postIds)
+        {
+            using (var connection = _databaseHelper.MakeConnection())
+            {
+                _postDao.GetPostsOrThrow(connection, postIds);
+                _postDao.DeletePosts(connection, postIds);
             }
         }
 
@@ -167,7 +207,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
                 UserName = userRow.UserName,
                 Posts = (from postRow in postRows
                          where postRow.UserId == userRow.UserId
-                         select MakePostDTO(postRow, userRow)).ToList()
+                         select MakePostDTO(postRow)).ToList()
             };
         }
 
@@ -177,23 +217,24 @@ namespace DapperExperiment.MultipleTablesTests.Service
                     select MakeUserDTO(userRow, postRows)).ToList();
         }
 
-        private static BriefUserDTO MakeBriefUserDTO(UserRow userRow)
-        {
-            return new BriefUserDTO
-                {
-                    UserId = userRow.UserId,
-                    UserName = userRow.UserName
-                };
-        }
-
-        private static PostDTO MakePostDTO(PostRow postRow, UserRow userRow)
+        private static PostDTO MakePostDTO(PostRow postRow)
         {
             return new PostDTO
                 {
                     PostId = postRow.PostId,
                     PostText = postRow.PostText,
-                    User = MakeBriefUserDTO(userRow)
+                    User = new BriefUserDTO
+                        {
+                            UserId = postRow.UserId,
+                            UserName = postRow.UserName
+                        }
                 };
+        }
+
+        private static IList<PostDTO> MakePostDTOs(IList<PostRow> postRows)
+        {
+            return (from postRow in postRows
+                    select MakePostDTO(postRow)).ToList();
         }
     }
 }
