@@ -109,6 +109,11 @@ namespace DapperExperiment.MultipleTablesTests.Service
             using (var connection = _databaseHelper.MakeConnection())
             {
                 _userDao.GetUserOrThrow(connection, userId);
+
+                var userPosts = _postDao.GetUserPosts(connection, userId);
+                var postIds = userPosts.Select(post => post.PostId).ToList();
+                _postDao.DeletePosts(connection, postIds);
+
                 _userDao.DeleteUser(connection, userId);
             }
         }
