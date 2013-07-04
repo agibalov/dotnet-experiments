@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using DapperExperiment.MultipleTablesTests.DAL;
@@ -216,6 +217,20 @@ namespace DapperExperiment.MultipleTablesTests.Service
             }
         }
 
+        public IList<UserAndPostCountDTO> GetUsersWithPostCount()
+        {
+            using (var connection = _databaseHelper.MakeConnection())
+            {
+                var userWithPostCountRows = _userDao.GetUsersWithPostCount(connection);
+                return (from userAndPostCountRow in userWithPostCountRows
+                        select new UserAndPostCountDTO
+                            {
+                                User = new BriefUserDTO { UserId = userAndPostCountRow.UserId, UserName = userAndPostCountRow.UserName },
+                                PostCount = userAndPostCountRow.PostCount
+                            }).ToList();
+            }
+        }
+
         private static UserDTO MakeUserDTO(UserRow userRow, IList<PostRow> postRows)
         {
             return new UserDTO
@@ -232,6 +247,15 @@ namespace DapperExperiment.MultipleTablesTests.Service
         {
             return (from userRow in userRows
                     select MakeUserDTO(userRow, postRows)).ToList();
+        }
+
+        private static BriefUserDTO MakeBriefUserDTO(UserRow userRow)
+        {
+            return new BriefUserDTO
+                {
+                    UserId = userRow.UserId,
+                    UserName = userRow.UserName
+                };
         }
 
         private static PostDTO MakePostDTO(PostRow postRow)

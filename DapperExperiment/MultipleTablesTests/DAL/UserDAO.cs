@@ -113,5 +113,17 @@ namespace DapperExperiment.MultipleTablesTests.DAL
                 "where UserId in @userIds",
                 new { userIds });
         }
+
+        public IList<UserAndPostCountRow> GetUsersWithPostCount(IDbConnection connection)
+        {
+            var usersWithPostCount = connection.Query<UserAndPostCountRow>(
+                "select distinct U.UserId, U.UserName, count(P.PostId) as PostCount " + 
+                "from Users as U " + 
+                "left join Posts as P on U.UserId = P.UserId " + 
+                "group by U.UserId, U.UserName " + 
+                "order by PostCount desc").ToList();
+
+            return usersWithPostCount;
+        }
     }
 }

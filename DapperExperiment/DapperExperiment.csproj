@@ -62,6 +62,7 @@
     <Compile Include="MultipleTablesTests\DAL\NoSuchUserException.cs" />
     <Compile Include="MultipleTablesTests\DAL\TagDAO.cs" />
     <Compile Include="MultipleTablesTests\DAL\TagRow.cs" />
+    <Compile Include="MultipleTablesTests\DAL\UserAndPostCountRow.cs" />
     <Compile Include="MultipleTablesTests\PostsAndUsersTests.cs" />
     <Compile Include="MultipleTablesTests\PostTests.cs" />
     <Compile Include="MultipleTablesTests\Service\BlogService.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="MultipleTablesTests\Service\DTO\PostDTO.cs" />
     <Compile Include="MultipleTablesTests\DAL\PostRow.cs" />
     <Compile Include="MultipleTablesTests\DAL\UserDAO.cs" />
+    <Compile Include="MultipleTablesTests\Service\DTO\UserAndPostCountDTO.cs" />
     <Compile Include="MultipleTablesTests\UserTests.cs" />
     <Compile Include="SingleTableTests\StraightforwardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

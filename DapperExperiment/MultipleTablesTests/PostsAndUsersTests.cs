@@ -38,8 +38,10 @@ namespace DapperExperiment.MultipleTablesTests
             var user2post2 = BlogService.CreatePost(user2.UserId, "user 2 post 2");
             var user2post3 = BlogService.CreatePost(user2.UserId, "user 2 post 3");
 
+            var user3 = BlogService.CreateUser("user3");
+
             var userCount = BlogService.GetUserCount();
-            Assert.AreEqual(2, userCount);
+            Assert.AreEqual(3, userCount);
 
             var postCount = BlogService.GetPostCount();
             Assert.AreEqual(5, postCount);
@@ -50,6 +52,17 @@ namespace DapperExperiment.MultipleTablesTests
             AssertEqualPosts(user2post1, posts[2]);
             AssertEqualPosts(user2post2, posts[3]);
             AssertEqualPosts(user2post3, posts[4]);
+
+            var usersWithPostCount = BlogService.GetUsersWithPostCount();
+            Assert.AreEqual(3, usersWithPostCount.Count);
+            AssertEqualUsers(user2, usersWithPostCount[0].User);
+            Assert.AreEqual(3, usersWithPostCount[0].PostCount);
+
+            AssertEqualUsers(user1, usersWithPostCount[1].User);
+            Assert.AreEqual(2, usersWithPostCount[1].PostCount);
+
+            AssertEqualUsers(user3, usersWithPostCount[2].User);
+            Assert.AreEqual(0, usersWithPostCount[2].PostCount);
         }
     }
 }
