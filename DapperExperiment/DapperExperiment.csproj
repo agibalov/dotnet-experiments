@@ -38,6 +38,12 @@
     <Reference Include="Dapper">
       <HintPath>..\packages\Dapper.1.13\lib\net40\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="FluentMigrator">
+      <HintPath>..\packages\FluentMigrator.1.1.1.0\lib\40\FluentMigrator.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner">
+      <HintPath>..\packages\FluentMigrator.1.1.1.0\tools\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -57,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDatabaseTest.cs" />
+    <Compile Include="FluentMigratorTests\InitialVersion.cs" />
+    <Compile Include="FluentMigratorTests\MigrationOptions.cs" />
+    <Compile Include="FluentMigratorTests\FluentMigratorTests.cs" />
     <Compile Include="MultipleTablesTests\DAL\BlogServiceDAOException.cs" />
     <Compile Include="MultipleTablesTests\DAL\NoSuchPostException.cs" />
     <Compile Include="MultipleTablesTests\DAL\NoSuchUserException.cs" />
