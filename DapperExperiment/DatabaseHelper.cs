@@ -1,4 +1,5 @@
-﻿using System.Data.SqlServerCe;
+﻿using System.Data;
+using System.Data.SqlServerCe;
 using System.IO;
 
 namespace DapperExperiment
@@ -28,7 +29,7 @@ namespace DapperExperiment
             }
         }
 
-        public SqlCeConnection MakeConnection()
+        public IDbConnection MakeConnection()
         {
             return new SqlCeConnection(_connectionString);
         }

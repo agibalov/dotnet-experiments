@@ -56,20 +56,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDatabaseTest.cs" />
-    <Compile Include="MultipleTablesTests\BlogService.cs" />
-    <Compile Include="MultipleTablesTests\BlogServiceTest.cs" />
+    <Compile Include="MultipleTablesTests\DAL\BlogServiceDAOException.cs" />
+    <Compile Include="MultipleTablesTests\DAL\NoSuchPostException.cs" />
+    <Compile Include="MultipleTablesTests\DAL\NoSuchUserException.cs" />
+    <Compile Include="MultipleTablesTests\Service\BlogService.cs" />
+    <Compile Include="MultipleTablesTests\AbstractBlogServiceTest.cs" />
     <Compile Include="DatabaseHelper.cs" />
-    <Compile Include="MultipleTablesTests\BriefUserDTO.cs" />
-    <Compile Include="MultipleTablesTests\PostDAO.cs" />
-    <Compile Include="MultipleTablesTests\PostDTO.cs" />
-    <Compile Include="MultipleTablesTests\PostRow.cs" />
-    <Compile Include="MultipleTablesTests\UserDAO.cs" />
+    <Compile Include="MultipleTablesTests\Service\DTO\BriefUserDTO.cs" />
+    <Compile Include="MultipleTablesTests\DAL\PostDAO.cs" />
+    <Compile Include="MultipleTablesTests\Service\DTO\PostDTO.cs" />
+    <Compile Include="MultipleTablesTests\DAL\PostRow.cs" />
+    <Compile Include="MultipleTablesTests\DAL\UserDAO.cs" />
+    <Compile Include="MultipleTablesTests\UserTests.cs" />
     <Compile Include="SingleTableTests\Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleTableTests\UserDAO.cs" />
     <Compile Include="SingleTableTests\UserRow.cs" />
-    <Compile Include="MultipleTablesTests\UserDTO.cs" />
-    <Compile Include="MultipleTablesTests\UserRow.cs" />
+    <Compile Include="MultipleTablesTests\Service\DTO\UserDTO.cs" />
+    <Compile Include="MultipleTablesTests\DAL\UserRow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

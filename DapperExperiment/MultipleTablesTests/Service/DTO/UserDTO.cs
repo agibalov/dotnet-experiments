@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DapperExperiment.MultipleTablesTests
+namespace DapperExperiment.MultipleTablesTests.Service.DTO
 {
     public class UserDTO
     {

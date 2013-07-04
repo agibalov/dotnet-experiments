@@ -1,6 +1,6 @@
-﻿namespace DapperExperiment.MultipleTablesTests
+﻿namespace DapperExperiment.MultipleTablesTests.DAL
 {
-    public class BriefUserDTO
+    public class UserRow
     {
         public int UserId { get; set; }
         public string UserName { get; set; }

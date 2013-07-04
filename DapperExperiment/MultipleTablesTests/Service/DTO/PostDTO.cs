@@ -1,4 +1,4 @@
-﻿namespace DapperExperiment.MultipleTablesTests
+﻿namespace DapperExperiment.MultipleTablesTests.Service.DTO
 {
     public class PostDTO
     {
