@@ -6,17 +6,16 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
     public class StopCommandHandler : ICommandHandler
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly WindowsServiceManager _windowsServiceManager;
 
-        private readonly DummyWindowsServiceManager _dummyWindowsServiceManager;
-
-        public StopCommandHandler(DummyWindowsServiceManager dummyWindowsServiceManager)
+        public StopCommandHandler(WindowsServiceManager windowsServiceManager)
         {
-            _dummyWindowsServiceManager = dummyWindowsServiceManager;
+            _windowsServiceManager = windowsServiceManager;
         }
 
         public void Handle()
         {
-            var isInstalled = _dummyWindowsServiceManager.IsInstalled();
+            var isInstalled = _windowsServiceManager.IsInstalled();
             if (!isInstalled)
             {
                 Logger.Error("Service is not installed");
@@ -25,7 +24,7 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
 
             Logger.Info("Service is installed");
 
-            var isRunning = _dummyWindowsServiceManager.IsRunning();
+            var isRunning = _windowsServiceManager.IsRunning();
             if (!isRunning)
             {
                 Logger.Error("Service is not running");
@@ -33,9 +32,7 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
             }
 
             Logger.Info("Service is running, trying to stop it");
-
-            _dummyWindowsServiceManager.Stop();
-
+            _windowsServiceManager.Stop();
             Logger.Info("Successfully stopped the service");
         }
     }

@@ -54,7 +54,6 @@
     <Compile Include="Service\DummyWindowsService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Infrastructure\DummyWindowsServiceManager.cs" />
     <Compile Include="CommandHandlers\ICommandHandler.cs" />
     <Compile Include="CommandHandlers\InstallAndStartCommandHandler.cs" />
     <Compile Include="CommandHandlers\InstallCommandHandler.cs" />

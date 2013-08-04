@@ -6,17 +6,16 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
     public class UninstallCommandHandler : ICommandHandler
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly WindowsServiceManager _windowsServiceManager;
 
-        private readonly DummyWindowsServiceManager _dummyWindowsServiceManager;
-
-        public UninstallCommandHandler(DummyWindowsServiceManager dummyWindowsServiceManager)
+        public UninstallCommandHandler(WindowsServiceManager windowsServiceManager)
         {
-            _dummyWindowsServiceManager = dummyWindowsServiceManager;
+            _windowsServiceManager = windowsServiceManager;
         }
 
         public void Handle()
         {
-            var isInstalled = _dummyWindowsServiceManager.IsInstalled();
+            var isInstalled = _windowsServiceManager.IsInstalled();
             if (!isInstalled)
             {
                 Logger.Error("Service is not installed");
@@ -25,7 +24,7 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
 
             Logger.Info("Service is installed");
 
-            var isRunning = _dummyWindowsServiceManager.IsRunning();
+            var isRunning = _windowsServiceManager.IsRunning();
             if (isRunning)
             {
                 Logger.Error("Service is running");
@@ -33,9 +32,7 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
             }
 
             Logger.Info("Service is not running, trying to uninstall it");
-
-            _dummyWindowsServiceManager.Uninstall();
-
+            _windowsServiceManager.Uninstall();
             Logger.Info("Successfully uninstalled the service");
         }
     }

@@ -6,18 +6,17 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
     public class PrintStatusCommandHandler : ICommandHandler
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly WindowsServiceManager _windowsServiceManager;
 
-        private readonly DummyWindowsServiceManager _dummyWindowsServiceManager;
-
-        public PrintStatusCommandHandler(DummyWindowsServiceManager dummyWindowsServiceManager)
+        public PrintStatusCommandHandler(WindowsServiceManager windowsServiceManager)
         {
-            _dummyWindowsServiceManager = dummyWindowsServiceManager;
+            _windowsServiceManager = windowsServiceManager;
         }
 
         public void Handle()
         {
-            var isInstalled = _dummyWindowsServiceManager.IsInstalled();
-            var isRunning = isInstalled && _dummyWindowsServiceManager.IsRunning();
+            var isInstalled = _windowsServiceManager.IsInstalled();
+            var isRunning = isInstalled && _windowsServiceManager.IsRunning();
             Logger.Info("Service installed: {0}", isInstalled);
             Logger.Info("Service running: {0}", isRunning);
         }

@@ -6,21 +6,20 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
     public class InstallAndStartCommandHandler : ICommandHandler
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly WindowsServiceManager _windowsServiceManager;
 
-        private readonly DummyWindowsServiceManager _dummyWindowsServiceManager;
-
-        public InstallAndStartCommandHandler(DummyWindowsServiceManager dummyWindowsServiceManager)
+        public InstallAndStartCommandHandler(WindowsServiceManager windowsServiceManager)
         {
-            _dummyWindowsServiceManager = dummyWindowsServiceManager;
+            _windowsServiceManager = windowsServiceManager;
         }
 
         public void Handle()
         {
-            var isInstalled = _dummyWindowsServiceManager.IsInstalled();
+            var isInstalled = _windowsServiceManager.IsInstalled();
             if (!isInstalled)
             {
                 Logger.Info("Service is not installed, trying to install");
-                _dummyWindowsServiceManager.Install();
+                _windowsServiceManager.Install();
                 Logger.Info("Successfully installed the service");
             }
             else
@@ -28,11 +27,11 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
                 Logger.Info("Service is already installed");
             }
 
-            var isRunning = _dummyWindowsServiceManager.IsRunning();
+            var isRunning = _windowsServiceManager.IsRunning();
             if (!isRunning)
             {
                 Logger.Info("Service is not running, trying to start");
-                _dummyWindowsServiceManager.Start();
+                _windowsServiceManager.Start();
                 Logger.Info("Successfully started the service");
             }
             else

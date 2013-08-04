@@ -6,17 +6,16 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
     public class InstallCommandHandler : ICommandHandler
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly WindowsServiceManager _windowsServiceManager;
 
-        private readonly DummyWindowsServiceManager _dummyWindowsServiceManager;
-
-        public InstallCommandHandler(DummyWindowsServiceManager dummyWindowsServiceManager)
+        public InstallCommandHandler(WindowsServiceManager windowsServiceManager)
         {
-            _dummyWindowsServiceManager = dummyWindowsServiceManager;
+            _windowsServiceManager = windowsServiceManager;
         }
 
         public void Handle()
         {
-            var isInstalled = _dummyWindowsServiceManager.IsInstalled();
+            var isInstalled = _windowsServiceManager.IsInstalled();
             if (isInstalled)
             {
                 Logger.Error("Service is already installed");
@@ -24,9 +23,7 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
             }
 
             Logger.Info("Service is not installed");
-
-            _dummyWindowsServiceManager.Install();
-
+            _windowsServiceManager.Install();
             Logger.Info("Successfully installed the service");
         }
     }

@@ -61,12 +61,8 @@ namespace SelfManageableWindowsServiceExperiment
 
             var kernel = new StandardKernel();
 
-            kernel.Bind<WindowsServiceManager>()
-                .ToSelf()
-                .InSingletonScope();
-
             var configuration = Configuration.LoadFromAppConfig();
-            kernel.Bind<DummyWindowsServiceManager>()
+            kernel.Bind<WindowsServiceManager>()
                 .ToSelf()
                 .InSingletonScope()
                 .WithConstructorArgument("serviceName", configuration.WindowsServiceName)

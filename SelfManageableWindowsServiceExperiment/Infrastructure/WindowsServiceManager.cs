@@ -6,13 +6,27 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
 {
     public class WindowsServiceManager
     {
-        public void Install(string serviceName, string displayName, string executablePath)
+        private readonly string _serviceName;
+        private readonly string _serviceDisplayName;
+        private readonly string _executablePath;
+
+        public WindowsServiceManager(
+            string serviceName, 
+            string serviceDisplayName, 
+            string executablePath)
+        {
+            _serviceName = serviceName;
+            _serviceDisplayName = serviceDisplayName;
+            _executablePath = executablePath;
+        }
+
+        public void Install()
         {
             var win32ServiceManagementClass = new ManagementClass("Win32_Service");
             var inParams = win32ServiceManagementClass.GetMethodParameters("Create");
-            inParams["Name"] = serviceName;
-            inParams["DisplayName"] = displayName;
-            inParams["PathName"] = executablePath;
+            inParams["Name"] = _serviceName;
+            inParams["DisplayName"] = _serviceDisplayName;
+            inParams["PathName"] = _executablePath;
             inParams["StartMode"] = ServiceStartMode.Automatic.ToString();
 
             var outParams = win32ServiceManagementClass.InvokeMethod("Create", inParams, null);
@@ -23,9 +37,9 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
             }
         }
 
-        public void Uninstall(string serviceName)
+        public void Uninstall()
         {
-            using (var service = GetWin32ServiceManagementObjectByName(serviceName))
+            using (var service = GetWin32ServiceManagementObjectByName(_serviceName))
             {
                 var outParams = service.InvokeMethod("Delete", null, null);
                 var returnValue = Convert.ToInt32(outParams["ReturnValue"]);
@@ -36,11 +50,11 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
             }
         }
 
-        public bool IsInstalled(string serviceName)
+        public bool IsInstalled()
         {
             try
             {
-                Interrogate(serviceName);
+                Interrogate(_serviceName);
                 return true;
             }
             catch
@@ -49,18 +63,18 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
             }
         }
 
-        public bool IsRunning(string serviceName)
+        public bool IsRunning()
         {
-            using (var service = GetWin32ServiceManagementObjectByName(serviceName))
+            using (var service = GetWin32ServiceManagementObjectByName(_serviceName))
             {
                 var serviceStateString = service.Properties["State"].Value.ToString().Trim().ToLower();
                 return serviceStateString == "running";
             }
         }
 
-        public void Start(string serviceName)
+        public void Start()
         {
-            using (var service = GetWin32ServiceManagementObjectByName(serviceName))
+            using (var service = GetWin32ServiceManagementObjectByName(_serviceName))
             {
                 var outParams = service.InvokeMethod("StartService", null, null);
                 var returnValue = Convert.ToInt32(outParams["ReturnValue"]);
@@ -69,13 +83,13 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
                     throw new WmiException(returnValue);
                 }
 
-                Interrogate(serviceName);
+                Interrogate(_serviceName);
             }
         }
 
-        public void Stop(string serviceName)
+        public void Stop()
         {
-            using (var service = GetWin32ServiceManagementObjectByName(serviceName))
+            using (var service = GetWin32ServiceManagementObjectByName(_serviceName))
             {
                 var outParams = service.InvokeMethod("StopService", null, null);
                 var returnValue = Convert.ToInt32(outParams["ReturnValue"]);
@@ -84,7 +98,7 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
                     throw new WmiException(returnValue);
                 }
 
-                Interrogate(serviceName);
+                Interrogate(_serviceName);
             }
         }
 
