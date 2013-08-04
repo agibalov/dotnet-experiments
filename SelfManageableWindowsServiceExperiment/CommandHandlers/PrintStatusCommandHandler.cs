@@ -1,10 +1,12 @@
-﻿using System;
+﻿using NLog;
 using SelfManageableWindowsServiceExperiment.Infrastructure;
 
 namespace SelfManageableWindowsServiceExperiment.CommandHandlers
 {
     public class PrintStatusCommandHandler : ICommandHandler
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private readonly DummyWindowsServiceManager _dummyWindowsServiceManager;
 
         public PrintStatusCommandHandler(DummyWindowsServiceManager dummyWindowsServiceManager)
@@ -16,8 +18,8 @@ namespace SelfManageableWindowsServiceExperiment.CommandHandlers
         {
             var isInstalled = _dummyWindowsServiceManager.IsInstalled();
             var isRunning = isInstalled && _dummyWindowsServiceManager.IsRunning();
-            Console.WriteLine("Installed: {0}", isInstalled);
-            Console.WriteLine("Running: {0}", isRunning);
+            Logger.Info("Service installed: {0}", isInstalled);
+            Logger.Info("Service running: {0}", isRunning);
         }
     }
 }

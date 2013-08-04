@@ -38,17 +38,14 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
 
         public bool IsInstalled(string serviceName)
         {
-            using (var service = GetWin32ServiceManagementObjectByName(serviceName))
+            try
             {
-                try
-                {
-                    Interrogate(serviceName);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                Interrogate(serviceName);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -94,7 +91,9 @@ namespace SelfManageableWindowsServiceExperiment.Infrastructure
         private static ManagementObject GetWin32ServiceManagementObjectByName(string serviceName)
         {
             var servicePath = string.Format("Win32_Service.Name='{0}'", serviceName);
-            return new ManagementObject(new ManagementPath(servicePath));
+            var managementPath = new ManagementPath(servicePath);
+            var managementObject = new ManagementObject(managementPath);
+            return managementObject;
         }
 
         private static void Interrogate(string serviceName)
