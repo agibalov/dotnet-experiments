@@ -14,12 +14,64 @@ namespace AspNetMvcOpenIdExperiment.Controllers
         private const string FacebookApplicationId = "219687484855349";
         private const string FacebookApplicationSecret = "d58490eecd561a33275ccfeeabc0e5d5";
 
+        private const string GoogleClientId = "347919506647.apps.googleusercontent.com";
+        private const string GoogleClientSecret = "uD-KxJPqLBAQt6NqPyhZAN_f";
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult SignInWithFacebook()
+        public ActionResult SignInWithGoogleOAuth2()
+        {
+            var webServerClient = new WebServerClient(new AuthorizationServerDescription
+            {
+                TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token"),
+                AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth"),
+                ProtocolVersion = ProtocolVersion.V20
+            })
+            {
+                ClientIdentifier = GoogleClientId,
+                ClientCredentialApplicator = ClientCredentialApplicator.PostParameter(GoogleClientSecret)
+            };
+
+            var authorization = webServerClient.ProcessUserAuthorization(Request);
+            if (authorization == null)
+            {
+                var request = webServerClient.PrepareRequestUserAuthorization(new[] { "https://www.googleapis.com/auth/userinfo.email" });
+                request.Send(HttpContext);
+                HttpContext.Response.End();
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(authorization.AccessToken))
+            {
+                ViewBag.Message = "Cancelled or something weird";
+            }
+            else
+            {
+                var authorizingHandler = webServerClient.CreateAuthorizingHandler(authorization);
+                var httpClient = new HttpClient(authorizingHandler);
+                var jsonResponse = httpClient
+                    .GetAsync("https://www.googleapis.com/oauth2/v1/userinfo")
+                    .Result
+                    .Content
+                    .ReadAsStringAsync()
+                    .Result;
+                var googleMe = JsonConvert.DeserializeObject<GoogleMe>(jsonResponse);
+
+                ViewBag.Message = string.Format(
+                    "Access token: {0}, JSON response: {1}, Email: {2}, Id: {3}",
+                    authorization.AccessToken,
+                    jsonResponse,
+                    googleMe.Email,
+                    googleMe.Id);
+            }
+
+            return View();
+        }
+
+        public ActionResult SignInWithFacebookOAuth2()
         {
             var webServerClient = new WebServerClient(new AuthorizationServerDescription
                 {
@@ -41,22 +93,29 @@ namespace AspNetMvcOpenIdExperiment.Controllers
                 return null;
             }
 
-            var authorizingHandler = webServerClient.CreateAuthorizingHandler(authorization);
-            var httpClient = new HttpClient(authorizingHandler);
-            var jsonResponse = httpClient
-                .GetAsync("https://graph.facebook.com/me?fields=email")
-                .Result
-                .Content
-                .ReadAsStringAsync()
-                .Result;
-            var facebookMe = JsonConvert.DeserializeObject<FacebookMe>(jsonResponse);
-            
-            ViewBag.Message = string.Format(
-                "Access token: {0}, JSON response: {1}, Email: {2}, Id: {3}", 
-                authorization.AccessToken, 
-                jsonResponse, 
-                facebookMe.Email,
-                facebookMe.Id);
+            if (string.IsNullOrEmpty(authorization.AccessToken))
+            {
+                ViewBag.Message = "Cancelled or something weird";
+            }
+            else
+            {
+                var authorizingHandler = webServerClient.CreateAuthorizingHandler(authorization);
+                var httpClient = new HttpClient(authorizingHandler);
+                var jsonResponse = httpClient
+                    .GetAsync("https://graph.facebook.com/me?fields=email")
+                    .Result
+                    .Content
+                    .ReadAsStringAsync()
+                    .Result;
+                var facebookMe = JsonConvert.DeserializeObject<FacebookMe>(jsonResponse);
+
+                ViewBag.Message = string.Format(
+                    "Access token: {0}, JSON response: {1}, Email: {2}, Id: {3}",
+                    authorization.AccessToken,
+                    jsonResponse,
+                    facebookMe.Email,
+                    facebookMe.Id);
+            }
 
             return View();
         }
@@ -70,7 +129,16 @@ namespace AspNetMvcOpenIdExperiment.Controllers
             public string Email { get; set; }
         }
 
-        public ActionResult SignInWithGoogle()
+        public class GoogleMe
+        {
+            [JsonProperty("id")]
+            public string Id { get; set; }
+
+            [JsonProperty("email")]
+            public string Email { get; set; }
+        }
+
+        public ActionResult SignInWithGoogleOpenId()
         {
             using (var openIdRelyingParty = new OpenIdRelyingParty())
             {

@@ -224,10 +224,13 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\SignInWithGoogle.cshtml" />
+    <Content Include="Views\Home\SignInWithGoogleOpenId.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\SignInWithFacebook.cshtml" />
+    <Content Include="Views\Home\SignInWithFacebookOAuth2.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\SignInWithGoogleOAuth2.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
