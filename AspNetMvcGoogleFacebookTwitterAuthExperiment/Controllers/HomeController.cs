@@ -33,20 +33,23 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
         {
             var googleClient = new GoogleOAuth2Client(GoogleClientId, GoogleClientSecret);
             var authentication = googleClient.VerifyAuthentication(HttpContext, GetGoogleCallbackUrl());
+
+            var authenticationModel = new AuthenticationModel
+                {
+                    ProviderName = "Google",
+                    IsAuthenticated = authentication.IsSuccessful
+                };
+
             if (authentication.IsSuccessful)
             {
-                ViewBag.Message = string.Format(
-                    "id: {0}, user_name: {1}, email: {2}",
-                    authentication.ProviderUserId,
-                    authentication.UserName,
-                    authentication.ExtraData["email"]);
+                authenticationModel.ProviderUserId = authentication.ProviderUserId;
+                authenticationModel.UserName = authentication.UserName;
+                authenticationModel.UserEmail = authentication.ExtraData["email"];
+                authenticationModel.FirstName = authentication.ExtraData["given_name"];
+                authenticationModel.LastName = authentication.ExtraData["family_name"];
             }
-            else
-            {
-                ViewBag.Message = "not successfull";
-            }
-
-            return View();
+            
+            return View("Index", authenticationModel);
         }
 
         private Uri GetGoogleCallbackUrl()
@@ -57,7 +60,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                 Fragment = string.Empty,
                 Path = Url.Action("GoogleAuthCallback")
             };
-            return uriBuilder.Uri;//.AbsoluteUri;
+            return uriBuilder.Uri;
         }
 
         private string GetFacebookCallbackUrl()
@@ -91,6 +94,11 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
             [Bind(Prefix = "error")] string error,
             [Bind(Prefix = "error_reason")]string errorReason)
         {
+            var authenticationModel = new AuthenticationModel
+                {
+                    ProviderName = "Facebook"
+                };
+
             if (!string.IsNullOrEmpty(code))
             {
                 var facebookClient = new FacebookClient();
@@ -106,20 +114,21 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                 facebookClient.AccessToken = accessToken;
 
                 dynamic me = facebookClient.Get("me?fields=first_name,last_name,id,email");
-                ViewBag.Message = string.Format(
-                    "Access token: {0}, first name: {1}, last name: {2}, id: {3}, email: {4}", 
-                    accessToken,
-                    me.first_name, 
-                    me.last_name, 
-                    me.id, 
-                    me.email);
+
+                authenticationModel.IsAuthenticated = true;
+                authenticationModel.ProviderUserId = me.id;
+                authenticationModel.UserName = null;
+                authenticationModel.UserEmail = me.email;
+                authenticationModel.FirstName = me.first_name;
+                authenticationModel.LastName = me.last_name;
             }
             else
             {
-                ViewBag.Message = string.Format("Error: error={0}, error_reason={1}", error, errorReason);
+                authenticationModel.IsAuthenticated = false;
+                authenticationModel.Comments = string.Format("Error: error={0}, error_reason={1}", error, errorReason);
             }
 
-            return View();
+            return View("Index", authenticationModel);
         }
 
         public ActionResult SignInWithTwitter()
@@ -137,6 +146,11 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
             [Bind(Prefix = "oauth_verifier")] string oauthVerifier,
             [Bind(Prefix = "denied")] string denied)
         {
+            var authenticationModel = new AuthenticationModel
+                {
+                    ProviderName = "Twitter"
+                };
+
             if (string.IsNullOrEmpty(denied))
             {
                 var requestToken = new OAuthRequestToken
@@ -148,19 +162,17 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                 var accessToken = twitterService.GetAccessToken(requestToken, oauthVerifier);
                 twitterService.AuthenticateWith(accessToken.Token, accessToken.TokenSecret);
                 var twitterUser = twitterService.VerifyCredentials(new VerifyCredentialsOptions());
-                ViewBag.Message = string.Format(
-                    "id: {0}, name: {1}, screen_name: {2}",
-                    twitterUser.Id,
-                    twitterUser.Name,
-                    twitterUser.ScreenName);
+
+                authenticationModel.IsAuthenticated = true;
+                authenticationModel.ProviderUserId = Convert.ToString(twitterUser.Id);
+                authenticationModel.UserName = twitterUser.ScreenName;
             }
             else
             {
-
-                ViewBag.Message = "User cancelled";
+                authenticationModel.IsAuthenticated = false;
             }
 
-            return View();
+            return View("Index", authenticationModel);
         }
 
         private string GetTwitterCallbackUrl()
@@ -179,6 +191,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
     {
         public string ProviderName { get; set; }
         public bool IsAuthenticated { get; set; }
+        public string Comments { get; set; }
         
         public string ProviderUserId { get; set; }
         public string UserName { get; set; }
