@@ -56,7 +56,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
         {
             var uriBuilder = new UriBuilder(Request.Url)
             {
-                Query = "?", // it doesn't work with string.Empty (https://github.com/mj1856/DotNetOpenAuth.GoogleOAuth2/issues/4)
+                Query = string.Empty,
                 Fragment = string.Empty,
                 Path = Url.Action("GoogleAuthCallback")
             };
