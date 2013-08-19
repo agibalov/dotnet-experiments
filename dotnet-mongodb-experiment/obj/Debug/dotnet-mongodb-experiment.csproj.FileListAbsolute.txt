@@ -1,0 +1,10 @@
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\dotnet-mongodb-experiment.exe
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\dotnet-mongodb-experiment.pdb
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\MongoDB.Bson.dll
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\MongoDB.Driver.dll
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\MongoDB.Bson.xml
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\MongoDB.Driver.xml
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\obj\Debug\dotnet-mongodb-experiment.exe
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\obj\Debug\dotnet-mongodb-experiment.pdb
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\nunit.framework.dll
+c:\dev\dotnet-mongodb-experiment\dotnet-mongodb-experiment\bin\Debug\nunit.framework.xml
