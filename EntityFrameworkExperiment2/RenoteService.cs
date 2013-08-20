@@ -135,7 +135,16 @@ namespace EntityFrameworkExperiment2
 
         public IList<string> GetTags(string sessionToken)
         {
-            throw new NotImplementedException();
+            return Run(context =>
+                {
+                    var user = GetUserBySessionTokenOrThrow(context, sessionToken);
+                    var tagNames = context.Tags
+                        .Where(t => t.UserId == user.UserId)
+                        .Select(t => t.TagName)
+                        .ToList();
+
+                    return tagNames;
+                });
         }
 
         public IList<CompleteNoteDTO> FindNotes(string sessionToken, IList<string> tagNames)

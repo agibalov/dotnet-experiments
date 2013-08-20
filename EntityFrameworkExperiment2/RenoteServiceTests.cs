@@ -66,5 +66,21 @@ namespace EntityFrameworkExperiment2
             Assert.IsTrue(retrievedNote.Tags.Contains("porn"));
             Assert.IsTrue(retrievedNote.Tags.Contains("programming"));
         }
+
+        [Test]
+        public void CanGetTagNames()
+        {
+            var authentication = _service.Authenticate("loki2302");
+            Assert.AreEqual(0, _service.GetTags(authentication.SessionToken).Count);
+
+            _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "porn", "programming" });
+            _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "music", "programming" });
+
+             var tagNames = _service.GetTags(authentication.SessionToken);
+            Assert.AreEqual(3, tagNames.Count);
+            Assert.IsTrue(tagNames.Contains("porn"));
+            Assert.IsTrue(tagNames.Contains("music"));
+            Assert.IsTrue(tagNames.Contains("programming"));
+        }
     }
 }
