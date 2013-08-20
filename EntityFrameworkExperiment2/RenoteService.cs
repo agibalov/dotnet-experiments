@@ -184,7 +184,35 @@ namespace EntityFrameworkExperiment2
 
         public void DeleteNote(string sessionToken, int noteId)
         {
-            throw new NotImplementedException();
+            Run(context =>
+                {
+                    var user = GetUserBySessionTokenOrThrow(context, sessionToken);
+
+                    var note = context.Notes
+                        .Include(n => n.Tags)
+                        .SingleOrDefault(n => n.NoteId == noteId);
+                    if (note == null)
+                    {
+                        throw new Exception("no such note");
+                    }
+
+                    if (user.UserId != note.UserId)
+                    {
+                        throw new Exception("no access");
+                    }
+
+                    var tagsToUnlink = note.Tags.ToList();
+                    foreach (var tag in tagsToUnlink)
+                    {
+                        note.Tags.Remove(tag);
+                    }
+                    context.Notes.Remove(note);
+
+                    var tagsToDelete = tagsToUnlink.Where(tagToUnlink => !tagToUnlink.Notes.Any()).ToList();
+                    context.Tags.RemoveRange(tagsToDelete);
+
+                    context.SaveChanges();
+                });
         }
 
         public IList<string> GetTags(string sessionToken)
@@ -266,6 +294,15 @@ namespace EntityFrameworkExperiment2
                     }
                 }
             }
+        }
+
+        private void Run(Action<RenoteContext> action)
+        {
+            Run<object>(context =>
+                {
+                    action(context);
+                    return null;
+                });
         }
     }
 }

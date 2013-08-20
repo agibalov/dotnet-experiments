@@ -106,5 +106,15 @@ namespace EntityFrameworkExperiment2
             Assert.IsTrue(tagNames.Contains("porn"));
             Assert.IsTrue(tagNames.Contains("music"));
         }
+
+        [Test]
+        public void CanDeleteNote()
+        {
+            var authentication = _service.Authenticate("loki2302");
+            var note = _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "porn", "programming" });
+            Assert.AreEqual(2, _service.GetTags(authentication.SessionToken).Count);
+            _service.DeleteNote(authentication.SessionToken, note.NoteId);
+            Assert.AreEqual(0, _service.GetTags(authentication.SessionToken).Count);
+        }
     }
 }
