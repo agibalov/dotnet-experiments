@@ -125,7 +125,61 @@ namespace EntityFrameworkExperiment2
 
         public CompleteNoteDTO UpdateNote(string sessionToken, int noteId, string noteText, IList<string> tagNames)
         {
-            throw new NotImplementedException();
+            return Run(context =>
+                {
+                    var user = GetUserBySessionTokenOrThrow(context, sessionToken);
+
+                    var note = context.Notes
+                        .Include(n => n.Tags)
+                        .SingleOrDefault(n => n.NoteId == noteId);
+                    if (note == null)
+                    {
+                        throw new Exception("no such note");
+                    }
+
+                    if (user.UserId != note.UserId)
+                    {
+                        throw new Exception("no access");
+                    }
+
+                    var currentlyReferencedNoteTags = note.Tags;
+                    
+                    // unlink existing tags
+                    var noteTagsToUnlink = currentlyReferencedNoteTags
+                        .Where(t => !tagNames.Contains(t.TagName))
+                        .ToList();
+                    foreach (var noteTagToUnlink in noteTagsToUnlink)
+                    {
+                        note.Tags.Remove(noteTagToUnlink);
+                    }
+
+                    // delete unused tags
+                    context.Tags.RemoveRange(noteTagsToUnlink.Where(t => t.Notes.Count() == 1));
+                    
+                    // create new tags
+                    var tagsToCreateAndLink = tagNames
+                        .Where(tagName => !currentlyReferencedNoteTags
+                            .Select(t => t.TagName)
+                            .Contains(tagName))
+                            .Select(tagName => new Tag
+                                {
+                                    TagName = tagName,
+                                    User = user
+                                }).ToList();
+                    context.Tags.AddRange(tagsToCreateAndLink);
+
+                    // link new tags
+                    foreach (var tagToCreateAndLink in tagsToCreateAndLink)
+                    {
+                        note.Tags.Add(tagToCreateAndLink);
+                    }
+
+                    note.NoteText = noteText;
+
+                    context.SaveChanges();
+                    
+                    return MapNoteToCompleteNoteDTO(note);
+                });
         }
 
         public void DeleteNote(string sessionToken, int noteId)

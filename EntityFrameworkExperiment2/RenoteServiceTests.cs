@@ -76,11 +76,35 @@ namespace EntityFrameworkExperiment2
             _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "porn", "programming" });
             _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "music", "programming" });
 
-             var tagNames = _service.GetTags(authentication.SessionToken);
+            var tagNames = _service.GetTags(authentication.SessionToken);
             Assert.AreEqual(3, tagNames.Count);
             Assert.IsTrue(tagNames.Contains("porn"));
             Assert.IsTrue(tagNames.Contains("music"));
             Assert.IsTrue(tagNames.Contains("programming"));
+        }
+
+        [Test]
+        public void CanUpdateNote()
+        {
+            var authentication = _service.Authenticate("loki2302");
+            
+            var originalNote = _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "porn", "programming" });
+            var tagNames = _service.GetTags(authentication.SessionToken);
+            Assert.AreEqual(2, tagNames.Count);
+            Assert.IsTrue(tagNames.Contains("porn"));
+            Assert.IsTrue(tagNames.Contains("programming"));
+
+            var updatedNote = _service.UpdateNote(authentication.SessionToken, originalNote.NoteId, "qwerty", new List<string> { "porn", "music" });
+            Assert.AreEqual(originalNote.NoteId, updatedNote.NoteId);
+            Assert.AreEqual("qwerty", updatedNote.NoteText);
+            Assert.AreEqual(2, updatedNote.Tags.Count);
+            Assert.IsTrue(updatedNote.Tags.Contains("porn"));
+            Assert.IsTrue(updatedNote.Tags.Contains("music"));
+
+            tagNames = _service.GetTags(authentication.SessionToken);
+            Assert.AreEqual(2, tagNames.Count);
+            Assert.IsTrue(tagNames.Contains("porn"));
+            Assert.IsTrue(tagNames.Contains("music"));
         }
     }
 }
