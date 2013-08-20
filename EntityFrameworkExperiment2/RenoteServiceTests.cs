@@ -53,5 +53,18 @@ namespace EntityFrameworkExperiment2
             Assert.AreEqual(1, programmingNotes.Count(n => n.NoteId == note1.NoteId));
             Assert.AreEqual(1, programmingNotes.Count(n => n.NoteId == note2.NoteId));
         }
+
+        [Test]
+        public void CanGetNote()
+        {
+            var authentication = _service.Authenticate("loki2302");
+            var note = _service.CreateNote(authentication.SessionToken, "hello there", new List<string> { "porn", "programming" });
+            var retrievedNote = _service.GetNote(authentication.SessionToken, note.NoteId);
+            Assert.AreNotEqual(0, retrievedNote.NoteId);
+            Assert.AreEqual("hello there", retrievedNote.NoteText);
+            Assert.AreEqual(2, retrievedNote.Tags.Count);
+            Assert.IsTrue(retrievedNote.Tags.Contains("porn"));
+            Assert.IsTrue(retrievedNote.Tags.Contains("programming"));
+        }
     }
 }

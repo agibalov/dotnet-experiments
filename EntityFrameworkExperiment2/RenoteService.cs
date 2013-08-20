@@ -100,6 +100,29 @@ namespace EntityFrameworkExperiment2
                 });
         }
 
+        public CompleteNoteDTO GetNote(string sessionToken, int noteId)
+        {
+            return Run(context =>
+                {
+                    var user = GetUserBySessionTokenOrThrow(context, sessionToken);
+
+                    var note = context.Notes
+                        .Include(n => n.Tags)
+                        .SingleOrDefault(n => n.NoteId == noteId);
+                    if (note == null)
+                    {
+                        throw new Exception("no such note");
+                    }
+
+                    if (user.UserId != note.UserId)
+                    {
+                        throw new Exception("no access");
+                    }
+
+                    return MapNoteToCompleteNoteDTO(note);
+                });
+        }
+
         public CompleteNoteDTO UpdateNote(string sessionToken, int noteId, string noteText, IList<string> tagNames)
         {
             throw new NotImplementedException();
