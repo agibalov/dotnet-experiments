@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CombinatorialTests.cs" />
+    <Compile Include="TestCaseDataTests.cs" />
+    <Compile Include="TestCaseSourceDemo.cs" />
     <Compile Include="SequentialTests.cs" />
     <Compile Include="Trivial\Classic\CollectionTests.cs" />
     <Compile Include="Trivial\ConstraintBased\CollectionTests.cs" />
