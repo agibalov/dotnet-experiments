@@ -1,0 +1,6 @@
+c:\dev\NUnitExperiment\NUnitExperiment\bin\Debug\NUnitExperiment.dll
+c:\dev\NUnitExperiment\NUnitExperiment\bin\Debug\NUnitExperiment.pdb
+c:\dev\NUnitExperiment\NUnitExperiment\bin\Debug\nunit.framework.dll
+c:\dev\NUnitExperiment\NUnitExperiment\bin\Debug\nunit.framework.xml
+c:\dev\NUnitExperiment\NUnitExperiment\obj\Debug\NUnitExperiment.dll
+c:\dev\NUnitExperiment\NUnitExperiment\obj\Debug\NUnitExperiment.pdb
