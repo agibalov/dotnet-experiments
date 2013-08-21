@@ -1,4 +1,4 @@
-﻿namespace NUnitExperiment
+﻿namespace NUnitExperiment.Trivial
 {
     public interface IStringTests
     {

@@ -1,74 +1,73 @@
 ﻿using NUnit.Framework;
 
-namespace NUnitExperiment.ConstraintBased
+namespace NUnitExperiment.Trivial.Classic
 {
     public class StringTests : IStringTests
     {
         [Test]
         public void CanCheckIfStringsAreEqual()
         {
-            Assert.That("qwerty", Is.EqualTo("qwerty"));
+            Assert.AreEqual("qwerty", "qwerty");
         }
 
         [Test]
         public void CanCheckIfStringsAreNotEqual()
         {
-            Assert.That("qwerty", Is.Not.EqualTo("asdfgh"));
+            Assert.AreNotEqual("qwerty", "asdfgh");
         }
 
         [Test]
         public void CanCheckIfStringHasASubstring()
         {
-            Assert.That("qwerty", Is.StringContaining("wer"));
-            Assert.That("qwerty", Contains.Substring("wer"));
+            StringAssert.Contains("wer", "qwerty");
         }
 
         [Test]
         public void CanCheckIfStringHasNoSubstring()
         {
-            Assert.That("asdfgh", Is.Not.StringContaining("wer"));
+            StringAssert.DoesNotContain("wer", "asdfgh");
         }
 
         [Test]
         public void CanCheckIfStringStartsWith()
         {
-            Assert.That("qwerty", Is.StringStarting("qwe"));
+            StringAssert.StartsWith("qwe", "qwerty");
         }
 
         [Test]
         public void CanCheckIfStringDoesNotStartWith()
         {
-            Assert.That("qwerty", Is.Not.StringStarting("asd"));
+            StringAssert.DoesNotStartWith("asd", "qwerty");
         }
 
         [Test]
         public void CanCheckIfStringEndsWith()
         {
-            Assert.That("qwerty", Is.StringEnding("rty"));
+            StringAssert.EndsWith("rty", "qwerty");
         }
 
         [Test]
         public void CanCheckIfStringDoesNotEndWith()
         {
-            Assert.That("asdfgh", Is.Not.StringEnding("rty"));
+            StringAssert.DoesNotEndWith("rty", "asdfgh");
         }
 
         [Test]
         public void CanCheckIfStringsAreEqualIgnoringCase()
         {
-            Assert.That("qwerty", Is.EqualTo("QwErTy").IgnoreCase);
+            StringAssert.AreEqualIgnoringCase("qwerty", "QwErTy");
         }
 
         [Test]
         public void CanCheckIfStringMatches()
         {
-            Assert.That("$100", Is.StringMatching(@"\$\d+"));
+            StringAssert.IsMatch(@"\$\d+", "$100");
         }
 
         [Test]
         public void CanCheckIfStringDoesNotMatch()
         {
-            Assert.That("hello", Is.Not.StringMatching(@"\$\d+"));
+            StringAssert.DoesNotMatch(@"\$\d+", "hello");
         }
     }
 }

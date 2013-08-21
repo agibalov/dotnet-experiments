@@ -42,12 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classic\CollectionTests.cs" />
-    <Compile Include="ConstraintBased\CollectionTests.cs" />
-    <Compile Include="ICollectionTests.cs" />
-    <Compile Include="Classic\StringTests.cs" />
-    <Compile Include="IStringTests.cs" />
-    <Compile Include="ConstraintBased\StringTests.cs" />
+    <Compile Include="CombinatorialTests.cs" />
+    <Compile Include="SequentialTests.cs" />
+    <Compile Include="Trivial\Classic\CollectionTests.cs" />
+    <Compile Include="Trivial\ConstraintBased\CollectionTests.cs" />
+    <Compile Include="Trivial\ICollectionTests.cs" />
+    <Compile Include="Trivial\Classic\StringTests.cs" />
+    <Compile Include="Trivial\IStringTests.cs" />
+    <Compile Include="Trivial\ConstraintBased\StringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace NUnitExperiment.Classic
+namespace NUnitExperiment.Trivial.Classic
 {
     public class CollectionTests : ICollectionTests
     {

@@ -4,3 +4,9 @@ c:\dev\NUnitExperiment\NUnitExperiment\bin\Debug\nunit.framework.dll
 c:\dev\NUnitExperiment\NUnitExperiment\bin\Debug\nunit.framework.xml
 c:\dev\NUnitExperiment\NUnitExperiment\obj\Debug\NUnitExperiment.dll
 c:\dev\NUnitExperiment\NUnitExperiment\obj\Debug\NUnitExperiment.pdb
+C:\dev\nunit-experiment\NUnitExperiment\bin\Debug\NUnitExperiment.dll
+C:\dev\nunit-experiment\NUnitExperiment\bin\Debug\NUnitExperiment.pdb
+C:\dev\nunit-experiment\NUnitExperiment\bin\Debug\nunit.framework.dll
+C:\dev\nunit-experiment\NUnitExperiment\bin\Debug\nunit.framework.xml
+C:\dev\nunit-experiment\NUnitExperiment\obj\Debug\NUnitExperiment.dll
+C:\dev\nunit-experiment\NUnitExperiment\obj\Debug\NUnitExperiment.pdb

@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace NUnitExperiment.ConstraintBased
+namespace NUnitExperiment.Trivial.ConstraintBased
 {
     public class CollectionTests : ICollectionTests
     {
