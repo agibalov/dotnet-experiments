@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Data.SqlServerCe;
 using System.IO;
 using System.Linq;
-using System.Text;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
