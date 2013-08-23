@@ -6,5 +6,8 @@ namespace EntityFrameworkInheritanceExperiment.DAL.Entities
     {
         public int UserId { get; set; }
         public IList<AuthenticationMethod> AuthenticationMethods { get; set; }
+
+        // Looks like known bug in EF: I can't have entity that only has Id field, need at least one another column
+        public string DUMMY { get; set; }
     }
 }

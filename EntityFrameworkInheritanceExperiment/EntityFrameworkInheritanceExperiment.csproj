@@ -62,12 +62,12 @@
     <Compile Include="AuthenticationService.cs" />
     <Compile Include="TrivialAuthenticationServiceTests.cs" />
     <Compile Include="DAL\Entities\AuthenticationMethod.cs" />
-    <Compile Include="DAL\Entities\EmailPasswordAuthenticationMethod.cs" />
+    <Compile Include="DAL\Entities\EmailAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\FacebookAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\GoogleAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\TwitterAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\User.cs" />
-    <Compile Include="DTO\EmailPasswordAuthenticationMethodDTO.cs" />
+    <Compile Include="DTO\EmailAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\FacebookAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\GoogleAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\TwitterAuthenticationMethodDTO.cs" />
