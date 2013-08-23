@@ -51,7 +51,9 @@
     <Compile Include="BindByAttribute\BindByAttributeTests.cs" />
     <Compile Include="BindByAttribute\HandlerAttribute.cs" />
     <Compile Include="BindByAttribute\HandlerOne.cs" />
+    <Compile Include="BindByAttribute\HandleWithMagicAttribute.cs" />
     <Compile Include="BindByAttribute\HandlerTwo.cs" />
+    <Compile Include="BindByAttribute\MagicHandlerAttribute.cs" />
     <Compile Include="BindByNamespace\BindByNamespaceTests.cs" />
     <Compile Include="BindByNamespace\Handlers\HandlerOne.cs" />
     <Compile Include="BindByNamespace\Handlers\HandlerTwo.cs" />

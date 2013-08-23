@@ -20,5 +20,19 @@ namespace NinjectExtensionsConventionsTests.BindByAttribute
             Assert.AreSame(kernel.Get<HandlerOne>(), kernel.Get<HandlerOne>());
             Assert.AreSame(kernel.Get<HandlerTwo>(), kernel.Get<HandlerTwo>());
         }
+
+        [Test]
+        public void BindingByAttributeConsidersAttributeInheritance()
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind(x => x
+                .FromThisAssembly()
+                .SelectAllClasses()
+                .WithAttribute<HandlerAttribute>()
+                .BindToSelf()
+                .Configure(b => b.InSingletonScope()));
+
+            Assert.AreSame(kernel.Get<HandleWithMagicAttribute>(), kernel.Get<HandleWithMagicAttribute>());
+        }
     }
 }
