@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DTO;
+using EntityFrameworkInheritanceExperiment.Service;
+using EntityFrameworkInheritanceExperiment.Service.Exceptions;
 using NUnit.Framework;
 
 namespace EntityFrameworkInheritanceExperiment

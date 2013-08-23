@@ -39,6 +39,12 @@
     <Reference Include="EntityFramework.SqlServerCompact">
       <HintPath>..\packages\EntityFramework.SqlServerCompact.6.0.0-rc1\lib\net40\EntityFramework.SqlServerCompact.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.2-unstable-9037\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Conventions">
+      <HintPath>..\packages\Ninject.Extensions.Conventions.3.0.2-unstable-9010\lib\net40\Ninject.Extensions.Conventions.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -59,7 +65,16 @@
   <ItemGroup>
     <Compile Include="AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
-    <Compile Include="AuthenticationService.cs" />
+    <Compile Include="Service\Mappers\AuthenticationMethodToAuthenticationMethodDTOMapper.cs" />
+    <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="Service\Exceptions\AuthenticationServiceException.cs" />
+    <Compile Include="Service\Exceptions\EmailAlreadyUsedException.cs" />
+    <Compile Include="Service\Configuration\MapperAttribute.cs" />
+    <Compile Include="Service\TransactionScripts\ResetTransactionScript.cs" />
+    <Compile Include="Service\Configuration\ServiceAttribute.cs" />
+    <Compile Include="Service\TransactionScripts\SignUpWithEmailAndPasswordTransactionScript.cs" />
+    <Compile Include="Service\Configuration\TransactionScriptAttribute.cs" />
+    <Compile Include="Service\Mappers\UserToUserDTOMapper.cs" />
     <Compile Include="TrivialAuthenticationServiceTests.cs" />
     <Compile Include="DAL\Entities\AuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\EmailAuthenticationMethod.cs" />
