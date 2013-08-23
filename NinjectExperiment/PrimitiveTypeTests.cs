@@ -15,7 +15,7 @@ namespace NinjectExperiment
         }
 
         [Test]
-        public void CanInjectPrimitveValuesUsingNamedConstructorArguments()
+        public void CanInjectPrimitiveValuesUsingNamedConstructorArguments()
         {
             var kernel = new StandardKernel();
             kernel.Bind<int>().ToConstant(123).Named("period");
