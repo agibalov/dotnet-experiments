@@ -36,21 +36,38 @@ namespace EntityFrameworkInheritanceExperiment
         }
 
         [Test]
+        [ExpectedException(typeof(EmailNotRegisteredException))]
         public void CannotSignInWithoutSignUp()
         {
-            throw new NotImplementedException();
+            Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
         }
 
         [Test]
         public void CanSignInAfterSigningUp()
         {
-            throw new NotImplementedException();
+            var user1 = Service.SignUpWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
+            var user2 = Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
+            Assert.AreEqual(user1.UserId, user2.UserId);
+        }
+
+        [Test]
+        [ExpectedException(typeof(IncorrectPasswordException))]
+        public void CannotSignInWithIncorrectPassword()
+        {
+            Service.SignUpWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
+            Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty1");
         }
 
         [Test]
         public void SigningInWithSameEmailAndPasswordMoreThanOnceResultsInSameUser()
         {
-            throw new NotImplementedException();
+            var user1 = Service.SignUpWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
+            
+            var user2 = Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
+            Assert.AreEqual(user1.UserId, user2.UserId);
+
+            var user3 = Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
+            Assert.AreEqual(user1.UserId, user3.UserId);
         }
 
         [Test]

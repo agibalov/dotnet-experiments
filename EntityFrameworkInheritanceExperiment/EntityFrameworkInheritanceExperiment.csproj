@@ -65,6 +65,8 @@
   <ItemGroup>
     <Compile Include="AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
+    <Compile Include="Service\Exceptions\EmailNotRegisteredException.cs" />
+    <Compile Include="Service\Exceptions\IncorrectPasswordException.cs" />
     <Compile Include="Service\Mappers\AuthenticationMethodToAuthenticationMethodDTOMapper.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
     <Compile Include="Service\Exceptions\AuthenticationServiceException.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Service\Configuration\MapperAttribute.cs" />
     <Compile Include="Service\TransactionScripts\ResetTransactionScript.cs" />
     <Compile Include="Service\Configuration\ServiceAttribute.cs" />
+    <Compile Include="Service\TransactionScripts\SignInWithEmailAndPasswordTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\SignUpWithEmailAndPasswordTransactionScript.cs" />
     <Compile Include="Service\Configuration\TransactionScriptAttribute.cs" />
     <Compile Include="Service\Mappers\UserToUserDTOMapper.cs" />

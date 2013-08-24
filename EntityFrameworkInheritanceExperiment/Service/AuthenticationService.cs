@@ -18,6 +18,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         [Inject] public ResetTransactionScript ResetTransactionScript { private get; set; }
         [Inject] public SignUpWithEmailAndPasswordTransactionScript SignUpWithEmailAndPasswordTransactionScript { private get; set; }
+        [Inject] public SignInWithEmailAndPasswordTransactionScript SignInWithEmailAndPasswordTransactionScript { private get; set; }
 
         public void Reset()
         {
@@ -35,7 +36,11 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO SignInWithEmailAndPassword(string email, string password)
         {
-            throw new NotImplementedException();
+            return Run(context => SignInWithEmailAndPasswordTransactionScript
+                .SignInWithEmailAndPassword(
+                    context, 
+                    email, 
+                    password));
         }
 
         public UserDTO AuthenticateWithGoogleUserId(string googleUserId)
