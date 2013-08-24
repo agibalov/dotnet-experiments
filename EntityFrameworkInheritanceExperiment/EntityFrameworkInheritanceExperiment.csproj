@@ -65,8 +65,19 @@
   <ItemGroup>
     <Compile Include="AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
+    <Compile Include="Service\TransactionScripts\AddEmailAndPasswordTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AddFacebookUserIdTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AddGoogleUserIdTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AddTwitterDisplayNameTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AuthenticateWithFacebookUserIdTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AuthenticateWithGoogleUserIdTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AuthenticateWithTwitterDisplayNameTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\DeleteAuthenticationMethodTransactionScript.cs" />
     <Compile Include="Service\Exceptions\EmailNotRegisteredException.cs" />
     <Compile Include="Service\Exceptions\IncorrectPasswordException.cs" />
+    <Compile Include="Service\TransactionScripts\GetAllUsersTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\GetUserCountTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\GetUserTransactionScript.cs" />
     <Compile Include="Service\Mappers\AuthenticationMethodToAuthenticationMethodDTOMapper.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
     <Compile Include="Service\Exceptions\AuthenticationServiceException.cs" />

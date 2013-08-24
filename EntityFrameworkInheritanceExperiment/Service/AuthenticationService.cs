@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
@@ -19,6 +18,17 @@ namespace EntityFrameworkInheritanceExperiment.Service
         [Inject] public ResetTransactionScript ResetTransactionScript { private get; set; }
         [Inject] public SignUpWithEmailAndPasswordTransactionScript SignUpWithEmailAndPasswordTransactionScript { private get; set; }
         [Inject] public SignInWithEmailAndPasswordTransactionScript SignInWithEmailAndPasswordTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithGoogleUserIdTransactionScript AuthenticateWithGoogleUserIdTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithFacebookUserIdTransactionScript AuthenticateWithFacebookUserIdTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithTwitterDisplayNameTransactionScript AuthenticateWithTwitterDisplayNameTransactionScript { private get; set; }
+        [Inject] public AddEmailAndPasswordTransactionScript AddEmailAndPasswordTransactionScript { private get; set; }
+        [Inject] public AddGoogleUserIdTransactionScript AddGoogleUserIdTransactionScript { private get; set; }
+        [Inject] public AddFacebookUserIdTransactionScript AddFacebookUserIdTransactionScript { private get; set; }
+        [Inject] public AddTwitterDisplayNameTransactionScript AddTwitterDisplayNameTransactionScript { private get; set; }
+        [Inject] public DeleteAuthenticationMethodTransactionScript DeleteAuthenticationMethodTransactionScript { private get; set; }
+        [Inject] public GetUserCountTransactionScript GetUserCountTransactionScript { private get; set; }
+        [Inject] public GetUserTransactionScript GetUserTransactionScript { private get; set; }
+        [Inject] public GetAllUsersTransactionScript GetAllUsersTransactionScript { private get; set; }
 
         public void Reset()
         {
@@ -43,63 +53,66 @@ namespace EntityFrameworkInheritanceExperiment.Service
                     password));
         }
 
-        public UserDTO AuthenticateWithGoogleUserId(string googleUserId)
+        public UserDTO AuthenticateWithGoogleUserId(string googleUserId, string email)
         {
-            throw new NotImplementedException();
+            return Run(context => AuthenticateWithGoogleUserIdTransactionScript
+                .AuthenticateWithGoogleUserId(
+                    googleUserId, 
+                    email));
         }
 
-        public UserDTO AuthenticateWithFacebookUserId(string facebookUserId)
+        public UserDTO AuthenticateWithFacebookUserId(string facebookUserId, string email)
         {
-            throw new NotImplementedException();
+            return Run(context => AuthenticateWithFacebookUserIdTransactionScript
+                .AuthenticateWithFacebookUserId(
+                    facebookUserId,
+                    email));
         }
 
         public UserDTO AuthenticateWithTwitterDisplayName(string twitterDisplayName)
         {
-            throw new NotImplementedException();
+            return Run(context => AuthenticateWithTwitterDisplayNameTransactionScript
+                .AuthenticateWithTwitterDisplayName(twitterDisplayName));
         }
 
         public UserDTO AddEmailAndPassword(int userId, string email, string password)
         {
-            throw new NotImplementedException();
+            return Run(context => AddEmailAndPasswordTransactionScript.AddEmailAndPassword(userId, email, password));
         }
 
-        public UserDTO AddGoogleUserId(int userId, string googleUserId)
+        public UserDTO AddGoogleUserId(int userId, string googleUserId, string email)
         {
-            throw new NotImplementedException();
+            return Run(context => AddGoogleUserIdTransactionScript.AddGoogleUserId(userId, googleUserId, email));
         }
 
-        public UserDTO AddFacebookUserId(int userId, string facebookUserId)
+        public UserDTO AddFacebookUserId(int userId, string facebookUserId, string email)
         {
-            throw new NotImplementedException();
+            return Run(context => AddFacebookUserIdTransactionScript.AddFacebookUserId(userId, facebookUserId, email));
         }
 
         public UserDTO AddTwitterDisplayName(int userId, string twitterDisplayName)
         {
-            throw new NotImplementedException();
+            return Run(context => AddTwitterDisplayNameTransactionScript.AddTwitterDisplayName(userId, twitterDisplayName));
         }
 
         public UserDTO DeleteAuthenticationMethod(int userId, int authenticationMethodId)
         {
-            throw new NotImplementedException();
+            return Run(context => DeleteAuthenticationMethodTransactionScript.DeleteAuthenticationMethod(userId, authenticationMethodId));
         }
 
         public IList<UserDTO> GetAllUsers()
         {
-            throw new NotImplementedException();
+            return Run(context => GetAllUsersTransactionScript.GetAllUsers());
         }
 
         public int GetUserCount()
         {
-            return Run(context =>
-                {
-                    var userCount = context.Users.Count();
-                    return userCount;
-                });
+            return Run(context => GetUserCountTransactionScript.GetUserCount(context));
         }
 
         public UserDTO GetUser(int userId)
         {
-            throw new NotImplementedException();
+            return Run(context => GetUserTransactionScript.GetUser(userId));
         }
 
         private T Run<T>(Func<UsersContext, T> func)
