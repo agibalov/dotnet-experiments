@@ -17,7 +17,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
 
             if (authenticationMethod is GoogleAuthenticationMethod)
             {
-                throw new NotImplementedException();
+                return MapGoogleAuthenticationMethodToGoogleAuthenticationMethodDTO((GoogleAuthenticationMethod) authenticationMethod);
             }
 
             if (authenticationMethod is FacebookAuthenticationMethod)
@@ -42,6 +42,16 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
                     AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
                     Email = authenticationMethod.Email,
                     Password = authenticationMethod.Password
+                };
+        }
+
+        private static GoogleAuthenticationMethodDTO MapGoogleAuthenticationMethodToGoogleAuthenticationMethodDTO(GoogleAuthenticationMethod authenticationMethod)
+        {
+            return new GoogleAuthenticationMethodDTO
+                {
+                    AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
+                    GoogleUserId = authenticationMethod.GoogleUserId,
+                    Email = authenticationMethod.Email
                 };
         }
     }

@@ -27,7 +27,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 File.Delete(databaseFileName);
             }
 
-            using (var context = new UsersContext(_connectionStringName))
+            using (var context = new UserContext(_connectionStringName))
             {
                 context.Database.Create();
             }

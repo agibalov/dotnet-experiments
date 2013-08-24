@@ -69,8 +69,8 @@
     <Compile Include="Service\TransactionScripts\AddFacebookUserIdTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AddGoogleUserIdTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AddTwitterDisplayNameTransactionScript.cs" />
-    <Compile Include="Service\TransactionScripts\AuthenticateWithFacebookUserIdTransactionScript.cs" />
-    <Compile Include="Service\TransactionScripts\AuthenticateWithGoogleUserIdTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AuthenticateWithFacebookTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AuthenticateWithGoogleTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AuthenticateWithTwitterDisplayNameTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\DeleteAuthenticationMethodTransactionScript.cs" />
     <Compile Include="Service\Exceptions\EmailNotRegisteredException.cs" />
@@ -102,7 +102,7 @@
     <Compile Include="DTO\TwitterAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DAL\UsersContext.cs" />
+    <Compile Include="DAL\UserContext.cs" />
     <Compile Include="WeirdAuthenticationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>

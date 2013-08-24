@@ -47,7 +47,7 @@ namespace EntityFrameworkInheritanceExperiment
         {
             var user1 = Service.SignUpWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
             var user2 = Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
-            Assert.AreEqual(user1.UserId, user2.UserId);
+            Assert.That(user1.UserId, Is.EqualTo(user2.UserId));
         }
 
         [Test]
@@ -64,16 +64,22 @@ namespace EntityFrameworkInheritanceExperiment
             var user1 = Service.SignUpWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
             
             var user2 = Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
-            Assert.AreEqual(user1.UserId, user2.UserId);
+            Assert.That(user1.UserId, Is.EqualTo(user2.UserId));
 
             var user3 = Service.SignInWithEmailAndPassword("loki2302@loki2302.me", "qwerty");
-            Assert.AreEqual(user1.UserId, user3.UserId);
+            Assert.That(user1.UserId, Is.EqualTo(user3.UserId));
         }
 
         [Test]
         public void CanSignUpWithGoogle()
         {
-            throw new NotImplementedException();
+            var user = Service.AuthenticateWithGoogle("google1", "loki2302@loki2302.me");
+            Assert.That(user.UserId, Is.GreaterThan(0));
+            Assert.That(user.AuthenticationMethods, Has.Count.EqualTo(1));
+            Assert.That(user.AuthenticationMethods.Single(), Is.InstanceOf<GoogleAuthenticationMethodDTO>());
+            Assert.That(user.AuthenticationMethods.OfType<GoogleAuthenticationMethodDTO>().Single().AuthenticationMethodId, Is.GreaterThan(0));
+            Assert.That(user.AuthenticationMethods.OfType<GoogleAuthenticationMethodDTO>().Single().Email, Is.EqualTo("loki2302@loki2302.me"));
+            Assert.That(user.AuthenticationMethods.OfType<GoogleAuthenticationMethodDTO>().Single().GoogleUserId, Is.EqualTo("google1"));
         }
 
         [Test]
@@ -85,7 +91,13 @@ namespace EntityFrameworkInheritanceExperiment
         [Test]
         public void CanSignUpWithFacebook()
         {
-            throw new NotImplementedException();
+            var user = Service.AuthenticateWithFacebook("facebook1", "loki2302@loki2302.me");
+            Assert.That(user.UserId, Is.GreaterThan(0));
+            Assert.That(user.AuthenticationMethods, Has.Count.EqualTo(1));
+            Assert.That(user.AuthenticationMethods.Single(), Is.InstanceOf<FacebookAuthenticationMethodDTO>());
+            Assert.That(user.AuthenticationMethods.OfType<FacebookAuthenticationMethodDTO>().Single().AuthenticationMethodId, Is.GreaterThan(0));
+            Assert.That(user.AuthenticationMethods.OfType<FacebookAuthenticationMethodDTO>().Single().Email, Is.EqualTo("loki2302@loki2302.me"));
+            Assert.That(user.AuthenticationMethods.OfType<FacebookAuthenticationMethodDTO>().Single().FacebookUserId, Is.EqualTo("facebook1"));
         }
 
         [Test]

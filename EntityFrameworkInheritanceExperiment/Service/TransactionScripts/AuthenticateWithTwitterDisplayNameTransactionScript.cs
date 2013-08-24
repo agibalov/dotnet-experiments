@@ -7,7 +7,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     [TransactionScript]
     public class AuthenticateWithTwitterDisplayNameTransactionScript
     {
-        public UserDTO AuthenticateWithTwitterDisplayName(string twitterDisplayName)
+        public UserDTO AuthenticateWithTwitter(string twitterDisplayName)
         {
             throw new NotImplementedException();
         }

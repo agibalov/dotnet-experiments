@@ -20,7 +20,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             _userToUserDtoMapper = userToUserDtoMapper;
         }
 
-        public UserDTO SignInWithEmailAndPassword(UsersContext context, string email, string password)
+        public UserDTO SignInWithEmailAndPassword(UserContext context, string email, string password)
         {
             var authenticationMethod = context.AuthenticationMethods
                 .OfType<EmailAuthenticationMethod>()

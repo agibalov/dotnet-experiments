@@ -18,9 +18,9 @@ namespace EntityFrameworkInheritanceExperiment.Service
         [Inject] public ResetTransactionScript ResetTransactionScript { private get; set; }
         [Inject] public SignUpWithEmailAndPasswordTransactionScript SignUpWithEmailAndPasswordTransactionScript { private get; set; }
         [Inject] public SignInWithEmailAndPasswordTransactionScript SignInWithEmailAndPasswordTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithGoogleUserIdTransactionScript AuthenticateWithGoogleUserIdTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithFacebookUserIdTransactionScript AuthenticateWithFacebookUserIdTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithTwitterDisplayNameTransactionScript AuthenticateWithTwitterDisplayNameTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithGoogleTransactionScript AuthenticateWithGoogleTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithFacebookTransactionScript AuthenticateWithFacebookTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithTwitterDisplayNameTransactionScript AuthenticateWithTwitterTransactionScript { private get; set; }
         [Inject] public AddEmailAndPasswordTransactionScript AddEmailAndPasswordTransactionScript { private get; set; }
         [Inject] public AddGoogleUserIdTransactionScript AddGoogleUserIdTransactionScript { private get; set; }
         [Inject] public AddFacebookUserIdTransactionScript AddFacebookUserIdTransactionScript { private get; set; }
@@ -53,26 +53,27 @@ namespace EntityFrameworkInheritanceExperiment.Service
                     password));
         }
 
-        public UserDTO AuthenticateWithGoogleUserId(string googleUserId, string email)
+        public UserDTO AuthenticateWithGoogle(string googleUserId, string email)
         {
-            return Run(context => AuthenticateWithGoogleUserIdTransactionScript
-                .AuthenticateWithGoogleUserId(
+            return Run(context => AuthenticateWithGoogleTransactionScript
+                .AuthenticateWithGoogle(
+                    context,
                     googleUserId, 
                     email));
         }
 
-        public UserDTO AuthenticateWithFacebookUserId(string facebookUserId, string email)
+        public UserDTO AuthenticateWithFacebook(string facebookUserId, string email)
         {
-            return Run(context => AuthenticateWithFacebookUserIdTransactionScript
-                .AuthenticateWithFacebookUserId(
+            return Run(context => AuthenticateWithFacebookTransactionScript
+                .AuthenticateWithFacebook(
                     facebookUserId,
                     email));
         }
 
         public UserDTO AuthenticateWithTwitterDisplayName(string twitterDisplayName)
         {
-            return Run(context => AuthenticateWithTwitterDisplayNameTransactionScript
-                .AuthenticateWithTwitterDisplayName(twitterDisplayName));
+            return Run(context => AuthenticateWithTwitterTransactionScript
+                .AuthenticateWithTwitter(twitterDisplayName));
         }
 
         public UserDTO AddEmailAndPassword(int userId, string email, string password)
@@ -115,9 +116,9 @@ namespace EntityFrameworkInheritanceExperiment.Service
             return Run(context => GetUserTransactionScript.GetUser(userId));
         }
 
-        private T Run<T>(Func<UsersContext, T> func)
+        private T Run<T>(Func<UserContext, T> func)
         {
-            using (var context = new UsersContext(ConnectionStringName))
+            using (var context = new UserContext(ConnectionStringName))
             {
                 return func(context);
             }

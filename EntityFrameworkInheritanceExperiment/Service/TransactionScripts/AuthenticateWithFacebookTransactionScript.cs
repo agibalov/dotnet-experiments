@@ -5,9 +5,9 @@ using EntityFrameworkInheritanceExperiment.Service.Configuration;
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 {
     [TransactionScript]
-    public class AuthenticateWithGoogleUserIdTransactionScript
+    public class AuthenticateWithFacebookTransactionScript
     {
-        public UserDTO AuthenticateWithGoogleUserId(string googleUserId, string email)
+        public UserDTO AuthenticateWithFacebook(string facebookUserId, string email)
         {
             throw new NotImplementedException();
         }

@@ -18,7 +18,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             _userToUserDtoMapper = userToUserDtoMapper;
         }
 
-        public UserDTO SignUpWithEmailAndPassword(UsersContext context, string email, string password)
+        public UserDTO SignUpWithEmailAndPassword(UserContext context, string email, string password)
         {
             var isEmailAreadyUsed = context.AuthenticationMethods.OfType<EmailAuthenticationMethod>().Any(
                 emailAuthenticationMethod => emailAuthenticationMethod.Email == email);
