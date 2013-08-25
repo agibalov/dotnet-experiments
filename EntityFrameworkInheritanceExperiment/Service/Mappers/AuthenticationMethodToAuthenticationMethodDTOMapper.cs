@@ -27,7 +27,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
 
             if (authenticationMethod is TwitterAuthenticationMethod)
             {
-                throw new NotImplementedException();
+                return MapTwitterAuthenticationMethodToTwitterAuthenticationMethodDTO((TwitterAuthenticationMethod) authenticationMethod);
             }
             
             throw new NotImplementedException();
@@ -58,11 +58,21 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
         private static FacebookAuthenticationMethodDTO MapFacebookAuthenticationMethodToFacebookAuthenticationMethodDTO(FacebookAuthenticationMethod authenticationMethod)
         {
             return new FacebookAuthenticationMethodDTO
-            {
-                AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
-                FacebookUserId = authenticationMethod.FacebookUserId,
-                Email = authenticationMethod.Email
-            };
+                {
+                    AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
+                    FacebookUserId = authenticationMethod.FacebookUserId,
+                    Email = authenticationMethod.Email
+                };
+        }
+
+        private static TwitterAuthenticationMethodDTO MapTwitterAuthenticationMethodToTwitterAuthenticationMethodDTO(
+            TwitterAuthenticationMethod authenticationMethod)
+        {
+            return new TwitterAuthenticationMethodDTO
+                {
+                    AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
+                    TwitterDisplayName = authenticationMethod.TwitterDisplayName
+                };
         }
     }
 }

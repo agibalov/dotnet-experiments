@@ -74,7 +74,9 @@ namespace EntityFrameworkInheritanceExperiment.Service
         public UserDTO AuthenticateWithTwitter(string twitterDisplayName)
         {
             return Run(context => AuthenticateWithTwitterTransactionScript
-                .AuthenticateWithTwitter(twitterDisplayName));
+                .AuthenticateWithTwitter(
+                    context, 
+                    twitterDisplayName));
         }
 
         public UserDTO AddEmailAndPassword(int userId, string email, string password)
