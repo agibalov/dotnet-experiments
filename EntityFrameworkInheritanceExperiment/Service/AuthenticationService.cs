@@ -22,9 +22,9 @@ namespace EntityFrameworkInheritanceExperiment.Service
         [Inject] public AuthenticateWithFacebookTransactionScript AuthenticateWithFacebookTransactionScript { private get; set; }
         [Inject] public AuthenticateWithTwitterDisplayNameTransactionScript AuthenticateWithTwitterTransactionScript { private get; set; }
         [Inject] public AddEmailAndPasswordTransactionScript AddEmailAndPasswordTransactionScript { private get; set; }
-        [Inject] public AddGoogleUserIdTransactionScript AddGoogleUserIdTransactionScript { private get; set; }
-        [Inject] public AddFacebookUserIdTransactionScript AddFacebookUserIdTransactionScript { private get; set; }
-        [Inject] public AddTwitterDisplayNameTransactionScript AddTwitterDisplayNameTransactionScript { private get; set; }
+        [Inject] public AddGoogleUserIdTransactionScript AddGoogleTransactionScript { private get; set; }
+        [Inject] public AddFacebookUserIdTransactionScript AddFacebookTransactionScript { private get; set; }
+        [Inject] public AddTwitterDisplayNameTransactionScript AddTwitterTransactionScript { private get; set; }
         [Inject] public DeleteAuthenticationMethodTransactionScript DeleteAuthenticationMethodTransactionScript { private get; set; }
         [Inject] public GetUserCountTransactionScript GetUserCountTransactionScript { private get; set; }
         [Inject] public GetUserTransactionScript GetUserTransactionScript { private get; set; }
@@ -71,7 +71,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
                     email));
         }
 
-        public UserDTO AuthenticateWithTwitterDisplayName(string twitterDisplayName)
+        public UserDTO AuthenticateWithTwitter(string twitterDisplayName)
         {
             return Run(context => AuthenticateWithTwitterTransactionScript
                 .AuthenticateWithTwitter(twitterDisplayName));
@@ -82,19 +82,19 @@ namespace EntityFrameworkInheritanceExperiment.Service
             return Run(context => AddEmailAndPasswordTransactionScript.AddEmailAndPassword(userId, email, password));
         }
 
-        public UserDTO AddGoogleUserId(int userId, string googleUserId, string email)
+        public UserDTO AddGoogle(int userId, string googleUserId, string email)
         {
-            return Run(context => AddGoogleUserIdTransactionScript.AddGoogleUserId(userId, googleUserId, email));
+            return Run(context => AddGoogleTransactionScript.AddGoogleUserId(userId, googleUserId, email));
         }
 
-        public UserDTO AddFacebookUserId(int userId, string facebookUserId, string email)
+        public UserDTO AddFacebook(int userId, string facebookUserId, string email)
         {
-            return Run(context => AddFacebookUserIdTransactionScript.AddFacebookUserId(userId, facebookUserId, email));
+            return Run(context => AddFacebookTransactionScript.AddFacebookUserId(userId, facebookUserId, email));
         }
 
-        public UserDTO AddTwitterDisplayName(int userId, string twitterDisplayName)
+        public UserDTO AddTwitter(int userId, string twitterDisplayName)
         {
-            return Run(context => AddTwitterDisplayNameTransactionScript.AddTwitterDisplayName(userId, twitterDisplayName));
+            return Run(context => AddTwitterTransactionScript.AddTwitterDisplayName(userId, twitterDisplayName));
         }
 
         public UserDTO DeleteAuthenticationMethod(int userId, int authenticationMethodId)

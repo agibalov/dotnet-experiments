@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EntityFrameworkInheritanceExperiment.DTO;
-using EntityFrameworkInheritanceExperiment.Service;
 using EntityFrameworkInheritanceExperiment.Service.Exceptions;
 using NUnit.Framework;
 
@@ -113,13 +111,20 @@ namespace EntityFrameworkInheritanceExperiment
         [Test]
         public void CanSignUpWithTwitter()
         {
-            throw new NotImplementedException();
+            var user = Service.AuthenticateWithTwitter("twitter1");
+            Assert.That(user.UserId, Is.GreaterThan(0));
+            Assert.That(user.AuthenticationMethods, Has.Count.EqualTo(1));
+            Assert.That(user.AuthenticationMethods.Single(), Is.InstanceOf<TwitterAuthenticationMethodDTO>());
+            Assert.That(user.AuthenticationMethods.OfType<TwitterAuthenticationMethodDTO>().Single().AuthenticationMethodId, Is.GreaterThan(0));
+            Assert.That(user.AuthenticationMethods.OfType<TwitterAuthenticationMethodDTO>().Single().TwitterDisplayName, Is.EqualTo("twitter1"));
         }
 
         [Test]
         public void CanSignInWithTwitter()
         {
-            throw new NotImplementedException();
+            var user1 = Service.AuthenticateWithTwitter("twitter1");
+            var user2 = Service.AuthenticateWithTwitter("twitter1");
+            Assert.That(user1.UserId, Is.EqualTo(user2.UserId));
         }
     }
 }
