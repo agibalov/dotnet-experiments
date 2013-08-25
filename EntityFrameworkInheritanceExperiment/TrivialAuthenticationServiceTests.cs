@@ -105,7 +105,9 @@ namespace EntityFrameworkInheritanceExperiment
         [Test]
         public void CanSignInWithFacebook()
         {
-            throw new NotImplementedException();
+            var user1 = Service.AuthenticateWithFacebook("facebook1", "loki2302@loki2302.me");
+            var user2 = Service.AuthenticateWithFacebook("facebook1", "loki2302@loki2302.me");
+            Assert.That(user1.UserId, Is.EqualTo(user2.UserId));
         }
 
         [Test]

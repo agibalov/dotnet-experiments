@@ -66,6 +66,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
         {
             return Run(context => AuthenticateWithFacebookTransactionScript
                 .AuthenticateWithFacebook(
+                    context,
                     facebookUserId,
                     email));
         }
