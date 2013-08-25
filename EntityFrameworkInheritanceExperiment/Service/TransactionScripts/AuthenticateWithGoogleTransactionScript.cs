@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
@@ -21,6 +22,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
         {
             var googleAuthMethod = context.AuthenticationMethods
                 .OfType<GoogleAuthenticationMethod>()
+                .Include(am => am.User)
                 .SingleOrDefault(x => x.GoogleUserId == googleUserId);
 
             User user;

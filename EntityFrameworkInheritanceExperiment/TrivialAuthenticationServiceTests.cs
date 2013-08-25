@@ -85,7 +85,9 @@ namespace EntityFrameworkInheritanceExperiment
         [Test]
         public void CanSignInWithGoogle()
         {
-            throw new NotImplementedException();
+            var user1 = Service.AuthenticateWithGoogle("google1", "loki2302@loki2302.me");
+            var user2 = Service.AuthenticateWithGoogle("google1", "loki2302@loki2302.me");
+            Assert.That(user1.UserId, Is.EqualTo(user2.UserId));
         }
 
         [Test]
