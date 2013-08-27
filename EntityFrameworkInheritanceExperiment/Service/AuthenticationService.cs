@@ -71,11 +71,12 @@ namespace EntityFrameworkInheritanceExperiment.Service
                     email));
         }
 
-        public UserDTO AuthenticateWithTwitter(string twitterDisplayName)
+        public UserDTO AuthenticateWithTwitter(string twitterUserId, string twitterDisplayName)
         {
             return Run(context => AuthenticateWithTwitterTransactionScript
                 .AuthenticateWithTwitter(
                     context, 
+                    twitterUserId,
                     twitterDisplayName));
         }
 

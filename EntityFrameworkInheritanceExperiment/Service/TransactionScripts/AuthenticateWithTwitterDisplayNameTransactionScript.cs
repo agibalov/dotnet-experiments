@@ -18,12 +18,12 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             _userToUserDtoMapper = userToUserDtoMapper;
         }
 
-        public UserDTO AuthenticateWithTwitter(UserContext context, string twitterDisplayName)
+        public UserDTO AuthenticateWithTwitter(UserContext context, string twitterUserId, string twitterDisplayName)
         {
             var twitterAuthMethod = context.AuthenticationMethods
                 .OfType<TwitterAuthenticationMethod>()
                 .Include(am => am.User)
-                .SingleOrDefault(x => x.TwitterDisplayName == twitterDisplayName);
+                .SingleOrDefault(x => x.TwitterUserId == twitterUserId);
 
             User user;
             if (twitterAuthMethod != null)
@@ -37,6 +37,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 
                 twitterAuthMethod = new TwitterAuthenticationMethod
                     {
+                        TwitterUserId = twitterUserId,
                         TwitterDisplayName = twitterDisplayName,
                         User = user
                     };

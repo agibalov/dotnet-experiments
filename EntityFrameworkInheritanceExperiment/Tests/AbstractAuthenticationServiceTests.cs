@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Ninject;
 using Ninject.Extensions.Conventions;
 
-namespace EntityFrameworkInheritanceExperiment
+namespace EntityFrameworkInheritanceExperiment.Tests
 {
     public abstract class AbstractAuthenticationServiceTests
     {

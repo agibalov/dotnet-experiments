@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Combinatorics">
+      <HintPath>..\packages\Combinatorics.1.0.3.2\lib\net40\Combinatorics.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.0-rc1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -63,7 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractAuthenticationServiceTests.cs" />
+    <Compile Include="Tests\AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
     <Compile Include="Service\TransactionScripts\AddEmailAndPasswordTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AddFacebookUserIdTransactionScript.cs" />
@@ -89,7 +92,6 @@
     <Compile Include="Service\TransactionScripts\SignUpWithEmailAndPasswordTransactionScript.cs" />
     <Compile Include="Service\Configuration\TransactionScriptAttribute.cs" />
     <Compile Include="Service\Mappers\UserToUserDTOMapper.cs" />
-    <Compile Include="TrivialAuthenticationServiceTests.cs" />
     <Compile Include="DAL\Entities\AuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\EmailAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\FacebookAuthenticationMethod.cs" />
@@ -103,7 +105,15 @@
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\UserContext.cs" />
-    <Compile Include="WeirdAuthenticationServiceTests.cs" />
+    <Compile Include="Tests\AuthenticationSteps\AuthenticateWithFacebookAuthenticationStep.cs" />
+    <Compile Include="Tests\AuthenticationSteps\AuthenticateWithGoogleAuthenticationStep.cs" />
+    <Compile Include="Tests\AuthenticationSteps\AuthenticateWithTwitterAuthenticationStep.cs" />
+    <Compile Include="Tests\AuthenticationSteps\AuthenticationStep.cs" />
+    <Compile Include="Tests\AuthenticationSteps\IContextRequirement.cs" />
+    <Compile Include="Tests\AuthenticationSteps\SignUpWithEmailAndPasswordAuthenticationStep.cs" />
+    <Compile Include="Tests\AuthenticationSteps\ThereShouldBeUserWithId.cs" />
+    <Compile Include="Tests\AuthenticationScenarioTests.cs" />
+    <Compile Include="Tests\TrivialAuthenticationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

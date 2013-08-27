@@ -71,6 +71,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
             return new TwitterAuthenticationMethodDTO
                 {
                     AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
+                    TwitterUserId = authenticationMethod.TwitterUserId,
                     TwitterDisplayName = authenticationMethod.TwitterDisplayName
                 };
         }
