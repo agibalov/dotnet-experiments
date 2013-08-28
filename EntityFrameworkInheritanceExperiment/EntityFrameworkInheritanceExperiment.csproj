@@ -109,10 +109,14 @@
     <Compile Include="Tests\AuthenticationSteps\AuthenticateWithGoogleAuthenticationStep.cs" />
     <Compile Include="Tests\AuthenticationSteps\AuthenticateWithTwitterAuthenticationStep.cs" />
     <Compile Include="Tests\AuthenticationSteps\AuthenticationStep.cs" />
-    <Compile Include="Tests\AuthenticationSteps\IContextRequirement.cs" />
     <Compile Include="Tests\AuthenticationSteps\SignUpWithEmailAndPasswordAuthenticationStep.cs" />
-    <Compile Include="Tests\AuthenticationSteps\ThereShouldBeUserWithId.cs" />
     <Compile Include="Tests\AuthenticationScenarioTests.cs" />
+    <Compile Include="Tests\Expectations\IExpectation.cs" />
+    <Compile Include="Tests\Expectations\NonTwitterUserHasEmailAndPasswordAuthMethod.cs" />
+    <Compile Include="Tests\Expectations\NonTwitterUserHasFacebookAuthMethod.cs" />
+    <Compile Include="Tests\Expectations\NonTwitterUserHasGoogleAuthMethod.cs" />
+    <Compile Include="Tests\Expectations\ThereIsOneNonTwitterUserExpectation.cs" />
+    <Compile Include="Tests\Expectations\ThereIsOneTwitterUserExpectation.cs" />
     <Compile Include="Tests\TrivialAuthenticationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>

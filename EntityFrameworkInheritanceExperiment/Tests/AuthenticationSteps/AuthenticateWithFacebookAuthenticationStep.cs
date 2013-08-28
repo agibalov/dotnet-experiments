@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service;
 
@@ -15,7 +14,7 @@ namespace EntityFrameworkInheritanceExperiment.Tests.AuthenticationSteps
             _email = email;
         }
         
-        public override UserDTO Run(AuthenticationService authenticationService, IList<IContextRequirement> contextRequirements)
+        public override UserDTO Run(AuthenticationService authenticationService)
         {
             return authenticationService.AuthenticateWithFacebook(_facebookUserId, _email);
         }

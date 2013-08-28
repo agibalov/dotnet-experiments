@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Combinatorics.Collections;
 using EntityFrameworkInheritanceExperiment.Tests.AuthenticationSteps;
+using EntityFrameworkInheritanceExperiment.Tests.Expectations;
 using NUnit.Framework;
 
 namespace EntityFrameworkInheritanceExperiment.Tests
@@ -9,29 +11,16 @@ namespace EntityFrameworkInheritanceExperiment.Tests
     public class AuthenticationScenarioTests : AbstractAuthenticationServiceTests
     {
         [TestCaseSource("TestCases")]
-        public void AuthenticationWorks(IList<AuthenticationStep> stepSequenceToConsider)
+        public void AuthenticationWorks(IList<AuthenticationStep> stepSequenceToConsider, IList<IExpectation> expectations)
         {
-            var contextRequirements = new List<IContextRequirement>();
-
-            int? userId = null;
             foreach (var authenticationStep in stepSequenceToConsider)
             {
-                var result = authenticationStep.Run(Service, contextRequirements);
-                Assert.That(result, Is.Not.Null); // TODO
-
-                if (!userId.HasValue)
-                {
-                    userId = result.UserId;
-                }
-                else
-                {
-                    Assert.That(result.UserId, Is.EqualTo(userId.Value));
-                }
+                authenticationStep.Run(Service);
             }
 
-            foreach (var contextRequirement in contextRequirements)
+            foreach (var expectation in expectations)
             {
-                contextRequirement.Check(Service);
+                expectation.Check(Service);
             }
         }
 
@@ -55,11 +44,56 @@ namespace EntityFrameworkInheritanceExperiment.Tests
                         var stepSequencesToConsider = new Permutations<AuthenticationStep>(stepSetToConsider);
                         foreach (var stepSequenceToConsider in stepSequencesToConsider)
                         {
-                            yield return new TestCaseData(stepSequenceToConsider).SetName(string.Join("->", stepSequenceToConsider));
+                            var expectations = BuildExpectations(stepSequenceToConsider);
+                            yield return new TestCaseData(stepSequenceToConsider, expectations).SetName(string.Join("->", stepSequenceToConsider));
                         }
                     }
                 }
             }
+        }
+
+        private static IList<IExpectation> BuildExpectations(IList<AuthenticationStep> authenticationSteps)
+        {
+            var expectations = new List<IExpectation>();
+
+            var shouldHaveOneNonTwitterUser = authenticationSteps.Any(authenticationStep =>
+                authenticationStep is SignUpWithEmailAndPasswordAuthenticationStep ||
+                authenticationStep is AuthenticateWithGoogleAuthenticationStep ||
+                authenticationStep is AuthenticateWithFacebookAuthenticationStep);
+            if (shouldHaveOneNonTwitterUser)
+            {
+                expectations.Add(new ThereIsOneNonTwitterUserExpectation());
+            }
+
+            var nonTwitterUserShouldHaveEmailAndPasswordAuthMethod = authenticationSteps.Any(authenticationStep =>
+                    authenticationStep is SignUpWithEmailAndPasswordAuthenticationStep);
+            if (nonTwitterUserShouldHaveEmailAndPasswordAuthMethod)
+            {
+                expectations.Add(new NonTwitterUserHasEmailAndPasswordAuthMethod());
+            }
+
+            var nonTwitterUserShouldHaveGoogleAuthMethod = authenticationSteps.Any(authenticationStep =>
+                    authenticationStep is AuthenticateWithGoogleAuthenticationStep);
+            if (nonTwitterUserShouldHaveGoogleAuthMethod)
+            {
+                expectations.Add(new NonTwitterUserHasGoogleAuthMethod());
+            }
+
+            var nonTwitterUserShouldHaveFacebookAuthMethod = authenticationSteps.Any(authenticationStep =>
+                    authenticationStep is AuthenticateWithFacebookAuthenticationStep);
+            if (nonTwitterUserShouldHaveFacebookAuthMethod)
+            {
+                expectations.Add(new NonTwitterUserHasFacebookAuthMethod());
+            }
+
+            var shouldHaveOneTwitterUser = authenticationSteps.Any(authenticationStep =>
+                authenticationStep is AuthenticateWithTwitterAuthenticationStep);
+            if (shouldHaveOneTwitterUser)
+            {
+                expectations.Add(new ThereIsOneTwitterUserExpectation());
+            }
+
+            return expectations;
         }
     }
 }

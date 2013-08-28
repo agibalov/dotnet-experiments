@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service;
-using NUnit.Framework;
 
 namespace EntityFrameworkInheritanceExperiment.Tests.AuthenticationSteps
 {
@@ -16,15 +14,9 @@ namespace EntityFrameworkInheritanceExperiment.Tests.AuthenticationSteps
             _password = password;
         }
 
-        public override UserDTO Run(AuthenticationService authenticationService, IList<IContextRequirement> contextRequirements)
+        public override UserDTO Run(AuthenticationService authenticationService)
         {
-            var user = authenticationService.SignUpWithEmailAndPassword(_email, _password);
-            Assert.That(user.UserId, Is.GreaterThan(0));
-            // todo
-
-            contextRequirements.Add(new ThereShouldBeUserWithId(user.UserId));
-
-            return user;
+            return authenticationService.SignUpWithEmailAndPassword(_email, _password);
         }
 
         public override string ToString()

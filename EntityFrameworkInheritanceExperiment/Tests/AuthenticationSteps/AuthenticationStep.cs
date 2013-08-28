@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service;
 
@@ -12,7 +11,7 @@ namespace EntityFrameworkInheritanceExperiment.Tests.AuthenticationSteps
             return string.CompareOrdinal(ToString(), other.ToString());
         }
         
-        public abstract UserDTO Run(AuthenticationService authenticationService, IList<IContextRequirement> contextRequirements);
+        public abstract UserDTO Run(AuthenticationService authenticationService);
         public abstract override string ToString();
     }
 }

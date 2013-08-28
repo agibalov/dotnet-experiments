@@ -107,7 +107,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public IList<UserDTO> GetAllUsers()
         {
-            return Run(context => GetAllUsersTransactionScript.GetAllUsers());
+            return Run(context => GetAllUsersTransactionScript.GetAllUsers(context));
         }
 
         public int GetUserCount()

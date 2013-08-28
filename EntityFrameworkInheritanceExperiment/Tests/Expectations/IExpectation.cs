@@ -1,8 +1,8 @@
 using EntityFrameworkInheritanceExperiment.Service;
 
-namespace EntityFrameworkInheritanceExperiment.Tests.AuthenticationSteps
+namespace EntityFrameworkInheritanceExperiment.Tests.Expectations
 {
-    public interface IContextRequirement
+    public interface IExpectation
     {
         void Check(AuthenticationService authenticationService);
     }

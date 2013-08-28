@@ -1,5 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Mappers;
@@ -16,9 +18,13 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             _userToUserDtoMapper = userToUserDtoMapper;
         }
 
-        public IList<UserDTO> GetAllUsers()
+        public IList<UserDTO> GetAllUsers(UserContext context)
         {
-            throw new NotImplementedException();
+            return context.Users
+                .Select(u => u)
+                .Include(u => u.AuthenticationMethods)
+                .Select(_userToUserDtoMapper.MapUserToUserDTO)
+                .ToList();
         }
     }
 }
