@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
@@ -34,54 +33,27 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                     user = new User();
                     context.Users.Add(user);
 
-                    var emailAddress = new EmailAddress
-                    {
-                        Email = email,
-                        User = user
-                    };
-                    context.EmailAddresses.Add(emailAddress);
-
-                    var facebookAuthMethod = new FacebookAuthenticationMethod
-                    {
-                        FacebookUserId = facebookUserId,
-                        User = user
-                    };
-                    context.AuthenticationMethods.Add(facebookAuthMethod);
+                    _userManager.UserAddEmailAddress(context, user, email);
+                    _userManager.UserAddFacebookAuthenticationMethod(context, user, facebookUserId);
 
                     context.SaveChanges();
                 }
                 else
                 {
                     // known email - associate facebookuserid with existing user
-                    var facebookAuthMethod = new FacebookAuthenticationMethod
-                    {
-                        FacebookUserId = facebookUserId,
-                        User = user
-                    };
-                    context.AuthenticationMethods.Add(facebookAuthMethod);
-
+                    _userManager.UserAddFacebookAuthenticationMethod(context, user, facebookUserId);
                     context.SaveChanges();
                 }
             }
             else
             {
                 // known facebookuserid
-                var isKnownEmailAddress = context.EmailAddresses
+                var isNewEmailAddress = !context.EmailAddresses
                     .Any(e => e.UserId == user.UserId && e.Email == email);
-                if (isKnownEmailAddress)
-                {
-                    // known email address - do nothing
-                }
-                else
+                if (isNewEmailAddress)
                 {
                     // new email address - associate with existing user
-                    var emailAddress = new EmailAddress
-                    {
-                        Email = email,
-                        User = user
-                    };
-                    context.EmailAddresses.Add(emailAddress);
-
+                    _userManager.UserAddEmailAddress(context, user, email);
                     context.SaveChanges();
                 }
             }

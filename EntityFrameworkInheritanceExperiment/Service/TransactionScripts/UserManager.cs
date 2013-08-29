@@ -35,5 +35,25 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 
             return emailAddress.User;
         }
+
+        public void UserAddEmailAddress(UserContext context, User user, string email)
+        {
+            var emailAddress = new EmailAddress
+            {
+                Email = email,
+                User = user
+            };
+            context.EmailAddresses.Add(emailAddress);
+        }
+
+        public void UserAddFacebookAuthenticationMethod(UserContext context, User user, string facebookUserId)
+        {
+            var facebookAuthMethod = new FacebookAuthenticationMethod
+            {
+                FacebookUserId = facebookUserId,
+                User = user
+            };
+            context.AuthenticationMethods.Add(facebookAuthMethod);
+        }
     }
 }
