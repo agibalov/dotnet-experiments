@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="DAL\Entities\EmailAddress.cs" />
     <Compile Include="DTO\EmailAddressDTO.cs" />
+    <Compile Include="Service\TransactionScripts\UserManager.cs" />
     <Compile Include="Tests\AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
     <Compile Include="Service\TransactionScripts\AddEmailAndPasswordTransactionScript.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Service\TransactionScripts\AddTwitterDisplayNameTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AuthenticateWithFacebookTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AuthenticateWithGoogleTransactionScript.cs" />
-    <Compile Include="Service\TransactionScripts\AuthenticateWithTwitterDisplayNameTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AuthenticateWithTwitterTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\DeleteAuthenticationMethodTransactionScript.cs" />
     <Compile Include="Service\Exceptions\EmailNotRegisteredException.cs" />
     <Compile Include="Service\Exceptions\IncorrectPasswordException.cs" />

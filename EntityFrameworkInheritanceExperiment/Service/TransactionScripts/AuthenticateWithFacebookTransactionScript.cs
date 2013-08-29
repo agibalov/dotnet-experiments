@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
@@ -13,44 +12,78 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     public class AuthenticateWithFacebookTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserManager _userManager;
 
-        public AuthenticateWithFacebookTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
+        public AuthenticateWithFacebookTransactionScript(
+            UserToUserDTOMapper userToUserDtoMapper,
+            UserManager userManager)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
+            _userManager = userManager;
         }
 
         public UserDTO AuthenticateWithFacebook(UserContext context, string facebookUserId, string email)
         {
-            var facebookAuthMethod = context.AuthenticationMethods
-                .OfType<FacebookAuthenticationMethod>()
-                .Include(am => am.User)
-                .SingleOrDefault(x => x.FacebookUserId == facebookUserId);
-
-            User user;
-            if (facebookAuthMethod != null)
+            var user = _userManager.FindUserByFacebookUserId(context, facebookUserId);
+            if (user == null)
             {
-                user = facebookAuthMethod.User;
-            }
-            else
-            {
-                user = new User();
-                context.Users.Add(user);
+                user = _userManager.FindUserByEmail(context, email);
+                if (user == null)
+                {
+                    // brand new user
+                    user = new User();
+                    context.Users.Add(user);
 
-                var emailAddress = new EmailAddress
+                    var emailAddress = new EmailAddress
                     {
                         Email = email,
                         User = user
                     };
-                context.EmailAddresses.Add(emailAddress);
+                    context.EmailAddresses.Add(emailAddress);
 
-                facebookAuthMethod = new FacebookAuthenticationMethod
+                    var facebookAuthMethod = new FacebookAuthenticationMethod
                     {
                         FacebookUserId = facebookUserId,
                         User = user
                     };
-                context.AuthenticationMethods.Add(facebookAuthMethod);
+                    context.AuthenticationMethods.Add(facebookAuthMethod);
 
-                context.SaveChanges();
+                    context.SaveChanges();
+                }
+                else
+                {
+                    // known email - associate facebookuserid with existing user
+                    var facebookAuthMethod = new FacebookAuthenticationMethod
+                    {
+                        FacebookUserId = facebookUserId,
+                        User = user
+                    };
+                    context.AuthenticationMethods.Add(facebookAuthMethod);
+
+                    context.SaveChanges();
+                }
+            }
+            else
+            {
+                // known facebookuserid
+                var isKnownEmailAddress = context.EmailAddresses
+                    .Any(e => e.UserId == user.UserId && e.Email == email);
+                if (isKnownEmailAddress)
+                {
+                    // known email address - do nothing
+                }
+                else
+                {
+                    // new email address - associate with existing user
+                    var emailAddress = new EmailAddress
+                    {
+                        Email = email,
+                        User = user
+                    };
+                    context.EmailAddresses.Add(emailAddress);
+
+                    context.SaveChanges();
+                }
             }
             
             return _userToUserDtoMapper.MapUserToUserDTO(user);

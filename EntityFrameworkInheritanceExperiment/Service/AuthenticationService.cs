@@ -20,7 +20,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
         [Inject] public SignInWithEmailAndPasswordTransactionScript SignInWithEmailAndPasswordTransactionScript { private get; set; }
         [Inject] public AuthenticateWithGoogleTransactionScript AuthenticateWithGoogleTransactionScript { private get; set; }
         [Inject] public AuthenticateWithFacebookTransactionScript AuthenticateWithFacebookTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithTwitterDisplayNameTransactionScript AuthenticateWithTwitterTransactionScript { private get; set; }
+        [Inject] public AuthenticateWithTwitterTransactionScript AuthenticateWithTwitterTransactionScript { private get; set; }
         [Inject] public AddEmailAndPasswordTransactionScript AddEmailAndPasswordTransactionScript { private get; set; }
         [Inject] public AddGoogleUserIdTransactionScript AddGoogleTransactionScript { private get; set; }
         [Inject] public AddFacebookUserIdTransactionScript AddFacebookTransactionScript { private get; set; }

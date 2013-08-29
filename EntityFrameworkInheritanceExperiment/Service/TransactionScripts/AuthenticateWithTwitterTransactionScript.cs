@@ -9,11 +9,11 @@ using EntityFrameworkInheritanceExperiment.Service.Mappers;
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 {
     [TransactionScript]
-    public class AuthenticateWithTwitterDisplayNameTransactionScript
+    public class AuthenticateWithTwitterTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
 
-        public AuthenticateWithTwitterDisplayNameTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
+        public AuthenticateWithTwitterTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
         }
