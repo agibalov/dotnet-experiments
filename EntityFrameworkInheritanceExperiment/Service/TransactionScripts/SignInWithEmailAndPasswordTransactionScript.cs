@@ -22,21 +22,21 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 
         public UserDTO SignInWithEmailAndPassword(UserContext context, string email, string password)
         {
-            var authenticationMethod = context.AuthenticationMethods
-                .OfType<EmailAuthenticationMethod>()
-                .Include("User")
-                .SingleOrDefault(am => am.Email == email);
-            if (authenticationMethod == null)
+            var emailAddress = context.EmailAddresses
+                .SingleOrDefault(e => e.Email == email);
+            if (emailAddress == null)
             {
                 throw new EmailNotRegisteredException();
             }
 
-            if (authenticationMethod.Password != password)
+            var user = emailAddress.User;
+            var passwordAuthenticationMethod = context.AuthenticationMethods
+                .OfType<PasswordAuthenticationMethod>()
+                .SingleOrDefault(p => p.UserId == user.UserId && p.Password == password);
+            if (passwordAuthenticationMethod == null)
             {
                 throw new IncorrectPasswordException();
             }
-
-            var user = authenticationMethod.User;
             
             return _userToUserDtoMapper.MapUserToUserDTO(user);
         }

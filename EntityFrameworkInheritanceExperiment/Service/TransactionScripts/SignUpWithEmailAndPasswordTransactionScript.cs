@@ -20,9 +20,8 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 
         public UserDTO SignUpWithEmailAndPassword(UserContext context, string email, string password)
         {
-            var isEmailAreadyUsed = context.AuthenticationMethods.OfType<EmailAuthenticationMethod>().Any(
-                emailAuthenticationMethod => emailAuthenticationMethod.Email == email);
-            if (isEmailAreadyUsed)
+            var emailAddress = context.EmailAddresses.SingleOrDefault(e => e.Email == email);
+            if (emailAddress != null)
             {
                 throw new EmailAlreadyUsedException();
             }
@@ -30,9 +29,8 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             var user = new User();
             context.Users.Add(user);
 
-            var authenticationMethod = new EmailAuthenticationMethod
+            var authenticationMethod = new PasswordAuthenticationMethod
                 {
-                    Email = email,
                     Password = password,
                     User = user
                 };

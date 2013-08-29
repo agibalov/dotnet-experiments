@@ -22,7 +22,13 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
                     UserId = user.UserId,
                     AuthenticationMethods = user
                         .AuthenticationMethods.Select(_authenticationMethodToAuthenticationMethodDtoMapper.MapAuthenticationMethodToAuthenticationMethodDTO)
-                        .ToList()
+                        .ToList(),
+                    EmailAddresses = user
+                        .EmailAddresses.Select(emailAddress => new EmailAddressDTO
+                            {
+                                EmailAddressId = emailAddress.EmailAddressId,
+                                Email = emailAddress.Email
+                            }).ToList()
                 };
         }
     }

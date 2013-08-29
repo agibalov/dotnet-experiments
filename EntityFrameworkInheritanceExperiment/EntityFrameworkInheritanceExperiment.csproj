@@ -66,6 +66,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\Entities\EmailAddress.cs" />
+    <Compile Include="DTO\EmailAddressDTO.cs" />
     <Compile Include="Tests\AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
     <Compile Include="Service\TransactionScripts\AddEmailAndPasswordTransactionScript.cs" />
@@ -93,12 +95,12 @@
     <Compile Include="Service\Configuration\TransactionScriptAttribute.cs" />
     <Compile Include="Service\Mappers\UserToUserDTOMapper.cs" />
     <Compile Include="DAL\Entities\AuthenticationMethod.cs" />
-    <Compile Include="DAL\Entities\EmailAuthenticationMethod.cs" />
+    <Compile Include="DAL\Entities\PasswordAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\FacebookAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\GoogleAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\TwitterAuthenticationMethod.cs" />
     <Compile Include="DAL\Entities\User.cs" />
-    <Compile Include="DTO\EmailAuthenticationMethodDTO.cs" />
+    <Compile Include="DTO\PasswordAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\FacebookAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\GoogleAuthenticationMethodDTO.cs" />
     <Compile Include="DTO\TwitterAuthenticationMethodDTO.cs" />

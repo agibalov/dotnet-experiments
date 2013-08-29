@@ -23,6 +23,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             return context.Users
                 .Select(u => u)
                 .Include(u => u.AuthenticationMethods)
+                .Include(u => u.EmailAddresses)
                 .Select(_userToUserDtoMapper.MapUserToUserDTO)
                 .ToList();
         }

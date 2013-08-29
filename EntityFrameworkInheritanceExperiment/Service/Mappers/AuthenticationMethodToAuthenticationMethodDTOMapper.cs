@@ -10,9 +10,9 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
     {
         public AuthenticationMethodDTO MapAuthenticationMethodToAuthenticationMethodDTO(AuthenticationMethod authenticationMethod)
         {
-            if (authenticationMethod is EmailAuthenticationMethod)
+            if (authenticationMethod is PasswordAuthenticationMethod)
             {
-                return MapEmailPasswordAuthenticationMethodToEmailPasswordAuthenticationMethodDTO((EmailAuthenticationMethod) authenticationMethod);
+                return MapEmailPasswordAuthenticationMethodToEmailPasswordAuthenticationMethodDTO((PasswordAuthenticationMethod) authenticationMethod);
             }
 
             if (authenticationMethod is GoogleAuthenticationMethod)
@@ -33,14 +33,13 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
             throw new NotImplementedException();
         }
 
-        private static EmailAuthenticationMethodDTO
+        private static PasswordAuthenticationMethodDTO
             MapEmailPasswordAuthenticationMethodToEmailPasswordAuthenticationMethodDTO(
-            EmailAuthenticationMethod authenticationMethod)
+            PasswordAuthenticationMethod authenticationMethod)
         {
-            return new EmailAuthenticationMethodDTO
+            return new PasswordAuthenticationMethodDTO
                 {
                     AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
-                    Email = authenticationMethod.Email,
                     Password = authenticationMethod.Password
                 };
         }
@@ -51,7 +50,6 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
                 {
                     AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
                     GoogleUserId = authenticationMethod.GoogleUserId,
-                    Email = authenticationMethod.Email
                 };
         }
 
@@ -61,7 +59,6 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
                 {
                     AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
                     FacebookUserId = authenticationMethod.FacebookUserId,
-                    Email = authenticationMethod.Email
                 };
         }
 
@@ -72,7 +69,6 @@ namespace EntityFrameworkInheritanceExperiment.Service.Mappers
                 {
                     AuthenticationMethodId = authenticationMethod.AuthenticationMethodId,
                     TwitterUserId = authenticationMethod.TwitterUserId,
-                    TwitterDisplayName = authenticationMethod.TwitterDisplayName
                 };
         }
     }

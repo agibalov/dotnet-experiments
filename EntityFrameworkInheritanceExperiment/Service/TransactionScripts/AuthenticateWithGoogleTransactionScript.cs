@@ -38,7 +38,6 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 googleAuthMethod = new GoogleAuthenticationMethod
                     {
                         GoogleUserId = googleUserId,
-                        Email = email,
                         User = user
                     };
                 context.AuthenticationMethods.Add(googleAuthMethod);

@@ -36,17 +36,23 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 user = new User();
                 context.Users.Add(user);
 
+                var emailAddress = new EmailAddress
+                    {
+                        Email = email,
+                        User = user
+                    };
+                context.EmailAddresses.Add(emailAddress);
+
                 facebookAuthMethod = new FacebookAuthenticationMethod
                     {
                         FacebookUserId = facebookUserId,
-                        Email = email,
                         User = user
                     };
                 context.AuthenticationMethods.Add(facebookAuthMethod);
 
                 context.SaveChanges();
             }
-
+            
             return _userToUserDtoMapper.MapUserToUserDTO(user);
         }
     }

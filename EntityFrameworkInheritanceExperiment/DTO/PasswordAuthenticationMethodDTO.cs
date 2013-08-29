@@ -1,8 +1,7 @@
 ﻿namespace EntityFrameworkInheritanceExperiment.DTO
 {
-    public class EmailAuthenticationMethodDTO : AuthenticationMethodDTO
+    public class PasswordAuthenticationMethodDTO : AuthenticationMethodDTO
     {
-        public string Email { get; set; }
         public string Password { get; set; }
     }
 }

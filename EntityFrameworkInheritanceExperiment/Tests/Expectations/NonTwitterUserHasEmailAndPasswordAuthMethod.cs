@@ -11,7 +11,7 @@ namespace EntityFrameworkInheritanceExperiment.Tests.Expectations
         {
             var allUsers = authenticationService.GetAllUsers();
             var user = allUsers.Single(u => !u.AuthenticationMethods.Any(authMethod => authMethod is TwitterAuthenticationMethodDTO));
-            Assert.That(user.AuthenticationMethods.OfType<EmailAuthenticationMethodDTO>().Count(), Is.EqualTo(1));
+            Assert.That(user.AuthenticationMethods.OfType<PasswordAuthenticationMethodDTO>().Count(), Is.EqualTo(1));
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿namespace EntityFrameworkInheritanceExperiment.DAL.Entities
 {
-    public class EmailAuthenticationMethod : AuthenticationMethod
+    public class EmailAddress
     {
+        public int EmailAddressId { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public User User { get; set; }
     }
 }

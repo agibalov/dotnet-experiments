@@ -6,5 +6,6 @@ namespace EntityFrameworkInheritanceExperiment.DTO
     {
         public int UserId { get; set; }
         public IList<AuthenticationMethodDTO> AuthenticationMethods { get; set; }
+        public IList<EmailAddressDTO> EmailAddresses { get; set; }
     }
 }
