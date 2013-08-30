@@ -28,11 +28,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             var user = _userManager.FindUserByTwitterUserId(context, twitterUserId);
             if (user == null)
             {
-                user = new User
-                    {
-                        AuthenticationMethods = new List<AuthenticationMethod>(),
-                        EmailAddresses = new List<EmailAddress>()
-                    };
+                user = new User();
                 context.Users.Add(user);
 
                 _userManager.UserAddTwitterAuthenticationMethod(context, user, twitterUserId, twitterDisplayName);

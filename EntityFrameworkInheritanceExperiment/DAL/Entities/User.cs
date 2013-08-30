@@ -10,5 +10,11 @@ namespace EntityFrameworkInheritanceExperiment.DAL.Entities
 
         // Looks like known bug in EF: I can't have entity that only has Id field, need at least one another column
         public string DUMMY { get; set; }
+
+        public User()
+        {
+            AuthenticationMethods = new List<AuthenticationMethod>();
+            EmailAddresses = new List<EmailAddress>();
+        }
     }
 }
