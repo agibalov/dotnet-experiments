@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using EntityFrameworkInheritanceExperiment.DAL;
+﻿using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
@@ -12,33 +11,41 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     public class SignUpWithEmailAndPasswordTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserManager _userManager;
 
-        public SignUpWithEmailAndPasswordTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
+        public SignUpWithEmailAndPasswordTransactionScript(
+            UserToUserDTOMapper userToUserDtoMapper,
+            UserManager userManager)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
+            _userManager = userManager;
         }
 
         public UserDTO SignUpWithEmailAndPassword(UserContext context, string email, string password)
         {
-            var emailAddress = context.EmailAddresses.SingleOrDefault(e => e.Email == email);
-            if (emailAddress != null)
+            var user = _userManager.FindUserByEmail(context, email);
+            if (user != null)
             {
-                throw new EmailAlreadyUsedException();
-            }
-
-            var user = new User();
-            context.Users.Add(user);
-
-            var authenticationMethod = new PasswordAuthenticationMethod
+                var userHasPasswordSet = _userManager.UserHasPasswordSet(context, user);
+                if (userHasPasswordSet)
                 {
-                    Password = password,
-                    User = user
-                };
-            context.AuthenticationMethods.Add(authenticationMethod);
+                    throw new EmailAlreadyUsedException();
+                }
+                
+                _userManager.UserAddPasswordAuthenticationMethod(context, user, password);
+            }
+            else
+            {
+                user = new User();
+                context.Users.Add(user);
+
+                _userManager.UserAddEmailAddress(context, user, email);
+                _userManager.UserAddPasswordAuthenticationMethod(context, user, password);
+            }
 
             context.SaveChanges();
 
-            return _userToUserDtoMapper.MapUserToUserDTO(authenticationMethod.User);
+            return _userToUserDtoMapper.MapUserToUserDTO(user);
         }
     }
 }

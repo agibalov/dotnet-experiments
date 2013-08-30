@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
@@ -12,39 +13,32 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     public class AuthenticateWithTwitterTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserManager _userManager;
 
-        public AuthenticateWithTwitterTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
+        public AuthenticateWithTwitterTransactionScript(
+            UserToUserDTOMapper userToUserDtoMapper,
+            UserManager userManager)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
+            _userManager = userManager;
         }
 
         public UserDTO AuthenticateWithTwitter(UserContext context, string twitterUserId, string twitterDisplayName)
         {
-            var twitterAuthMethod = context.AuthenticationMethods
-                .OfType<TwitterAuthenticationMethod>()
-                .Include(am => am.User)
-                .SingleOrDefault(x => x.TwitterUserId == twitterUserId);
-
-            User user;
-            if (twitterAuthMethod != null)
+            var user = _userManager.FindUserByTwitterUserId(context, twitterUserId);
+            if (user == null)
             {
-                user = twitterAuthMethod.User;
-            }
-            else
-            {
-                user = new User();
+                user = new User
+                    {
+                        AuthenticationMethods = new List<AuthenticationMethod>(),
+                        EmailAddresses = new List<EmailAddress>()
+                    };
                 context.Users.Add(user);
 
-                twitterAuthMethod = new TwitterAuthenticationMethod
-                    {
-                        TwitterUserId = twitterUserId,
-                        TwitterDisplayName = twitterDisplayName,
-                        User = user
-                    };
-                context.AuthenticationMethods.Add(twitterAuthMethod);
-
-                context.SaveChanges();
+                _userManager.UserAddTwitterAuthenticationMethod(context, user, twitterUserId, twitterDisplayName);
             }
+
+            context.SaveChanges();
 
             return _userToUserDtoMapper.MapUserToUserDTO(user);
         }
