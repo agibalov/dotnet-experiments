@@ -9,6 +9,20 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     [Service]
     public class UserManager
     {
+        public User FindUserByGoogleUserId(UserContext context, string googleUserId)
+        {
+            var googleAuthMethod = context.AuthenticationMethods
+                .OfType<GoogleAuthenticationMethod>()
+                .Include(am => am.User)
+                .SingleOrDefault(x => x.GoogleUserId == googleUserId);
+            if (googleAuthMethod == null)
+            {
+                return null;
+            }
+
+            return googleAuthMethod.User;
+        }
+
         public User FindUserByFacebookUserId(UserContext context, string facebookUserId)
         {
             var facebookAuthMethod = context.AuthenticationMethods
@@ -44,6 +58,16 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 User = user
             };
             context.EmailAddresses.Add(emailAddress);
+        }
+
+        public void UserAddGoogleAuthenticationMethod(UserContext context, User user, string googleUserId)
+        {
+            var googleAuthMethod = new GoogleAuthenticationMethod
+            {
+                GoogleUserId = googleUserId,
+                User = user
+            };
+            context.AuthenticationMethods.Add(googleAuthMethod);
         }
 
         public void UserAddFacebookAuthenticationMethod(UserContext context, User user, string facebookUserId)

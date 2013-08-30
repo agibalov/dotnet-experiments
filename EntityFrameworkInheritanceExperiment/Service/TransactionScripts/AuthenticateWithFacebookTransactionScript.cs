@@ -29,7 +29,6 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 user = _userManager.FindUserByEmail(context, email);
                 if (user == null)
                 {
-                    // brand new user
                     user = new User();
                     context.Users.Add(user);
 
@@ -40,19 +39,16 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 }
                 else
                 {
-                    // known email - associate facebookuserid with existing user
                     _userManager.UserAddFacebookAuthenticationMethod(context, user, facebookUserId);
                     context.SaveChanges();
                 }
             }
             else
             {
-                // known facebookuserid
                 var isNewEmailAddress = !context.EmailAddresses
                     .Any(e => e.UserId == user.UserId && e.Email == email);
                 if (isNewEmailAddress)
                 {
-                    // new email address - associate with existing user
                     _userManager.UserAddEmailAddress(context, user, email);
                     context.SaveChanges();
                 }

@@ -12,37 +12,47 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     public class AuthenticateWithGoogleTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserManager _userManager;
 
-        public AuthenticateWithGoogleTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
+        public AuthenticateWithGoogleTransactionScript(
+            UserToUserDTOMapper userToUserDtoMapper,
+            UserManager userManager)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
+            _userManager = userManager;
         }
 
         public UserDTO AuthenticateWithGoogle(UserContext context, string googleUserId, string email)
         {
-            var googleAuthMethod = context.AuthenticationMethods
-                .OfType<GoogleAuthenticationMethod>()
-                .Include(am => am.User)
-                .SingleOrDefault(x => x.GoogleUserId == googleUserId);
-
-            User user;
-            if (googleAuthMethod != null)
+            var user = _userManager.FindUserByGoogleUserId(context, googleUserId);
+            if (user == null)
             {
-                user = googleAuthMethod.User;
+                user = _userManager.FindUserByEmail(context, email);
+                if (user == null)
+                {
+                    user = new User();
+                    context.Users.Add(user);
+
+                    _userManager.UserAddEmailAddress(context, user, email);
+                    _userManager.UserAddGoogleAuthenticationMethod(context, user, googleUserId);
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    _userManager.UserAddGoogleAuthenticationMethod(context, user, googleUserId);
+                    context.SaveChanges();
+                }
             }
             else
             {
-                user = new User();
-                context.Users.Add(user);
-
-                googleAuthMethod = new GoogleAuthenticationMethod
-                    {
-                        GoogleUserId = googleUserId,
-                        User = user
-                    };
-                context.AuthenticationMethods.Add(googleAuthMethod);
-
-                context.SaveChanges();
+                var isNewEmailAddress = !context.EmailAddresses
+                    .Any(e => e.UserId == user.UserId && e.Email == email);
+                if (isNewEmailAddress)
+                {
+                    _userManager.UserAddEmailAddress(context, user, email);
+                    context.SaveChanges();
+                }
             }
 
             return _userToUserDtoMapper.MapUserToUserDTO(user);
