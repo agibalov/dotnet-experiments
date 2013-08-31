@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
@@ -69,6 +70,14 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             return context.AuthenticationMethods
                 .OfType<PasswordAuthenticationMethod>()
                 .Any(am => am.UserId == user.UserId);
+        }
+
+        public IList<PasswordAuthenticationMethod> UserGetPasswordAuthenticationMethods(UserContext context, User user)
+        {
+            return context.AuthenticationMethods
+                .OfType<PasswordAuthenticationMethod>()
+                .Where(am => am.UserId == user.UserId)
+                .ToList();
         }
 
         public void UserAddEmailAddress(UserContext context, User user, string email)

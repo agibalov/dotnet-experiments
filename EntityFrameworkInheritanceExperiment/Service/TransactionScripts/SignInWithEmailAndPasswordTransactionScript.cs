@@ -14,26 +14,27 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     public class SignInWithEmailAndPasswordTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserManager _userManager;
 
-        public SignInWithEmailAndPasswordTransactionScript(UserToUserDTOMapper userToUserDtoMapper)
+        public SignInWithEmailAndPasswordTransactionScript(
+            UserToUserDTOMapper userToUserDtoMapper,
+            UserManager userManager)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
+            _userManager = userManager;
         }
 
         public UserDTO SignInWithEmailAndPassword(UserContext context, string email, string password)
         {
-            var emailAddress = context.EmailAddresses
-                .SingleOrDefault(e => e.Email == email);
-            if (emailAddress == null)
+            var user = _userManager.FindUserByEmail(context, email);
+            if(user == null)
             {
                 throw new EmailNotRegisteredException();
             }
 
-            var user = emailAddress.User;
-            var passwordAuthenticationMethod = context.AuthenticationMethods
-                .OfType<PasswordAuthenticationMethod>()
-                .SingleOrDefault(p => p.UserId == user.UserId && p.Password == password);
-            if (passwordAuthenticationMethod == null)
+            var passwordAuthMethods = _userManager.UserGetPasswordAuthenticationMethods(context, user);
+            var passwordIsOk = passwordAuthMethods.Any(am => am.Password == password);
+            if (!passwordIsOk)
             {
                 throw new IncorrectPasswordException();
             }
