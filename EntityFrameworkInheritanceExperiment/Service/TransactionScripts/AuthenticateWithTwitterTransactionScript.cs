@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using EntityFrameworkInheritanceExperiment.DAL;
+﻿using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
