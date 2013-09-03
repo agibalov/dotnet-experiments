@@ -1,4 +1,5 @@
 ﻿using System;
+using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Mappers;
@@ -15,7 +16,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             _userToUserDtoMapper = userToUserDtoMapper;
         }
 
-        public UserDTO GetUser(int userId)
+        public UserDTO GetUser(UserContext context, int userId)
         {
             throw new NotImplementedException();
         }

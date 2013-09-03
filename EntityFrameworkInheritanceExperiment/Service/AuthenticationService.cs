@@ -82,27 +82,50 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO AddEmailAndPassword(int userId, string email, string password)
         {
-            return Run(context => AddEmailAndPasswordTransactionScript.AddEmailAndPassword(userId, email, password));
+            return Run(context => AddEmailAndPasswordTransactionScript
+                .AddEmailAndPassword(
+                    context, 
+                    userId, 
+                    email, 
+                    password));
         }
 
         public UserDTO AddGoogle(int userId, string googleUserId, string email)
         {
-            return Run(context => AddGoogleTransactionScript.AddGoogleUserId(userId, googleUserId, email));
+            return Run(context => AddGoogleTransactionScript
+                .AddGoogleUserId(
+                    context, 
+                    userId, 
+                    googleUserId, 
+                    email));
         }
 
         public UserDTO AddFacebook(int userId, string facebookUserId, string email)
         {
-            return Run(context => AddFacebookTransactionScript.AddFacebookUserId(userId, facebookUserId, email));
+            return Run(context => AddFacebookTransactionScript
+                .AddFacebookUserId(
+                    context, 
+                    userId, 
+                    facebookUserId, 
+                    email));
         }
 
         public UserDTO AddTwitter(int userId, string twitterDisplayName)
         {
-            return Run(context => AddTwitterTransactionScript.AddTwitterDisplayName(userId, twitterDisplayName));
+            return Run(context => AddTwitterTransactionScript
+                .AddTwitterDisplayName(
+                    context, 
+                    userId, 
+                    twitterDisplayName));
         }
 
         public UserDTO DeleteAuthenticationMethod(int userId, int authenticationMethodId)
         {
-            return Run(context => DeleteAuthenticationMethodTransactionScript.DeleteAuthenticationMethod(userId, authenticationMethodId));
+            return Run(context => DeleteAuthenticationMethodTransactionScript
+                .DeleteAuthenticationMethod(
+                    context, 
+                    userId, 
+                    authenticationMethodId));
         }
 
         public IList<UserDTO> GetAllUsers()
@@ -117,7 +140,10 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO GetUser(int userId)
         {
-            return Run(context => GetUserTransactionScript.GetUser(userId));
+            return Run(context => GetUserTransactionScript
+                .GetUser(
+                    context, 
+                    userId));
         }
 
         private T Run<T>(Func<UserContext, T> func)
