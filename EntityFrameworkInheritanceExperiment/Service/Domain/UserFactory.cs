@@ -1,17 +1,22 @@
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
-using EntityFrameworkInheritanceExperiment.Service.Configuration;
 
 namespace EntityFrameworkInheritanceExperiment.Service.Domain
 {
-    [Service]
     public class UserFactory
     {
-        public DDDUser MakeUser(UserContext context)
+        private readonly UserContext _context;
+
+        public UserFactory(UserContext context)
+        {
+            _context = context;
+        }
+
+        public DDDUser MakeUser()
         {
             var user = new User();
-            context.Users.Add(user);
-            return new DDDUser(context, user);
+            _context.Users.Add(user);
+            return new DDDUser(_context, user);
         }
     }
 }

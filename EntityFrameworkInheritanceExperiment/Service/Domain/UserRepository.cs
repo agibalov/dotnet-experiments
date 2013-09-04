@@ -3,29 +3,34 @@ using System.Data.Entity;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
-using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Exceptions;
 
 namespace EntityFrameworkInheritanceExperiment.Service.Domain
 {  
-    [Service]
     public class UserRepository
     {
-        public IList<DDDUser> GetAllUsers(UserContext context)
+        private readonly UserContext _context;
+
+        public UserRepository(UserContext context)
         {
-            var users = context.Users
+            _context = context;
+        }
+
+        public IList<DDDUser> GetAllUsers()
+        {
+            var users = _context.Users
                 .Include(u => u.AuthenticationMethods)
                 .Include(u => u.EmailAddresses)
                 .ToList();
 
             return users
-                .Select(u => new DDDUser(context, u))
+                .Select(u => new DDDUser(_context, u))
                 .ToList();
         }
 
-        public DDDUser FindUserByIdOrThrow(UserContext context, int userId)
+        public DDDUser FindUserByIdOrThrow(int userId)
         {
-            var user = context.Users
+            var user = _context.Users
                 .Include(u => u.AuthenticationMethods)
                 .Include(u => u.EmailAddresses)
                 .SingleOrDefault(u => u.UserId == userId);
@@ -35,62 +40,62 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 throw new NoSuchUserException();
             }
 
-            return new DDDUser(context, user);
+            return new DDDUser(_context, user);
         }
 
-        public DDDUser FindUserByEmail(UserContext context, string email)
+        public DDDUser FindUserByEmail(string email)
         {
-            var emailAddress = context.EmailAddresses
-                                      .Include(e => e.User)
-                                      .SingleOrDefault(x => x.Email == email);
+            var emailAddress = _context.EmailAddresses
+                .Include(e => e.User)
+                .SingleOrDefault(x => x.Email == email);
             if (emailAddress == null)
             {
                 return null;
             }
 
-            return new DDDUser(context, emailAddress.User);
+            return new DDDUser(_context, emailAddress.User);
         }
 
-        public DDDUser FindUserByGoogleUserId(UserContext context, string googleUserId)
+        public DDDUser FindUserByGoogleUserId(string googleUserId)
         {
-            var googleAuthMethod = context.AuthenticationMethods
-                                          .OfType<GoogleAuthenticationMethod>()
-                                          .Include(am => am.User)
-                                          .SingleOrDefault(x => x.GoogleUserId == googleUserId);
+            var googleAuthMethod = _context.AuthenticationMethods
+                .OfType<GoogleAuthenticationMethod>()
+                .Include(am => am.User)
+                .SingleOrDefault(x => x.GoogleUserId == googleUserId);
             if (googleAuthMethod == null)
             {
                 return null;
             }
 
-            return new DDDUser(context, googleAuthMethod.User);
+            return new DDDUser(_context, googleAuthMethod.User);
         }
 
-        public DDDUser FindUserByFacebookUserId(UserContext context, string facebookUserId)
+        public DDDUser FindUserByFacebookUserId(string facebookUserId)
         {
-            var facebookAuthMethod = context.AuthenticationMethods
-                                            .OfType<FacebookAuthenticationMethod>()
-                                            .Include(am => am.User)
-                                            .SingleOrDefault(x => x.FacebookUserId == facebookUserId);
+            var facebookAuthMethod = _context.AuthenticationMethods
+                .OfType<FacebookAuthenticationMethod>()
+                .Include(am => am.User)
+                .SingleOrDefault(x => x.FacebookUserId == facebookUserId);
             if (facebookAuthMethod == null)
             {
                 return null;
             }
 
-            return new DDDUser(context, facebookAuthMethod.User);
+            return new DDDUser(_context, facebookAuthMethod.User);
         }
 
-        public DDDUser FindUserByTwitterUserId(UserContext context, string twitterUserId)
+        public DDDUser FindUserByTwitterUserId(string twitterUserId)
         {
-            var twitterAuthMethod = context.AuthenticationMethods
-                                           .OfType<TwitterAuthenticationMethod>()
-                                           .Include(am => am.User)
-                                           .SingleOrDefault(x => x.TwitterUserId == twitterUserId);
+            var twitterAuthMethod = _context.AuthenticationMethods
+                .OfType<TwitterAuthenticationMethod>()
+                .Include(am => am.User)
+                .SingleOrDefault(x => x.TwitterUserId == twitterUserId);
             if (twitterAuthMethod == null)
             {
                 return null;
             }
 
-            return new DDDUser(context, twitterAuthMethod.User);
+            return new DDDUser(_context, twitterAuthMethod.User);
         }
     }
 }
