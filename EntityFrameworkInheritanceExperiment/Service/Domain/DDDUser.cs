@@ -23,14 +23,14 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
             get { return _user.UserId; }
         }
 
-        public bool UserHasPasswordSet()
+        public bool HasPasswordSet()
         {
             return _context.AuthenticationMethods
                 .OfType<PasswordAuthenticationMethod>()
                 .Any(am => am.UserId == _user.UserId);
         }
 
-        public IList<PasswordAuthenticationMethod> UserGetPasswordAuthenticationMethods()
+        public IList<PasswordAuthenticationMethod> GetPasswords()
         {
             return _context.AuthenticationMethods
                 .OfType<PasswordAuthenticationMethod>()
@@ -38,7 +38,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 .ToList();
         }
 
-        public void UserAddEmailAddress(string email)
+        public void AddEmail(string email)
         {
             var emailAddress = new EmailAddress
             {
@@ -48,7 +48,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
             _context.EmailAddresses.Add(emailAddress);
         }
 
-        public void UserAddPasswordAuthenticationMethod(string password)
+        public void AddPassword(string password)
         {
             var passwordAuthMethod = new PasswordAuthenticationMethod
             {
@@ -58,7 +58,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
             _context.AuthenticationMethods.Add(passwordAuthMethod);
         }
 
-        public void UserAddGoogleAuthenticationMethod(string googleUserId)
+        public void AddGoogle(string googleUserId)
         {
             var googleAuthMethod = new GoogleAuthenticationMethod
             {
@@ -68,7 +68,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
             _context.AuthenticationMethods.Add(googleAuthMethod);
         }
 
-        public void UserAddFacebookAuthenticationMethod(string facebookUserId)
+        public void AddFacebook(string facebookUserId)
         {
             var facebookAuthMethod = new FacebookAuthenticationMethod
             {
@@ -78,7 +78,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
             _context.AuthenticationMethods.Add(facebookAuthMethod);
         }
 
-        public void UserAddTwitterAuthenticationMethod(string twitterUserId, string twitterDisplayName)
+        public void AddTwitter(string twitterUserId, string twitterDisplayName)
         {
             var twitterAuthMethod = new TwitterAuthenticationMethod
             {

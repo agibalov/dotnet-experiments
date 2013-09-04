@@ -75,6 +75,7 @@
     <Compile Include="Service\Exceptions\TwitterUserIdAlreadyUsedException.cs" />
     <Compile Include="Service\Domain\UserRepository.cs" />
     <Compile Include="Service\Domain\DDDUser.cs" />
+    <Compile Include="Service\Domain\UserService.cs" />
     <Compile Include="Tests\AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
     <Compile Include="Service\TransactionScripts\AddEmailTransactionScript.cs" />

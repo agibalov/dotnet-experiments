@@ -25,7 +25,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             if (user == null)
             {
                 user = _userFactory.MakeUser(context);
-                user.UserAddTwitterAuthenticationMethod(twitterUserId, twitterDisplayName);
+                user.AddTwitter(twitterUserId, twitterDisplayName);
             }
 
             context.SaveChanges();

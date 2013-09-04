@@ -25,7 +25,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 throw new EmailNotRegisteredException();
             }
 
-            var passwordAuthMethods = user.UserGetPasswordAuthenticationMethods();
+            var passwordAuthMethods = user.GetPasswords();
             var passwordIsOk = passwordAuthMethods.Any(am => am.Password == password);
             if (!passwordIsOk)
             {

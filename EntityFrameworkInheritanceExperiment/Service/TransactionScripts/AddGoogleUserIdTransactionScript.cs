@@ -30,7 +30,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             }
             else
             {
-                user.UserAddGoogleAuthenticationMethod(googleUserId);
+                user.AddGoogle(googleUserId);
             }
 
             var somebodyWhoAlreadyHasThisEmail = _userRepository.FindUserByEmail(context, email);
@@ -43,7 +43,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             }
             else
             {
-                user.UserAddEmailAddress(email);
+                user.AddEmail(email);
             }
 
             context.SaveChanges();

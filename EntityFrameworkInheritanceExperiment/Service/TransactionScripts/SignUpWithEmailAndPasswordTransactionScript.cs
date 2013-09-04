@@ -25,19 +25,19 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             var user = _userRepository.FindUserByEmail(context, email);
             if (user != null)
             {
-                var userHasPasswordSet = user.UserHasPasswordSet();
+                var userHasPasswordSet = user.HasPasswordSet();
                 if (userHasPasswordSet)
                 {
                     throw new EmailAlreadyUsedException();
                 }
                 
-                user.UserAddPasswordAuthenticationMethod(password);
+                user.AddPassword(password);
             }
             else
             {
                 user = _userFactory.MakeUser(context);
-                user.UserAddEmailAddress(email);
-                user.UserAddPasswordAuthenticationMethod(password);
+                user.AddEmail(email);
+                user.AddPassword(password);
             }
 
             context.SaveChanges();

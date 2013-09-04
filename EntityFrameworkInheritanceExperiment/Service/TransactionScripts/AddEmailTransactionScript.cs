@@ -29,7 +29,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 }
             }
 
-            user.UserAddEmailAddress(email);
+            user.AddEmail(email);
             context.SaveChanges();
 
             return user.AsUserDTO();

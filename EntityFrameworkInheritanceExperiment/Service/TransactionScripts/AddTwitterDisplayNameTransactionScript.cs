@@ -30,7 +30,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             }
             else
             {
-                user.UserAddTwitterAuthenticationMethod(twitterUserId, twitterDisplayName);
+                user.AddTwitter(twitterUserId, twitterDisplayName);
             }
 
             context.SaveChanges();

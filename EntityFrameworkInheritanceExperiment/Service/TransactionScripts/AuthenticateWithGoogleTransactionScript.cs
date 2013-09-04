@@ -29,13 +29,13 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 if (user == null)
                 {
                     user = _userFactory.MakeUser(context);
-                    user.UserAddEmailAddress(email);
-                    user.UserAddGoogleAuthenticationMethod(googleUserId);
+                    user.AddEmail(email);
+                    user.AddGoogle(googleUserId);
                     context.SaveChanges();
                 }
                 else
                 {
-                    user.UserAddGoogleAuthenticationMethod(googleUserId);
+                    user.AddGoogle(googleUserId);
                     context.SaveChanges();
                 }
             }
@@ -45,7 +45,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                     .Any(e => e.UserId == user.UserId && e.Email == email);
                 if (isNewEmailAddress)
                 {
-                    user.UserAddEmailAddress(email);
+                    user.AddEmail(email);
                     context.SaveChanges();
                 }
             }

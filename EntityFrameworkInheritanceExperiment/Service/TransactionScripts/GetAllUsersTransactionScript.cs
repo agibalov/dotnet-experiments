@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
@@ -11,15 +10,17 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     [TransactionScript]
     public class GetAllUsersTransactionScript
     {
+        private readonly UserRepository _userRepository;
+
+        public GetAllUsersTransactionScript(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
         public IList<UserDTO> GetAllUsers(UserContext context)
         {
-            return context.Users
-                .Select(u => u)
-                .Include(u => u.AuthenticationMethods)
-                .Include(u => u.EmailAddresses)
-                .ToList()
-                .Select(u => new DDDUser(context, u).AsUserDTO()) // TODO: dirty hack, get rid ASAP
-                .ToList();
+            var users = _userRepository.GetAllUsers(context);
+            return users.Select(u => u.AsUserDTO()).ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
@@ -6,10 +7,22 @@ using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Exceptions;
 
 namespace EntityFrameworkInheritanceExperiment.Service.Domain
-{
+{  
     [Service]
     public class UserRepository
     {
+        public IList<DDDUser> GetAllUsers(UserContext context)
+        {
+            var users = context.Users
+                .Include(u => u.AuthenticationMethods)
+                .Include(u => u.EmailAddresses)
+                .ToList();
+
+            return users
+                .Select(u => new DDDUser(context, u))
+                .ToList();
+        }
+
         public DDDUser FindUserByIdOrThrow(UserContext context, int userId)
         {
             var user = context.Users
