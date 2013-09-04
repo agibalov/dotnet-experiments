@@ -68,10 +68,15 @@
   <ItemGroup>
     <Compile Include="DAL\Entities\EmailAddress.cs" />
     <Compile Include="DTO\EmailAddressDTO.cs" />
-    <Compile Include="Service\TransactionScripts\UserManager.cs" />
+    <Compile Include="Service\Exceptions\FacebookUserIdAlreadyUsedException.cs" />
+    <Compile Include="Service\Exceptions\GoogleUserIdAlreadyUsedException.cs" />
+    <Compile Include="Service\Exceptions\NoSuchUserException.cs" />
+    <Compile Include="Service\Exceptions\TwitterUserIdAlreadyUsedException.cs" />
+    <Compile Include="Service\Domain\UserRepository.cs" />
+    <Compile Include="Service\Domain\UserService.cs" />
     <Compile Include="Tests\AbstractAuthenticationServiceTests.cs" />
     <Compile Include="DTO\AuthenticationMethodDTO.cs" />
-    <Compile Include="Service\TransactionScripts\AddEmailAndPasswordTransactionScript.cs" />
+    <Compile Include="Service\TransactionScripts\AddEmailTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AddFacebookUserIdTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AddGoogleUserIdTransactionScript.cs" />
     <Compile Include="Service\TransactionScripts\AddTwitterDisplayNameTransactionScript.cs" />

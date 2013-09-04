@@ -1,4 +1,5 @@
-﻿using EntityFrameworkInheritanceExperiment.DAL;
+﻿using System;
+using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Domain;
@@ -8,13 +9,13 @@ using EntityFrameworkInheritanceExperiment.Service.Mappers;
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 {
     [TransactionScript]
-    public class AddGoogleUserIdTransactionScript
+    public class AddEmailTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
         private readonly UserRepository _userRepository;
         private readonly UserService _userService;
 
-        public AddGoogleUserIdTransactionScript(
+        public AddEmailTransactionScript(
             UserToUserDTOMapper userToUserDtoMapper, 
             UserRepository userRepository,
             UserService userService)
@@ -24,22 +25,9 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             _userService = userService;
         }
 
-        public UserDTO AddGoogleUserId(UserContext context, int userId, string googleUserId, string email)
+        public UserDTO AddEmail(UserContext context, int userId, string email)
         {
             var user = _userRepository.FindUserByIdOrThrow(context, userId);
-
-            var somebodyWhoAlreadyHasThisGoogleUserId = _userRepository.FindUserByGoogleUserId(context, googleUserId);
-            if (somebodyWhoAlreadyHasThisGoogleUserId != null)
-            {
-                if (somebodyWhoAlreadyHasThisGoogleUserId.UserId != user.UserId)
-                {
-                    throw new GoogleUserIdAlreadyUsedException();
-                }
-            }
-            else
-            {
-                _userService.UserAddGoogleAuthenticationMethod(context, user, googleUserId);
-            }
 
             var somebodyWhoAlreadyHasThisEmail = _userRepository.FindUserByEmail(context, email);
             if (somebodyWhoAlreadyHasThisEmail != null)
@@ -49,11 +37,8 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                     throw new EmailAlreadyUsedException();
                 }
             }
-            else
-            {
-                _userService.UserAddEmailAddress(context, user, email);
-            }
 
+            _userService.UserAddEmailAddress(context, user, email);
             context.SaveChanges();
 
             return _userToUserDtoMapper.MapUserToUserDTO(user);

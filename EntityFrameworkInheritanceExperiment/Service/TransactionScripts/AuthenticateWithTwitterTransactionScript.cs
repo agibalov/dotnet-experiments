@@ -2,6 +2,7 @@
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
+using EntityFrameworkInheritanceExperiment.Service.Domain;
 using EntityFrameworkInheritanceExperiment.Service.Mappers;
 
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
@@ -10,25 +11,28 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
     public class AuthenticateWithTwitterTransactionScript
     {
         private readonly UserToUserDTOMapper _userToUserDtoMapper;
-        private readonly UserManager _userManager;
+        private readonly UserRepository _userRepository;
+        private readonly UserService _userService;
 
         public AuthenticateWithTwitterTransactionScript(
             UserToUserDTOMapper userToUserDtoMapper,
-            UserManager userManager)
+            UserRepository userRepository,
+            UserService userService)
         {
             _userToUserDtoMapper = userToUserDtoMapper;
-            _userManager = userManager;
+            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public UserDTO AuthenticateWithTwitter(UserContext context, string twitterUserId, string twitterDisplayName)
         {
-            var user = _userManager.FindUserByTwitterUserId(context, twitterUserId);
+            var user = _userRepository.FindUserByTwitterUserId(context, twitterUserId);
             if (user == null)
             {
                 user = new User();
                 context.Users.Add(user);
 
-                _userManager.UserAddTwitterAuthenticationMethod(context, user, twitterUserId, twitterDisplayName);
+                _userService.UserAddTwitterAuthenticationMethod(context, user, twitterUserId, twitterDisplayName);
             }
 
             context.SaveChanges();

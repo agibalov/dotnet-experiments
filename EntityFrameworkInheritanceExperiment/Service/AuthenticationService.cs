@@ -21,7 +21,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
         [Inject] public AuthenticateWithGoogleTransactionScript AuthenticateWithGoogleTransactionScript { private get; set; }
         [Inject] public AuthenticateWithFacebookTransactionScript AuthenticateWithFacebookTransactionScript { private get; set; }
         [Inject] public AuthenticateWithTwitterTransactionScript AuthenticateWithTwitterTransactionScript { private get; set; }
-        [Inject] public AddEmailAndPasswordTransactionScript AddEmailAndPasswordTransactionScript { private get; set; }
+        [Inject] public AddEmailTransactionScript AddEmailTransactionScript { private get; set; }
         [Inject] public AddGoogleUserIdTransactionScript AddGoogleTransactionScript { private get; set; }
         [Inject] public AddFacebookUserIdTransactionScript AddFacebookTransactionScript { private get; set; }
         [Inject] public AddTwitterDisplayNameTransactionScript AddTwitterTransactionScript { private get; set; }
@@ -82,12 +82,11 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO AddEmailAndPassword(int userId, string email, string password)
         {
-            return Run(context => AddEmailAndPasswordTransactionScript
-                .AddEmailAndPassword(
+            return Run(context => AddEmailTransactionScript
+                .AddEmail(
                     context, 
                     userId, 
-                    email, 
-                    password));
+                    email));
         }
 
         public UserDTO AddGoogle(int userId, string googleUserId, string email)
@@ -110,12 +109,13 @@ namespace EntityFrameworkInheritanceExperiment.Service
                     email));
         }
 
-        public UserDTO AddTwitter(int userId, string twitterDisplayName)
+        public UserDTO AddTwitter(int userId, string twitterUserId, string twitterDisplayName)
         {
             return Run(context => AddTwitterTransactionScript
                 .AddTwitterDisplayName(
                     context, 
                     userId, 
+                    twitterUserId,
                     twitterDisplayName));
         }
 
