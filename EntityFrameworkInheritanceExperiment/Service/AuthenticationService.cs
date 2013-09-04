@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlServerCe;
+using System.IO;
+using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
-using EntityFrameworkInheritanceExperiment.Service.TransactionScripts;
+using EntityFrameworkInheritanceExperiment.Service.Domain;
 using Ninject;
 
 namespace EntityFrameworkInheritanceExperiment.Service
@@ -15,135 +19,133 @@ namespace EntityFrameworkInheritanceExperiment.Service
         [Named("ConnectionStringName")]
         public string ConnectionStringName { private get; set; }
 
-        [Inject] public ResetTransactionScript ResetTransactionScript { private get; set; }
-        [Inject] public SignUpWithEmailAndPasswordTransactionScript SignUpWithEmailAndPasswordTransactionScript { private get; set; }
-        [Inject] public SignInWithEmailAndPasswordTransactionScript SignInWithEmailAndPasswordTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithGoogleTransactionScript AuthenticateWithGoogleTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithFacebookTransactionScript AuthenticateWithFacebookTransactionScript { private get; set; }
-        [Inject] public AuthenticateWithTwitterTransactionScript AuthenticateWithTwitterTransactionScript { private get; set; }
-        [Inject] public AddEmailTransactionScript AddEmailTransactionScript { private get; set; }
-        [Inject] public AddGoogleUserIdTransactionScript AddGoogleTransactionScript { private get; set; }
-        [Inject] public AddFacebookUserIdTransactionScript AddFacebookTransactionScript { private get; set; }
-        [Inject] public AddTwitterDisplayNameTransactionScript AddTwitterTransactionScript { private get; set; }
-        [Inject] public DeleteAuthenticationMethodTransactionScript DeleteAuthenticationMethodTransactionScript { private get; set; }
-        [Inject] public GetUserCountTransactionScript GetUserCountTransactionScript { private get; set; }
-        [Inject] public GetUserTransactionScript GetUserTransactionScript { private get; set; }
-        [Inject] public GetAllUsersTransactionScript GetAllUsersTransactionScript { private get; set; }
+        [Inject] public UserService UserService { private get; set; }
 
         public void Reset()
         {
-            ResetTransactionScript.Reset();
+            var connectionStringBuilder = new SqlCeConnectionStringBuilder(
+                ConfigurationManager.ConnectionStrings[ConnectionStringName].ConnectionString);
+            var databaseFileName = connectionStringBuilder.DataSource;
+            if (File.Exists(databaseFileName))
+            {
+                File.Delete(databaseFileName);
+            }
+
+            using (var context = new UserContext(ConnectionStringName))
+            {
+                context.Database.Create();
+            }
         }
 
         public UserDTO SignUpWithEmailAndPassword(string email, string password)
         {
-            return Run(context => SignUpWithEmailAndPasswordTransactionScript
+            return Run(context => UserService
                 .SignUpWithEmailAndPassword(
                     context, 
                     email, 
-                    password));
+                    password).AsUserDTO());
         }
 
         public UserDTO SignInWithEmailAndPassword(string email, string password)
         {
-            return Run(context => SignInWithEmailAndPasswordTransactionScript
+            return Run(context => UserService
                 .SignInWithEmailAndPassword(
                     context, 
-                    email, 
-                    password));
+                    email,
+                    password).AsUserDTO());
         }
 
         public UserDTO AuthenticateWithGoogle(string googleUserId, string email)
         {
-            return Run(context => AuthenticateWithGoogleTransactionScript
+            return Run(context => UserService
                 .AuthenticateWithGoogle(
                     context,
-                    googleUserId, 
-                    email));
+                    googleUserId,
+                    email).AsUserDTO());
         }
 
         public UserDTO AuthenticateWithFacebook(string facebookUserId, string email)
         {
-            return Run(context => AuthenticateWithFacebookTransactionScript
+            return Run(context => UserService
                 .AuthenticateWithFacebook(
                     context,
                     facebookUserId,
-                    email));
+                    email).AsUserDTO());
         }
 
         public UserDTO AuthenticateWithTwitter(string twitterUserId, string twitterDisplayName)
         {
-            return Run(context => AuthenticateWithTwitterTransactionScript
+            return Run(context => UserService
                 .AuthenticateWithTwitter(
                     context, 
                     twitterUserId,
-                    twitterDisplayName));
+                    twitterDisplayName).AsUserDTO());
         }
 
         public UserDTO AddEmailAndPassword(int userId, string email, string password)
         {
-            return Run(context => AddEmailTransactionScript
+            return Run(context => UserService
                 .AddEmail(
                     context, 
-                    userId, 
-                    email));
+                    userId,
+                    email).AsUserDTO());
         }
 
         public UserDTO AddGoogle(int userId, string googleUserId, string email)
         {
-            return Run(context => AddGoogleTransactionScript
+            return Run(context => UserService
                 .AddGoogleUserId(
                     context, 
                     userId, 
-                    googleUserId, 
-                    email));
+                    googleUserId,
+                    email).AsUserDTO());
         }
 
         public UserDTO AddFacebook(int userId, string facebookUserId, string email)
         {
-            return Run(context => AddFacebookTransactionScript
+            return Run(context => UserService
                 .AddFacebookUserId(
                     context, 
                     userId, 
-                    facebookUserId, 
-                    email));
+                    facebookUserId,
+                    email).AsUserDTO());
         }
 
         public UserDTO AddTwitter(int userId, string twitterUserId, string twitterDisplayName)
         {
-            return Run(context => AddTwitterTransactionScript
+            return Run(context => UserService
                 .AddTwitterDisplayName(
                     context, 
                     userId, 
                     twitterUserId,
-                    twitterDisplayName));
+                    twitterDisplayName).AsUserDTO());
         }
 
         public UserDTO DeleteAuthenticationMethod(int userId, int authenticationMethodId)
         {
-            return Run(context => DeleteAuthenticationMethodTransactionScript
+            return Run(context => UserService
                 .DeleteAuthenticationMethod(
                     context, 
-                    userId, 
-                    authenticationMethodId));
+                    userId,
+                    authenticationMethodId).AsUserDTO());
         }
 
         public IList<UserDTO> GetAllUsers()
         {
-            return Run(context => GetAllUsersTransactionScript.GetAllUsers(context));
+            return Run(context => UserService.GetAllUsers(context).Select(u => u.AsUserDTO()).ToList());
         }
 
         public int GetUserCount()
         {
-            return Run(context => GetUserCountTransactionScript.GetUserCount(context));
+            return Run(context => UserService.GetUserCount(context));
         }
 
         public UserDTO GetUser(int userId)
         {
-            return Run(context => GetUserTransactionScript
+            return Run(context => UserService
                 .GetUser(
-                    context, 
-                    userId));
+                    context,
+                    userId).AsUserDTO());
         }
 
         private T Run<T>(Func<UserContext, T> func)
