@@ -154,12 +154,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
 
         public DDDUser SignInWithEmailAndPassword(string email, string password)
         {
-            var user = _userRepository.FindUserByEmail(email);
-            if (user == null)
-            {
-                throw new EmailNotRegisteredException();
-            }
-
+            var user = _userRepository.FindUserByEmailOrThrow(email);
             var passwordAuthMethods = user.GetPasswords();
             var passwordIsOk = passwordAuthMethods.Any(am => am.Password == password);
             if (!passwordIsOk)

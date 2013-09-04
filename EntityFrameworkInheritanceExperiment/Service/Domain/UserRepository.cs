@@ -56,6 +56,17 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
             return new DDDUser(_context, emailAddress.User);
         }
 
+        public DDDUser FindUserByEmailOrThrow(string email)
+        {
+            var user = FindUserByEmail(email);
+            if (user == null)
+            {
+                throw new EmailNotRegisteredException();
+            }
+
+            return user;
+        }
+
         public DDDUser FindUserByGoogleUserId(string googleUserId)
         {
             var googleAuthMethod = _context.AuthenticationMethods
