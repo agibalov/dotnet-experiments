@@ -70,33 +70,75 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
 
         public void AddGoogle(string googleUserId)
         {
-            var googleAuthMethod = new GoogleAuthenticationMethod
+            var existingGoogleAuthMethod = _context.AuthenticationMethods
+                .OfType<GoogleAuthenticationMethod>()
+                .SingleOrDefault(am => am.GoogleUserId == googleUserId);
+            if (existingGoogleAuthMethod != null)
             {
-                GoogleUserId = googleUserId,
-                User = _user
-            };
-            _context.AuthenticationMethods.Add(googleAuthMethod);
+                if (existingGoogleAuthMethod.UserId != _user.UserId)
+                {
+                    throw new GoogleUserIdAlreadyUsedException();
+                }
+            }
+            else
+            {
+                var googleAuthMethod = new GoogleAuthenticationMethod
+                {
+                    GoogleUserId = googleUserId,
+                    User = _user
+                };
+
+                _context.AuthenticationMethods.Add(googleAuthMethod);
+            }
         }
 
         public void AddFacebook(string facebookUserId)
         {
-            var facebookAuthMethod = new FacebookAuthenticationMethod
+            var existingFacebookAuthMethod = _context.AuthenticationMethods
+                .OfType<FacebookAuthenticationMethod>()
+                .SingleOrDefault(am => am.FacebookUserId == facebookUserId);
+            if (existingFacebookAuthMethod != null)
             {
-                FacebookUserId = facebookUserId,
-                User = _user
-            };
-            _context.AuthenticationMethods.Add(facebookAuthMethod);
+                if (existingFacebookAuthMethod.UserId != _user.UserId)
+                {
+                    throw new FacebookUserIdAlreadyUsedException();
+                }
+            }
+            else
+            {
+                var facebookAuthMethod = new FacebookAuthenticationMethod
+                {
+                    FacebookUserId = facebookUserId,
+                    User = _user
+                };
+
+                _context.AuthenticationMethods.Add(facebookAuthMethod);
+            }
         }
 
         public void AddTwitter(string twitterUserId, string twitterDisplayName)
         {
-            var twitterAuthMethod = new TwitterAuthenticationMethod
+            var existingTwitterAuthMethod = _context.AuthenticationMethods
+                .OfType<TwitterAuthenticationMethod>()
+                .SingleOrDefault(am => am.TwitterUserId == twitterUserId);
+            if (existingTwitterAuthMethod != null)
             {
-                TwitterUserId = twitterUserId,
-                TwitterDisplayName = twitterDisplayName,
-                User = _user
-            };
-            _context.AuthenticationMethods.Add(twitterAuthMethod);
+                if (existingTwitterAuthMethod.UserId != _user.UserId)
+                {
+                    throw new TwitterUserIdAlreadyUsedException();
+                }
+            }
+            else
+            {
+                var twitterAuthMethod = new TwitterAuthenticationMethod
+                {
+                    TwitterUserId = twitterUserId,
+                    TwitterDisplayName = twitterDisplayName,
+                    User = _user
+                };
+
+                _context.AuthenticationMethods.Add(twitterAuthMethod);
+            }
         }
 
         #region Entity -> DTO mapping should not be here

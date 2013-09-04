@@ -78,7 +78,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO AddGoogle(int userId, string googleUserId, string email)
         {
-            return UserService.AddGoogleUserId(
+            return UserService.AddGoogle(
                 userId, 
                 googleUserId,
                 email).AsUserDTO();
@@ -86,7 +86,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO AddFacebook(int userId, string facebookUserId, string email)
         {
-            return UserService.AddFacebookUserId(
+            return UserService.AddFacebook(
                 userId, 
                 facebookUserId,
                 email).AsUserDTO();
@@ -94,7 +94,7 @@ namespace EntityFrameworkInheritanceExperiment.Service
 
         public UserDTO AddTwitter(int userId, string twitterUserId, string twitterDisplayName)
         {
-            return UserService.AddTwitterDisplayName(
+            return UserService.AddTwitter(
                 userId, 
                 twitterUserId,
                 twitterDisplayName).AsUserDTO();

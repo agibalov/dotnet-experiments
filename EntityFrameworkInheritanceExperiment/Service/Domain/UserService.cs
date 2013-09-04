@@ -26,97 +26,38 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
         {
             var user = _userRepository.FindUserByIdOrThrow(userId);
             user.AddEmail(email);
+            
             _context.SaveChanges();
 
             return user;
         }
 
-        public DDDUser AddFacebookUserId(int userId, string facebookUserId, string email)
+        public DDDUser AddFacebook(int userId, string facebookUserId, string email)
         {
             var user = _userRepository.FindUserByIdOrThrow(userId);
-
-            var somebodyWhoAlreadyHasThisFacebookUserId = _userRepository.FindUserByFacebookUserId(facebookUserId);
-            if (somebodyWhoAlreadyHasThisFacebookUserId != null)
-            {
-                if (somebodyWhoAlreadyHasThisFacebookUserId.UserId != user.UserId)
-                {
-                    throw new FacebookUserIdAlreadyUsedException();
-                }
-            }
-            else
-            {
-                user.AddFacebook(facebookUserId);
-            }
-
-            var somebodyWhoAlreadyHasThisEmail = _userRepository.FindUserByEmail(email);
-            if (somebodyWhoAlreadyHasThisEmail != null)
-            {
-                if (somebodyWhoAlreadyHasThisEmail.UserId != user.UserId)
-                {
-                    throw new EmailAlreadyUsedException();
-                }
-            }
-            else
-            {
-                user.AddEmail(email);
-            }
+            user.AddFacebook(facebookUserId);
+            user.AddEmail(email);
 
             _context.SaveChanges();
 
             return user;
         }
 
-        public DDDUser AddGoogleUserId(int userId, string googleUserId, string email)
+        public DDDUser AddGoogle(int userId, string googleUserId, string email)
         {
             var user = _userRepository.FindUserByIdOrThrow(userId);
-
-            var somebodyWhoAlreadyHasThisGoogleUserId = _userRepository.FindUserByGoogleUserId(googleUserId);
-            if (somebodyWhoAlreadyHasThisGoogleUserId != null)
-            {
-                if (somebodyWhoAlreadyHasThisGoogleUserId.UserId != user.UserId)
-                {
-                    throw new GoogleUserIdAlreadyUsedException();
-                }
-            }
-            else
-            {
-                user.AddGoogle(googleUserId);
-            }
-
-            var somebodyWhoAlreadyHasThisEmail = _userRepository.FindUserByEmail(email);
-            if (somebodyWhoAlreadyHasThisEmail != null)
-            {
-                if (somebodyWhoAlreadyHasThisEmail.UserId != user.UserId)
-                {
-                    throw new EmailAlreadyUsedException();
-                }
-            }
-            else
-            {
-                user.AddEmail(email);
-            }
+            user.AddGoogle(googleUserId);
+            user.AddEmail(email);
 
             _context.SaveChanges();
 
             return user;
         }
 
-        public DDDUser AddTwitterDisplayName(int userId, string twitterUserId, string twitterDisplayName)
+        public DDDUser AddTwitter(int userId, string twitterUserId, string twitterDisplayName)
         {
             var user = _userRepository.FindUserByIdOrThrow(userId);
-
-            var somebodyWhoAlreadyHasThisTwitterDisplayName = _userRepository.FindUserByTwitterUserId(twitterUserId);
-            if (somebodyWhoAlreadyHasThisTwitterDisplayName != null)
-            {
-                if (somebodyWhoAlreadyHasThisTwitterDisplayName.UserId != user.UserId)
-                {
-                    throw new TwitterUserIdAlreadyUsedException();
-                }
-            }
-            else
-            {
-                user.AddTwitter(twitterUserId, twitterDisplayName);
-            }
+            user.AddTwitter(twitterUserId, twitterDisplayName);
 
             _context.SaveChanges();
 
@@ -134,24 +75,18 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                     user = _userFactory.MakeUser();
                     user.AddEmail(email);
                     user.AddFacebook(facebookUserId);
-                    _context.SaveChanges();
                 }
                 else
                 {
                     user.AddFacebook(facebookUserId);
-                    _context.SaveChanges();
                 }
             }
             else
             {
-                var isNewEmailAddress = !_context.EmailAddresses
-                    .Any(e => e.UserId == user.UserId && e.Email == email);
-                if (isNewEmailAddress)
-                {
-                    user.AddEmail(email);
-                    _context.SaveChanges();
-                }
+                user.AddEmail(email);
             }
+
+            _context.SaveChanges();
 
             return user;
         }
@@ -167,24 +102,18 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                     user = _userFactory.MakeUser();
                     user.AddEmail(email);
                     user.AddGoogle(googleUserId);
-                    _context.SaveChanges();
                 }
                 else
                 {
                     user.AddGoogle(googleUserId);
-                    _context.SaveChanges();
                 }
             }
             else
             {
-                var isNewEmailAddress = !_context.EmailAddresses
-                    .Any(e => e.UserId == user.UserId && e.Email == email);
-                if (isNewEmailAddress)
-                {
-                    user.AddEmail(email);
-                    _context.SaveChanges();
-                }
+                user.AddEmail(email);
             }
+
+            _context.SaveChanges();
 
             return user;
         }
