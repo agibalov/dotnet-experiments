@@ -1,28 +1,23 @@
 ﻿using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
-using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Domain;
-using EntityFrameworkInheritanceExperiment.Service.Mappers;
 
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 {
     [TransactionScript]
     public class AuthenticateWithFacebookTransactionScript
     {
-        private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserFactory _userFactory;
         private readonly UserRepository _userRepository;
-        private readonly UserService _userService;
 
         public AuthenticateWithFacebookTransactionScript(
-            UserToUserDTOMapper userToUserDtoMapper,
-            UserRepository userRepository,
-            UserService userService)
+            UserFactory userFactory,
+            UserRepository userRepository)
         {
-            _userToUserDtoMapper = userToUserDtoMapper;
+            _userFactory = userFactory;
             _userRepository = userRepository;
-            _userService = userService;
         }
 
         public UserDTO AuthenticateWithFacebook(UserContext context, string facebookUserId, string email)
@@ -33,17 +28,14 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 user = _userRepository.FindUserByEmail(context, email);
                 if (user == null)
                 {
-                    user = new User();
-                    context.Users.Add(user);
-
-                    _userService.UserAddEmailAddress(context, user, email);
-                    _userService.UserAddFacebookAuthenticationMethod(context, user, facebookUserId);
-
+                    user = _userFactory.MakeUser(context);
+                    user.UserAddEmailAddress(email);
+                    user.UserAddFacebookAuthenticationMethod(facebookUserId);
                     context.SaveChanges();
                 }
                 else
                 {
-                    _userService.UserAddFacebookAuthenticationMethod(context, user, facebookUserId);
+                    user.UserAddFacebookAuthenticationMethod(facebookUserId);
                     context.SaveChanges();
                 }
             }
@@ -53,12 +45,12 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                     .Any(e => e.UserId == user.UserId && e.Email == email);
                 if (isNewEmailAddress)
                 {
-                    _userService.UserAddEmailAddress(context, user, email);
+                    user.UserAddEmailAddress(email);
                     context.SaveChanges();
                 }
             }
-            
-            return _userToUserDtoMapper.MapUserToUserDTO(user);
+
+            return user.AsUserDTO();
         }
     }
 }

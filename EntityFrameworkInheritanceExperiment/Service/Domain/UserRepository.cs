@@ -10,7 +10,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
     [Service]
     public class UserRepository
     {
-        public User FindUserByIdOrThrow(UserContext context, int userId)
+        public DDDUser FindUserByIdOrThrow(UserContext context, int userId)
         {
             var user = context.Users
                 .Include(u => u.AuthenticationMethods)
@@ -22,10 +22,10 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 throw new NoSuchUserException();
             }
 
-            return user;
+            return new DDDUser(context, user);
         }
 
-        public User FindUserByEmail(UserContext context, string email)
+        public DDDUser FindUserByEmail(UserContext context, string email)
         {
             var emailAddress = context.EmailAddresses
                                       .Include(e => e.User)
@@ -35,10 +35,10 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 return null;
             }
 
-            return emailAddress.User;
+            return new DDDUser(context, emailAddress.User);
         }
 
-        public User FindUserByGoogleUserId(UserContext context, string googleUserId)
+        public DDDUser FindUserByGoogleUserId(UserContext context, string googleUserId)
         {
             var googleAuthMethod = context.AuthenticationMethods
                                           .OfType<GoogleAuthenticationMethod>()
@@ -49,10 +49,10 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 return null;
             }
 
-            return googleAuthMethod.User;
+            return new DDDUser(context, googleAuthMethod.User);
         }
 
-        public User FindUserByFacebookUserId(UserContext context, string facebookUserId)
+        public DDDUser FindUserByFacebookUserId(UserContext context, string facebookUserId)
         {
             var facebookAuthMethod = context.AuthenticationMethods
                                             .OfType<FacebookAuthenticationMethod>()
@@ -63,10 +63,10 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 return null;
             }
 
-            return facebookAuthMethod.User;
+            return new DDDUser(context, facebookAuthMethod.User);
         }
 
-        public User FindUserByTwitterUserId(UserContext context, string twitterUserId)
+        public DDDUser FindUserByTwitterUserId(UserContext context, string twitterUserId)
         {
             var twitterAuthMethod = context.AuthenticationMethods
                                            .OfType<TwitterAuthenticationMethod>()
@@ -77,7 +77,7 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
                 return null;
             }
 
-            return twitterAuthMethod.User;
+            return new DDDUser(context, twitterAuthMethod.User);
         }
     }
 }

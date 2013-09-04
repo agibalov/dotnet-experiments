@@ -1,27 +1,22 @@
 ﻿using EntityFrameworkInheritanceExperiment.DAL;
-using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Domain;
-using EntityFrameworkInheritanceExperiment.Service.Mappers;
 
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 {
     [TransactionScript]
     public class AuthenticateWithTwitterTransactionScript
     {
-        private readonly UserToUserDTOMapper _userToUserDtoMapper;
+        private readonly UserFactory _userFactory;
         private readonly UserRepository _userRepository;
-        private readonly UserService _userService;
 
         public AuthenticateWithTwitterTransactionScript(
-            UserToUserDTOMapper userToUserDtoMapper,
-            UserRepository userRepository,
-            UserService userService)
+            UserFactory userFactory,
+            UserRepository userRepository)
         {
-            _userToUserDtoMapper = userToUserDtoMapper;
+            _userFactory = userFactory;
             _userRepository = userRepository;
-            _userService = userService;
         }
 
         public UserDTO AuthenticateWithTwitter(UserContext context, string twitterUserId, string twitterDisplayName)
@@ -29,15 +24,13 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
             var user = _userRepository.FindUserByTwitterUserId(context, twitterUserId);
             if (user == null)
             {
-                user = new User();
-                context.Users.Add(user);
-
-                _userService.UserAddTwitterAuthenticationMethod(context, user, twitterUserId, twitterDisplayName);
+                user = _userFactory.MakeUser(context);
+                user.UserAddTwitterAuthenticationMethod(twitterUserId, twitterDisplayName);
             }
 
             context.SaveChanges();
 
-            return _userToUserDtoMapper.MapUserToUserDTO(user);
+            return user.AsUserDTO();
         }
     }
 }

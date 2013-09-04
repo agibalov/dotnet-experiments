@@ -1,28 +1,19 @@
-﻿using System;
-using EntityFrameworkInheritanceExperiment.DAL;
+﻿using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DTO;
 using EntityFrameworkInheritanceExperiment.Service.Configuration;
 using EntityFrameworkInheritanceExperiment.Service.Domain;
 using EntityFrameworkInheritanceExperiment.Service.Exceptions;
-using EntityFrameworkInheritanceExperiment.Service.Mappers;
 
 namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
 {
     [TransactionScript]
     public class AddEmailTransactionScript
     {
-        private readonly UserToUserDTOMapper _userToUserDtoMapper;
         private readonly UserRepository _userRepository;
-        private readonly UserService _userService;
 
-        public AddEmailTransactionScript(
-            UserToUserDTOMapper userToUserDtoMapper, 
-            UserRepository userRepository,
-            UserService userService)
+        public AddEmailTransactionScript(UserRepository userRepository)
         {
-            _userToUserDtoMapper = userToUserDtoMapper;
             _userRepository = userRepository;
-            _userService = userService;
         }
 
         public UserDTO AddEmail(UserContext context, int userId, string email)
@@ -38,10 +29,10 @@ namespace EntityFrameworkInheritanceExperiment.Service.TransactionScripts
                 }
             }
 
-            _userService.UserAddEmailAddress(context, user, email);
+            user.UserAddEmailAddress(email);
             context.SaveChanges();
 
-            return _userToUserDtoMapper.MapUserToUserDTO(user);
+            return user.AsUserDTO();
         }
     }
 }
