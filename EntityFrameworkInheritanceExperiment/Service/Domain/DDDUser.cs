@@ -4,6 +4,7 @@ using System.Linq;
 using EntityFrameworkInheritanceExperiment.DAL;
 using EntityFrameworkInheritanceExperiment.DAL.Entities;
 using EntityFrameworkInheritanceExperiment.DTO;
+using EntityFrameworkInheritanceExperiment.Service.Exceptions;
 
 namespace EntityFrameworkInheritanceExperiment.Service.Domain
 {
@@ -40,6 +41,15 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
 
         public void AddEmail(string email)
         {
+            var existingEmail = _context.EmailAddresses.SingleOrDefault(e => e.Email == email);
+            if (existingEmail != null)
+            {
+                if (existingEmail.UserId != _user.UserId)
+                {
+                    throw new EmailAlreadyUsedException();
+                }
+            }
+
             var emailAddress = new EmailAddress
             {
                 Email = email,

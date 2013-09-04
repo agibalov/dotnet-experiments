@@ -25,16 +25,6 @@ namespace EntityFrameworkInheritanceExperiment.Service.Domain
         public DDDUser AddEmail(int userId, string email)
         {
             var user = _userRepository.FindUserByIdOrThrow(userId);
-
-            var somebodyWhoAlreadyHasThisEmail = _userRepository.FindUserByEmail(email);
-            if (somebodyWhoAlreadyHasThisEmail != null)
-            {
-                if (somebodyWhoAlreadyHasThisEmail.UserId != user.UserId)
-                {
-                    throw new EmailAlreadyUsedException();
-                }
-            }
-
             user.AddEmail(email);
             _context.SaveChanges();
 
