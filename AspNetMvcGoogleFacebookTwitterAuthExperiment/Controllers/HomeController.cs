@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Web.Mvc;
+using AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Facebook;
+using AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Twitter;
+using AspNetMvcGoogleFacebookTwitterAuthExperiment.Models;
 using DotNetOpenAuth.GoogleOAuth2;
 using Facebook;
 using TweetSharp;
@@ -16,6 +19,9 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
 
         private const string TwitterConsumerKey = "xanAvVljVi9yCgbGkBZBcg";
         private const string TwitterConsumerSecret = "yqaJ1T4Hm7Q0CJ656tGy5hkrSwNkYZGH3dVzbfcVcw";
+
+        private readonly FacebookFacade _facebookFacade = new FacebookFacade(FacebookApplicationId, FacebookApplicationSecret);
+        private readonly TwitterFacade _twitterFacade = new TwitterFacade(TwitterConsumerKey, TwitterConsumerSecret);
 
         public ActionResult Index()
         {
@@ -111,16 +117,14 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                     });
 
                 var accessToken = result.access_token;
-                facebookClient.AccessToken = accessToken;
-
-                dynamic me = facebookClient.Get("me?fields=first_name,last_name,id,email");
+                var facebookUserInfo = _facebookFacade.GetUserInfo(accessToken);
 
                 authenticationModel.IsAuthenticated = true;
-                authenticationModel.ProviderUserId = me.id;
+                authenticationModel.ProviderUserId = facebookUserInfo.UserId;
                 authenticationModel.UserName = null;
-                authenticationModel.UserEmail = me.email;
-                authenticationModel.FirstName = me.first_name;
-                authenticationModel.LastName = me.last_name;
+                authenticationModel.UserEmail = facebookUserInfo.Email;
+                authenticationModel.FirstName = facebookUserInfo.FirstName;
+                authenticationModel.LastName = facebookUserInfo.LastName;
             }
             else
             {
@@ -153,19 +157,11 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
 
             if (string.IsNullOrEmpty(denied))
             {
-                var requestToken = new OAuthRequestToken
-                    {
-                        Token = oauthToken
-                    };
-
-                var twitterService = new TwitterService(TwitterConsumerKey, TwitterConsumerSecret);
-                var accessToken = twitterService.GetAccessToken(requestToken, oauthVerifier);
-                twitterService.AuthenticateWith(accessToken.Token, accessToken.TokenSecret);
-                var twitterUser = twitterService.VerifyCredentials(new VerifyCredentialsOptions());
+                var twitterUserInfo = _twitterFacade.GetUserInfo(oauthToken, oauthVerifier);
 
                 authenticationModel.IsAuthenticated = true;
-                authenticationModel.ProviderUserId = Convert.ToString(twitterUser.Id);
-                authenticationModel.UserName = twitterUser.ScreenName;
+                authenticationModel.ProviderUserId = twitterUserInfo.UserId;
+                authenticationModel.UserName = twitterUserInfo.ScreenName;
             }
             else
             {
@@ -185,18 +181,5 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
             };
             return uriBuilder.Uri.AbsoluteUri;
         }
-    }
-
-    public class AuthenticationModel
-    {
-        public string ProviderName { get; set; }
-        public bool IsAuthenticated { get; set; }
-        public string Comments { get; set; }
-        
-        public string ProviderUserId { get; set; }
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
     }
 }
