@@ -25,46 +25,56 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
 
         public ActionResult Index()
         {
-            return View(new SignInPageModel
-                {
-                    GoogleAuthUrl = _googleFacade.GetAuthenticationUrl(),
-                    FacebookAuthUrl = _facebookFacade.GetAuthenticationUrl(),
-                    TwitterAuthUrl = _twitterFacade.GetAuthenticationUrl()
-                });
+            return View();
+        }
+
+        public ActionResult AuthenticateWithGoogle()
+        {
+            return Redirect(_googleFacade.GetAuthenticationUrl());
+        }
+
+        public ActionResult AuthenticateWithFacebook()
+        {
+            return Redirect(_facebookFacade.GetAuthenticationUrl());
+        }
+
+        public ActionResult AuthenticateWithTwitter()
+        {
+            return Redirect(_twitterFacade.GetAuthenticationUrl());
         }
 
         public ActionResult GoogleAuthCallback(string code)
         {
             var userInfo = _googleFacade.GetUserInfo(code);
 
-            var authModel = new AuthModel
+            var authenticationModel = new AuthenticationModel
                 {
                     Provider = "Google"
                 };
             if (userInfo != null)
             {
-                authModel.UserId = userInfo.UserId;
-                authModel.Email = userInfo.Email;
+                authenticationModel.UserId = userInfo.UserId;
+                authenticationModel.Email = userInfo.Email;
             }
 
-            return View("AuthCallback", authModel);
+            return View("Index", authenticationModel);
         }
 
         public ActionResult FacebookAuthCallback(string code)
         {
             var userInfo = _facebookFacade.GetUserInfo(code);
 
-            var authModel = new AuthModel
+            var authenticationModel = new AuthenticationModel
             {
                 Provider = "Facebook"
             };
             if (userInfo != null)
             {
-                authModel.UserId = userInfo.UserId;
-                authModel.Email = userInfo.Email;
+                authenticationModel.UserId = userInfo.UserId;
+                authenticationModel.Email = userInfo.Email;
             }
 
-            return View("AuthCallback", authModel);
+            return View("Index", authenticationModel);
         }
 
         public ActionResult TwitterAuthCallback(
@@ -73,16 +83,16 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
         {
             var userInfo = _twitterFacade.GetUserInfo(oauthToken, oauthVerifier);
 
-            var authModel = new AuthModel
+            var authenticationModel = new AuthenticationModel
             {
                 Provider = "Twitter"
             };
             if (userInfo != null)
             {
-                authModel.UserId = userInfo.UserId;
+                authenticationModel.UserId = userInfo.UserId;
             }
 
-            return View("AuthCallback", authModel);
+            return View("Index", authenticationModel);
         }
     }
 }

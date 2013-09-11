@@ -120,8 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AuthModel.cs" />
-    <Compile Include="Models\SignInPageModel.cs" />
+    <Compile Include="Models\AuthenticationModel.cs" />
     <Compile Include="Integration\Facebook\FacebookFacade.cs" />
     <Compile Include="Integration\Facebook\FacebookUserInfo.cs" />
     <Compile Include="Integration\Twitter\TwitterFacade.cs" />
@@ -156,9 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\AuthCallback.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

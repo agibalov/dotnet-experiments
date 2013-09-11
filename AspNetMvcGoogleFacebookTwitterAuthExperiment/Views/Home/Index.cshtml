@@ -1,13 +1,17 @@
-﻿@model AspNetMvcGoogleFacebookTwitterAuthExperiment.Models.SignInPageModel
-
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
+﻿@model AspNetMvcGoogleFacebookTwitterAuthExperiment.Models.AuthenticationModel
 
 <ul>
-    <li><a href="@Model.GoogleAuthUrl">Google</a></li>
-    <li><a href="@Model.FacebookAuthUrl">Facebook</a></li>
-    <li><a href="@Model.TwitterAuthUrl">Twitter</a></li>
+    <li><a href="@Url.Action("AuthenticateWithGoogle")">Authenticate with Google</a></li>
+    <li><a href="@Url.Action("AuthenticateWithFacebook")">Authenticate with Facebook</a></li>
+    <li><a href="@Url.Action("AuthenticateWithTwitter")">Authenticate with Twitter</a></li>
 </ul>
+
+@if (Model != null)
+{
+    <h2>Index</h2>
+    <p>Provider: @Model.Provider</p>
+    <p>User id: @Model.UserId</p>
+    <p>Email: @Model.Email</p>
+    <p>Access token: @Model.AccessToken</p>
+    <p>Access token secret: @Model.AccessTokenSecret</p>
+}

@@ -1,6 +1,6 @@
 ﻿namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Models
 {
-    public class AuthModel
+    public class AuthenticationModel
     {
         public string Provider { get; set; }
         public string UserId { get; set; }
