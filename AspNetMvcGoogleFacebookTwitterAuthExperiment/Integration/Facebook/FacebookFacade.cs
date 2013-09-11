@@ -1,4 +1,7 @@
-﻿using Facebook;
+using System.Collections.Specialized;
+using OAuth2.Client.Impl;
+using OAuth2.Configuration;
+using OAuth2.Infrastructure;
 
 namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Facebook
 {
@@ -6,33 +9,59 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Facebook
     {
         private readonly string _facebookApplicationId;
         private readonly string _facebookApplicationSecret;
+        private readonly string _facebookCallbackUrl;
 
         public FacebookFacade(
-            string facebookApplicationId,
-            string facebookApplicationSecret)
+            string facebookApplicationId, 
+            string facebookApplicationSecret,
+            string facebookCallbackUrl)
         {
             _facebookApplicationId = facebookApplicationId;
             _facebookApplicationSecret = facebookApplicationSecret;
+            _facebookCallbackUrl = facebookCallbackUrl;
         }
 
-        public FacebookUserInfo GetUserInfo(string accessToken)
+        public string GetAuthenticationUrl()
         {
-            var facebookClient = new FacebookClient
-            {
-                AppId = _facebookApplicationId,
-                AppSecret = _facebookApplicationSecret,
-                AccessToken = accessToken
-            };
+            var facebookClient = MakeFacebookClient();
+            return facebookClient.GetLoginLinkUri();
+        }
 
-            dynamic me = facebookClient.Get("me?fields=first_name,last_name,id,email");
+        public FacebookUserInfo GetUserInfo(string code)
+        {
+            var parameters = new NameValueCollection
+                {
+                    {"code", code}
+                };
+
+            var facebookClient = MakeFacebookClient();
+            var userInfo = facebookClient.GetUserInfo(parameters);
+            if (userInfo == null)
+            {
+                return null;
+            }
 
             return new FacebookUserInfo
                 {
-                    UserId = me.id,
-                    Email = me.email,
-                    FirstName = me.first_name,
-                    LastName = me.last_name
+                    UserId = userInfo.Id,
+                    Email = userInfo.Email
                 };
+        }
+
+        private FacebookClient MakeFacebookClient()
+        {
+            var facebookClient = new FacebookClient(
+                new RequestFactory(),
+                new RuntimeClientConfiguration
+                    {
+                        ClientId = _facebookApplicationId,
+                        ClientSecret = _facebookApplicationSecret,
+                        IsEnabled = true,
+                        Scope = "email",
+                        RedirectUri = UriUtility.ToAbsolute(_facebookCallbackUrl)
+                    });
+
+            return facebookClient;
         }
     }
 }

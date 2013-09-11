@@ -1,41 +1,13 @@
-﻿@model AspNetMvcGoogleFacebookTwitterAuthExperiment.Models.AuthenticationModel
+﻿@model AspNetMvcGoogleFacebookTwitterAuthExperiment.Models.SignInPageModel
 
-<!doctype html>
-<html>
-    <head>
-        <title>hello</title>
-        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container">
-            <div class="page-header">
-                <h1>Authentication magic <small>with Google, Facebook and Twitter</small></h1>
-            </div>
-            
-            <a href="@Url.Action("SignInWithGoogle")" class="btn btn-large btn-success">Sign In with Google</a>
-            <a href="@Url.Action("SignInWithFacebook")" class="btn btn-large btn-success">Sign In with Facebook</a>
-            <a href="@Url.Action("SignInWithTwitter")" class="btn btn-large btn-success">Sign In with Twitter</a>
-            
-            @if (Model != null)
-            {
-                <h3>Authentication result - @Model.ProviderName</h3>
-                if (Model.IsAuthenticated)
-                {
-                    <p>ProviderUserId: @Model.ProviderUserId</p>
-                    <p>UserName: @Model.UserName</p>
-                    <p>UserEmail: @Model.UserEmail</p>
-                    <p>FirstName: @Model.FirstName</p>
-                    <p>LastName @Model.LastName</p>
-                }
-                else
-                {
-                    <p>Not authenticated (cancelled or whatever)</p>
-                    <p>Comments: @Model.Comments</p>
-                }
-            }
-            
-            <hr/>
-            &copy; <a href="http://loki2302.me" target="_blank">loki2302</a>
-        </div>
-    </body>
-</html>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<ul>
+    <li><a href="@Model.GoogleAuthUrl">Google</a></li>
+    <li><a href="@Model.FacebookAuthUrl">Facebook</a></li>
+    <li><a href="@Model.TwitterAuthUrl">Twitter</a></li>
+</ul>

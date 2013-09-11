@@ -1,5 +1,7 @@
-﻿using System;
-using TweetSharp;
+using System.Collections.Specialized;
+using OAuth2.Client.Impl;
+using OAuth2.Configuration;
+using OAuth2.Infrastructure;
 
 namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Twitter
 {
@@ -7,32 +9,58 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Twitter
     {
         private readonly string _twitterConsumerKey;
         private readonly string _twitterConsumerSecret;
+        private readonly string _twitterCallbackUrl;
 
         public TwitterFacade(
-            string twitterConsumerKey,
-            string twitterConsumerSecret)
+            string twitterConsumerKey, 
+            string twitterConsumerSecret,
+            string twitterCallbackUrl)
         {
             _twitterConsumerKey = twitterConsumerKey;
             _twitterConsumerSecret = twitterConsumerSecret;
+            _twitterCallbackUrl = twitterCallbackUrl;
+        }
+
+        public string GetAuthenticationUrl()
+        {
+            var twitterClient = MakeTwitterClient();
+            return twitterClient.GetLoginLinkUri();
         }
 
         public TwitterUserInfo GetUserInfo(string oauthToken, string oauthVerifier)
         {
-            var requestToken = new OAuthRequestToken
+            var parameters = new NameValueCollection
                 {
-                    Token = oauthToken
+                    {"oauth_token", oauthToken},
+                    {"oauth_verifier", oauthVerifier}
                 };
 
-            var twitterService = new TwitterService(_twitterConsumerKey, _twitterConsumerSecret);
-            var accessToken = twitterService.GetAccessToken(requestToken, oauthVerifier);
-            twitterService.AuthenticateWith(accessToken.Token, accessToken.TokenSecret);
-            var twitterUser = twitterService.VerifyCredentials(new VerifyCredentialsOptions());
+            var facebookClient = MakeTwitterClient();
+            var userInfo = facebookClient.GetUserInfo(parameters);
+            if (userInfo == null)
+            {
+                return null;
+            }
 
             return new TwitterUserInfo
                 {
-                    UserId = Convert.ToString(twitterUser.Id),
-                    ScreenName = twitterUser.ScreenName
+                    UserId = userInfo.Id,
                 };
+        }
+
+        private TwitterClient MakeTwitterClient()
+        {
+            var twitterClient = new TwitterClient(
+                new RequestFactory(),
+                new RuntimeClientConfiguration
+                    {
+                        ClientId = _twitterConsumerKey,
+                        ClientSecret = _twitterConsumerSecret,
+                        IsEnabled = true,
+                        RedirectUri = UriUtility.ToAbsolute(_twitterCallbackUrl)
+                    });
+
+            return twitterClient;
         }
     }
 }
