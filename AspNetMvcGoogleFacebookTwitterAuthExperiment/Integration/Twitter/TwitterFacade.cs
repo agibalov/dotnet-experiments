@@ -45,6 +45,8 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Twitter
             return new TwitterUserInfo
                 {
                     UserId = userInfo.Id,
+                    AccessToken = facebookClient.AccessToken,
+                    AccessTokenSecret = facebookClient.AccessTokenSecret
                 };
         }
 

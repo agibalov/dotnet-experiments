@@ -44,7 +44,8 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Google
             return new GoogleUserInfo
                 {
                     UserId = userInfo.Id,
-                    Email = userInfo.Email
+                    Email = userInfo.Email,
+                    AccessToken = googleClient.AccessToken
                 };
         }
 

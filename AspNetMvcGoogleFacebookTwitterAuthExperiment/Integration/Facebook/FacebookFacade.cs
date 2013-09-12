@@ -44,7 +44,8 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Facebook
             return new FacebookUserInfo
                 {
                     UserId = userInfo.Id,
-                    Email = userInfo.Email
+                    Email = userInfo.Email,
+                    AccessToken = facebookClient.AccessToken
                 };
         }
 

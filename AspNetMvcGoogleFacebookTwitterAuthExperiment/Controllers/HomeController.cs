@@ -55,6 +55,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
             {
                 authenticationModel.UserId = userInfo.UserId;
                 authenticationModel.Email = userInfo.Email;
+                authenticationModel.AccessToken = userInfo.AccessToken;
             }
 
             return View("Index", authenticationModel);
@@ -72,6 +73,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
             {
                 authenticationModel.UserId = userInfo.UserId;
                 authenticationModel.Email = userInfo.Email;
+                authenticationModel.AccessToken = userInfo.AccessToken;
             }
 
             return View("Index", authenticationModel);
@@ -90,6 +92,8 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
             if (userInfo != null)
             {
                 authenticationModel.UserId = userInfo.UserId;
+                authenticationModel.AccessToken = userInfo.AccessToken;
+                authenticationModel.AccessTokenSecret = userInfo.AccessTokenSecret;
             }
 
             return View("Index", authenticationModel);
