@@ -2,6 +2,7 @@
 using OAuth2.Client.Impl;
 using OAuth2.Configuration;
 using OAuth2.Infrastructure;
+using RestSharp;
 
 namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Google
 {
@@ -47,6 +48,15 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Google
                     Email = userInfo.Email,
                     AccessToken = googleClient.AccessToken
                 };
+        }
+
+        public CustomGoogleUserInfo GetCustomUserInfo(string accessToken)
+        {
+            var client = new RestClient("https://www.googleapis.com/");
+            var request = new RestRequest("/oauth2/v1/userinfo", Method.GET);
+            request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
+            var response = client.Execute<CustomGoogleUserInfo>(request);
+            return response.Data;
         }
 
         private GoogleClient MakeGoogleClient()

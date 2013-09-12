@@ -2,6 +2,7 @@ using System.Collections.Specialized;
 using OAuth2.Client.Impl;
 using OAuth2.Configuration;
 using OAuth2.Infrastructure;
+using RestSharp;
 
 namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Facebook
 {
@@ -47,6 +48,15 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Integration.Facebook
                     Email = userInfo.Email,
                     AccessToken = facebookClient.AccessToken
                 };
+        }
+
+        public CustomFacebookUserInfo GetCustomUserInfo(string accessToken)
+        {
+            var client = new RestClient("https://graph.facebook.com/");
+            var request = new RestRequest("/me", Method.GET);
+            request.AddHeader("Authorization", string.Format("Bearer {0}", accessToken));
+            var response = client.Execute<CustomFacebookUserInfo>(request);
+            return response.Data;
         }
 
         private FacebookClient MakeFacebookClient()

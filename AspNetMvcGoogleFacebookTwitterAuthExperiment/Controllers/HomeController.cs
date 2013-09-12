@@ -56,6 +56,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                 authenticationModel.UserId = userInfo.UserId;
                 authenticationModel.Email = userInfo.Email;
                 authenticationModel.AccessToken = userInfo.AccessToken;
+                authenticationModel.Extra = _googleFacade.GetCustomUserInfo(userInfo.AccessToken);
             }
 
             return View("Index", authenticationModel);
@@ -74,6 +75,7 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                 authenticationModel.UserId = userInfo.UserId;
                 authenticationModel.Email = userInfo.Email;
                 authenticationModel.AccessToken = userInfo.AccessToken;
+                authenticationModel.Extra = _facebookFacade.GetCustomUserInfo(userInfo.AccessToken);
             }
 
             return View("Index", authenticationModel);
@@ -94,6 +96,9 @@ namespace AspNetMvcGoogleFacebookTwitterAuthExperiment.Controllers
                 authenticationModel.UserId = userInfo.UserId;
                 authenticationModel.AccessToken = userInfo.AccessToken;
                 authenticationModel.AccessTokenSecret = userInfo.AccessTokenSecret;
+                /*authenticationModel.Extra = _twitterFacade.GetCustomUserInfo(
+                    userInfo.AccessToken,
+                    userInfo.AccessTokenSecret);*/
             }
 
             return View("Index", authenticationModel);

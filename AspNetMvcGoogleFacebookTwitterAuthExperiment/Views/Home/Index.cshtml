@@ -25,6 +25,13 @@
                 <p>Email: @Model.Email</p>
                 <p>Access token: @Model.AccessToken</p>
                 <p>Access token secret: @Model.AccessTokenSecret</p>
+                
+                if (Model.Extra != null)
+                {
+                    <h3>Extra</h3>
+                    <pre>@Model.Extra.ToString()
+</pre>
+                }
             }
             
             <hr/>

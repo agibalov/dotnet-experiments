@@ -120,6 +120,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\Facebook\CustomFacebookUserInfo.cs" />
+    <Compile Include="Integration\Google\CustomGoogleUserInfo.cs" />
+    <Compile Include="Integration\Twitter\CustomTwitterUserInfo.cs" />
     <Compile Include="Models\AuthenticationModel.cs" />
     <Compile Include="Integration\Facebook\FacebookFacade.cs" />
     <Compile Include="Integration\Facebook\FacebookUserInfo.cs" />
