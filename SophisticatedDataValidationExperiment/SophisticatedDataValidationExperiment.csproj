@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractTests.cs" />
     <Compile Include="Service\DTO\CustomerDTO.cs" />
     <Compile Include="Validation\CustomerDTOValidator.cs" />
     <Compile Include="Service\DTO\ItemDTO.cs" />
