@@ -1,5 +1,4 @@
 ﻿using DapperExperiment.MultipleTablesTests.DAL;
-using DapperExperiment.MultipleTablesTests.Service.DTO;
 using NUnit.Framework;
 
 namespace DapperExperiment.MultipleTablesTests

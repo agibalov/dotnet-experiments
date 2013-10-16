@@ -69,8 +69,6 @@
     <Compile Include="MultipleTablesTests\DAL\BlogServiceDAOException.cs" />
     <Compile Include="MultipleTablesTests\DAL\NoSuchPostException.cs" />
     <Compile Include="MultipleTablesTests\DAL\NoSuchUserException.cs" />
-    <Compile Include="MultipleTablesTests\DAL\TagDAO.cs" />
-    <Compile Include="MultipleTablesTests\DAL\TagRow.cs" />
     <Compile Include="MultipleTablesTests\DAL\UserAndPostCountRow.cs" />
     <Compile Include="MultipleTablesTests\PostsAndUsersTests.cs" />
     <Compile Include="MultipleTablesTests\PostTests.cs" />
