@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.SqlServerCe;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Dapper;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Announcers;
