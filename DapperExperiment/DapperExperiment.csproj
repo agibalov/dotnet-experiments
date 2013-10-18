@@ -91,6 +91,7 @@
     <Compile Include="SingleTableTests\UserRow.cs" />
     <Compile Include="MultipleTablesTests\Service\DTO\UserDTO.cs" />
     <Compile Include="MultipleTablesTests\DAL\UserRow.cs" />
+    <Compile Include="SqlServerTests\RecursiveCommonTableExpressionsTest.cs" />
     <Compile Include="SqlServerTests\SqlServerDatabaseHelper.cs" />
     <Compile Include="SqlServerTests\StoredProcedureSqlServerTest.cs" />
   </ItemGroup>
