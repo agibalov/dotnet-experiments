@@ -26,10 +26,11 @@ namespace DapperExperiment
                 var databaseCount = connection.Query<int>("select count(db_id(@databaseName))", new { databaseName }).Single();
                 if (databaseCount > 0)
                 {
-                    connection.Execute("drop database " + databaseName);
+                    connection.Execute(string.Format("alter database {0} set single_user with rollback immediate", databaseName));
+                    connection.Execute(string.Format("drop database {0}", databaseName));
                 }
 
-                connection.Execute("create database " + databaseName);
+                connection.Execute(string.Format("create database {0}", databaseName));
             }
         }
 

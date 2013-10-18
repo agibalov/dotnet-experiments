@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AbstractSqlCeTest.cs" />
     <Compile Include="AbstractSqlServerTest.cs" />
+    <Compile Include="DummySqlServerTest.cs" />
     <Compile Include="FluentMigratorTests\InitialVersion.cs" />
     <Compile Include="FluentMigratorTests\MigrationOptions.cs" />
     <Compile Include="FluentMigratorTests\FluentMigratorTests.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="MultipleTablesTests\Service\DTO\UserDTO.cs" />
     <Compile Include="MultipleTablesTests\DAL\UserRow.cs" />
     <Compile Include="SqlServerDatabaseHelper.cs" />
+    <Compile Include="StoredProcedureSqlServerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
