@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AbstractSqlCeTest.cs" />
     <Compile Include="SqlServerTests\AbstractSqlServerTest.cs" />
+    <Compile Include="SqlServerTests\BulkInsertTest.cs" />
     <Compile Include="SqlServerTests\CompositeQueriesTest.cs" />
     <Compile Include="FluentMigratorTests\InitialVersion.cs" />
     <Compile Include="FluentMigratorTests\MigrationOptions.cs" />
