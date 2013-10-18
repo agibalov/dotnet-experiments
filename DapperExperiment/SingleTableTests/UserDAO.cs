@@ -7,16 +7,16 @@ namespace DapperExperiment.SingleTableTests
 {
     public class UserDAO
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly SqlCeDatabaseHelper _sqlCeDatabaseHelper;
 
-        public UserDAO(DatabaseHelper databaseHelper)
+        public UserDAO(SqlCeDatabaseHelper sqlCeDatabaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            _sqlCeDatabaseHelper = sqlCeDatabaseHelper;
         }
 
         public void CreateSchema()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 connection.Execute(
                     "create table Users(" +
@@ -28,7 +28,7 @@ namespace DapperExperiment.SingleTableTests
 
         public UserRow CreateUser(string userName)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var rowGuid = Guid.NewGuid();
 
@@ -49,7 +49,7 @@ namespace DapperExperiment.SingleTableTests
 
         public UserRow GetUser(int userId)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRow = connection.Query<UserRow>(
                     "select UserId, UserName " + 
@@ -63,7 +63,7 @@ namespace DapperExperiment.SingleTableTests
 
         public IList<UserRow> GetUsers(IList<int> userIds)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRows = connection.Query<UserRow>(
                     "select UserId, UserName " + 
@@ -77,7 +77,7 @@ namespace DapperExperiment.SingleTableTests
 
         public IList<UserRow> GetAllUsers()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRows = connection.Query<UserRow>(
                     "select UserId, UserName " + 
@@ -89,7 +89,7 @@ namespace DapperExperiment.SingleTableTests
 
         public Page<UserRow> GetAllUsers(int itemsPerPage, int page)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userCount = connection.Query<int>(
                     "select count(*) " + 
@@ -121,7 +121,7 @@ namespace DapperExperiment.SingleTableTests
 
         public void DeleteUser(int userId)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 connection.Execute(
                     "delete from Users " + 
@@ -132,7 +132,7 @@ namespace DapperExperiment.SingleTableTests
 
         public void DeleteUsers(IList<int> userIds)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 connection.Execute(
                     "delete from Users " + 
@@ -143,7 +143,7 @@ namespace DapperExperiment.SingleTableTests
 
         public UserRow ChangeUserName(int userId, string userName)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 connection.Execute(
                     "update Users " + 
@@ -163,7 +163,7 @@ namespace DapperExperiment.SingleTableTests
 
         public int GetUserCount()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userCount = connection.Query<int>(
                     "select count(*) " + 

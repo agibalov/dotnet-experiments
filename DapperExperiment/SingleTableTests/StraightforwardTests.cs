@@ -2,14 +2,14 @@
 
 namespace DapperExperiment.SingleTableTests
 {
-    public class StraightforwardTests : AbstractDatabaseTest
+    public class StraightforwardTests : AbstractSqlCeTest
     {
         private UserDAO _dao;
 
         [SetUp]
         public void ConstructUserDAO()
         {
-            _dao = new UserDAO(DatabaseHelper);
+            _dao = new UserDAO(SqlCeDatabaseHelper);
             _dao.CreateSchema();
         }
 

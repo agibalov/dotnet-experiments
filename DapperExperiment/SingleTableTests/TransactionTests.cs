@@ -5,12 +5,12 @@ using NUnit.Framework;
 
 namespace DapperExperiment.SingleTableTests
 {
-    public class TransactionTests : AbstractDatabaseTest
+    public class TransactionTests : AbstractSqlCeTest
     {
         [SetUp]
         public void InitializeSchema()
         {
-            using (var connection = DatabaseHelper.MakeConnection())
+            using (var connection = SqlCeDatabaseHelper.MakeConnection())
             {
                 connection.Execute(
                     "create table Users(" + 
@@ -22,7 +22,7 @@ namespace DapperExperiment.SingleTableTests
         [Test]
         public void NoDataIsCommitedToDatabaseIfTransactionIsNotSuccessful()
         {
-            using (var connection = DatabaseHelper.MakeConnection())
+            using (var connection = SqlCeDatabaseHelper.MakeConnection())
             {
                 using (var transactionScope = new TransactionScope())
                 {
@@ -38,7 +38,7 @@ namespace DapperExperiment.SingleTableTests
         [Test]
         public void DataIsCommitedToDatabaseIfTransactionIsSuccessful()
         {
-            using (var connection = DatabaseHelper.MakeConnection())
+            using (var connection = SqlCeDatabaseHelper.MakeConnection())
             {
                 using (var transactionScope = new TransactionScope())
                 {

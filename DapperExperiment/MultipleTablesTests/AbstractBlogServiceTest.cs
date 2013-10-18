@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace DapperExperiment.MultipleTablesTests
 {
-    public class AbstractBlogServiceTest : AbstractDatabaseTest
+    public class AbstractBlogServiceTest : AbstractSqlCeTest
     {
         protected BlogService BlogService;
 
@@ -14,7 +14,7 @@ namespace DapperExperiment.MultipleTablesTests
         {
             var userDao = new UserDAO();
             var postDao = new PostDAO();
-            BlogService = new BlogService(DatabaseHelper, userDao, postDao);
+            BlogService = new BlogService(SqlCeDatabaseHelper, userDao, postDao);
             BlogService.CreateSchema();
         }
 

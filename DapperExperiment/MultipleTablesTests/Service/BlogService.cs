@@ -8,23 +8,23 @@ namespace DapperExperiment.MultipleTablesTests.Service
 {
     public class BlogService
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly SqlCeDatabaseHelper _sqlCeDatabaseHelper;
         private readonly UserDAO _userDao;
         private readonly PostDAO _postDao;
 
         public BlogService(
-            DatabaseHelper databaseHelper, 
+            SqlCeDatabaseHelper sqlCeDatabaseHelper, 
             UserDAO userDao, 
             PostDAO postDao)
         {
-            _databaseHelper = databaseHelper;
+            _sqlCeDatabaseHelper = sqlCeDatabaseHelper;
             _userDao = userDao;
             _postDao = postDao;
         }
 
         public void CreateSchema()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 connection.Execute(
                     "create table Users(" + 
@@ -43,7 +43,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public UserDTO CreateUser(string userName)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRow = _userDao.CreateUser(connection, userName);
                 var postRows = _postDao.GetUserPosts(connection, userRow.UserId);
@@ -54,7 +54,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public UserDTO GetUser(int userId)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRow = _userDao.GetUserOrThrow(connection, userId);
                 var postRows = _postDao.GetUserPosts(connection, userId);
@@ -65,7 +65,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public IList<UserDTO> GetUsers(IList<int> userIds)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRows = _userDao.GetUsersOrThrow(connection, userIds);
                 var postRows = _postDao.GetPostsForManyUsers(connection, userIds);
@@ -75,7 +75,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public IList<UserDTO> GetAllUsers()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRows = _userDao.GetAllUsers(connection);
                 var userIds = userRows.Select(userRow => userRow.UserId).ToList();
@@ -86,7 +86,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public int GetUserCount()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userCount = _userDao.GetUserCount(connection);
                 return userCount;
@@ -95,7 +95,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public UserDTO UpdateUser(int userId, string userName)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userRow = _userDao.UpdateUser(connection, userId, userName);
                 var postRows = _postDao.GetUserPosts(connection, userId);
@@ -105,7 +105,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public void DeleteUser(int userId)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 _userDao.GetUserOrThrow(connection, userId);
 
@@ -119,7 +119,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public void DeleteUsers(IList<int> userIds)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 _userDao.GetUsersOrThrow(connection, userIds);
                 _userDao.DeleteUsers(connection, userIds);
@@ -128,7 +128,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public PostDTO CreatePost(int userId, string postText)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 _userDao.GetUserOrThrow(connection, userId);
                 var postRow = _postDao.CreatePost(connection, userId, postText);
@@ -139,7 +139,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public PostDTO GetPost(int postId)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var postRow = _postDao.GetPostOrThrow(connection, postId);
                 var postDto = MakePostDTO(postRow);
@@ -149,7 +149,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public IList<PostDTO> GetPosts(IList<int> postIds)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var postRows = _postDao.GetPostsOrThrow(connection, postIds);
                 var postDtos = MakePostDTOs(postRows);
@@ -159,7 +159,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public IList<PostDTO> GetAllPosts()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var postRows = _postDao.GetAllPosts(connection);
                 var postDtos = MakePostDTOs(postRows);
@@ -169,7 +169,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public PostDTO UpdatePost(int postId, string postText)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var postRow = _postDao.UpdatePost(connection, postId, postText);
                 return MakePostDTO(postRow);
@@ -178,7 +178,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public int GetPostCount()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var postCount = _postDao.GetPostCount(connection);
                 return postCount;
@@ -187,7 +187,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public void DeletePost(int postId)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 _postDao.GetPostOrThrow(connection, postId);
                 _postDao.DeletePost(connection, postId);
@@ -196,7 +196,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public void DeletePosts(IList<int> postIds)
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 _postDao.GetPostsOrThrow(connection, postIds);
                 _postDao.DeletePosts(connection, postIds);
@@ -205,7 +205,7 @@ namespace DapperExperiment.MultipleTablesTests.Service
 
         public IList<UserAndPostCountDTO> GetUsersWithPostCount()
         {
-            using (var connection = _databaseHelper.MakeConnection())
+            using (var connection = _sqlCeDatabaseHelper.MakeConnection())
             {
                 var userWithPostCountRows = _userDao.GetUsersWithPostCount(connection);
                 return (from userAndPostCountRow in userWithPostCountRows

@@ -62,7 +62,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractDatabaseTest.cs" />
+    <Compile Include="AbstractSqlCeTest.cs" />
+    <Compile Include="AbstractSqlServerTest.cs" />
     <Compile Include="FluentMigratorTests\InitialVersion.cs" />
     <Compile Include="FluentMigratorTests\MigrationOptions.cs" />
     <Compile Include="FluentMigratorTests\FluentMigratorTests.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="MultipleTablesTests\PostTests.cs" />
     <Compile Include="MultipleTablesTests\Service\BlogService.cs" />
     <Compile Include="MultipleTablesTests\AbstractBlogServiceTest.cs" />
-    <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="SqlCeDatabaseHelper.cs" />
     <Compile Include="MultipleTablesTests\Service\DTO\BriefUserDTO.cs" />
     <Compile Include="MultipleTablesTests\DAL\PostDAO.cs" />
     <Compile Include="MultipleTablesTests\Service\DTO\PostDTO.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="SingleTableTests\UserRow.cs" />
     <Compile Include="MultipleTablesTests\Service\DTO\UserDTO.cs" />
     <Compile Include="MultipleTablesTests\DAL\UserRow.cs" />
+    <Compile Include="SqlServerDatabaseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

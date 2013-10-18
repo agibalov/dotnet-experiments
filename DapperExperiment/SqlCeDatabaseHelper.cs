@@ -4,11 +4,11 @@ using System.IO;
 
 namespace DapperExperiment
 {
-    public class DatabaseHelper
+    public class SqlCeDatabaseHelper
     {
         private readonly string _connectionString;
 
-        public DatabaseHelper(string connectionString)
+        public SqlCeDatabaseHelper(string connectionString)
         {
             _connectionString = connectionString;
         }
