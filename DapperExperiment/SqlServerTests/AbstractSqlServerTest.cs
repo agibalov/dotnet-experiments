@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using NUnit.Framework;
 
-namespace DapperExperiment
+namespace DapperExperiment.SqlServerTests
 {
     public abstract class AbstractSqlServerTest
     {

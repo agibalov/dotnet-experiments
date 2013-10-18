@@ -3,7 +3,7 @@ using System.Linq;
 using Dapper;
 using NUnit.Framework;
 
-namespace DapperExperiment
+namespace DapperExperiment.SqlServerTests
 {
     public class StoredProcedureSqlServerTest : AbstractSqlServerTest
     {

@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
 
-namespace DapperExperiment
+namespace DapperExperiment.SqlServerTests
 {
     public class SqlServerDatabaseHelper
     {
