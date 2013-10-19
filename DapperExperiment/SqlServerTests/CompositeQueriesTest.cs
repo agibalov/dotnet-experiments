@@ -76,7 +76,7 @@ namespace DapperExperiment.SqlServerTests
                 var reader = connection.QueryMultiple(@"
                     select Id, Content from Posts;
                     select Id, Text, PostId from Comments;", 
-                                                      new { postId = 1 });
+                    new { postId = 1 });
 
                 var postRow = reader.Read().Single();
                 Assert.AreEqual(1, postRow.Id);

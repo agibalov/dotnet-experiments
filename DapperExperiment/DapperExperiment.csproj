@@ -95,6 +95,7 @@
     <Compile Include="SqlServerTests\RecursiveCommonTableExpressionsTest.cs" />
     <Compile Include="SqlServerTests\SqlServerDatabaseHelper.cs" />
     <Compile Include="SqlServerTests\StoredProcedureSqlServerTest.cs" />
+    <Compile Include="SqlServerTests\TsqlSqlServerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
