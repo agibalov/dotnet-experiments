@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractWebApiTest.cs" />
+    <Compile Include="CustomControllerAndActionResolutionTest.cs" />
     <Compile Include="RpcApiTest.cs" />
     <Compile Include="ControllerClassPerRequestTypeTest.cs" />
     <Compile Include="MostTrivialTest.cs" />
