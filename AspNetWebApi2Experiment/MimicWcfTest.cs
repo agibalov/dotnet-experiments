@@ -35,7 +35,7 @@ namespace AspNetWebApi2Experiment
 
         private static TApi MakeProxy<TApi>(string baseAddress) where TApi : class
         {
-            var restClient = new RestClient(BaseAddress);
+            var restClient = new RestClient(baseAddress);
             var proxy = new ProxyImplementor(restClient, typeof(TApi)).ActLike<TApi>();
             return proxy;
         }
