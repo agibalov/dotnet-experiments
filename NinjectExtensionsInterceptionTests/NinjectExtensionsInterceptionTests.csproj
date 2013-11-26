@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F9E01E6-7DCF-44B6-B9B9-90CB983C64C8}</ProjectGuid>
+    <ProjectGuid>{8642DC28-1942-4D37-88EE-A111F6F82881}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NinjectExtensionsConventionsTests</RootNamespace>
-    <AssemblyName>NinjectExtensionsConventionsTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>NinjectExtensionsInterceptionTests</RootNamespace>
+    <AssemblyName>NinjectExtensionsInterceptionTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,15 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LinFu.DynamicProxy">
+      <HintPath>..\packages\Ninject.Extensions.Interception.Linfu.3.0.0.8\lib\net35\LinFu.DynamicProxy.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.2-unstable-9037\lib\net40\Ninject.dll</HintPath>
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.Extensions.Conventions">
-      <HintPath>..\packages\Ninject.Extensions.Conventions.3.0.2-unstable-9010\lib\net40\Ninject.Extensions.Conventions.dll</HintPath>
+    <Reference Include="Ninject.Extensions.Interception">
+      <HintPath>..\packages\Ninject.Extensions.Interception.3.0.0.8\lib\net45-full\Ninject.Extensions.Interception.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    <Reference Include="Ninject.Extensions.Interception.LinFu">
+      <HintPath>..\packages\Ninject.Extensions.Interception.Linfu.3.0.0.8\lib\net35\Ninject.Extensions.Interception.LinFu.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\NinjectExperiment\bin\Debug\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,15 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindByAttribute\BindByAttributeTests.cs" />
-    <Compile Include="BindByAttribute\HandlerAttribute.cs" />
-    <Compile Include="BindByAttribute\HandlerOne.cs" />
-    <Compile Include="BindByAttribute\HandleWithMagicAttribute.cs" />
-    <Compile Include="BindByAttribute\HandlerTwo.cs" />
-    <Compile Include="BindByAttribute\MagicHandlerAttribute.cs" />
-    <Compile Include="BindByNamespace\BindByNamespaceTests.cs" />
-    <Compile Include="BindByNamespace\Handlers\HandlerOne.cs" />
-    <Compile Include="BindByNamespace\Handlers\HandlerTwo.cs" />
+    <Compile Include="InterceptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
