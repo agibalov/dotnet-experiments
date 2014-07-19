@@ -1,0 +1,24 @@
+﻿<Window x:Class="HelloWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Edit here:</TextBlock>
+            
+            <!-- 
+            If UpdateSourceTrigger is not set to PropertyChanged, 
+            the model only gets updated on focus loss
+            -->
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="10,0,0,0"
+                     Width="200" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock>Should update here:</TextBlock>
+            <TextBlock Text="{Binding Name}"
+                       Margin="10,0,0,0" />
+        </StackPanel>
+    </StackPanel>
+</Window>
