@@ -32,7 +32,7 @@ namespace VertexBufferSimple
             _bufferId = bufs[0];
             gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, _bufferId);
             gl.BufferData(OpenGL.GL_ARRAY_BUFFER, vertexData, OpenGL.GL_STATIC_DRAW);
-            gl.VertexAttribPointer(0, 0, OpenGL.GL_FLOAT, false, 0, IntPtr.Zero);
+            gl.VertexPointer(3, OpenGL.GL_FLOAT, 0, IntPtr.Zero);
         }
 
         private void SimpleOpenGlControl_OnRenderScene(object sender, SimpleOpenGlEventArgs args)
@@ -42,7 +42,6 @@ namespace VertexBufferSimple
             gl.LookAt(0, 0, -5, 0, 0, 0, 0, 1, 0);
 
             gl.BindBuffer(OpenGL.GL_ARRAY_BUFFER, _bufferId);
-            gl.VertexPointer(3, OpenGL.GL_FLOAT, 0, IntPtr.Zero);
             gl.EnableClientState(OpenGL.GL_VERTEX_ARRAY);
             gl.DrawArrays(OpenGL.GL_QUADS, 0, 4);
             gl.DisableClientState(OpenGL.GL_VERTEX_ARRAY);
