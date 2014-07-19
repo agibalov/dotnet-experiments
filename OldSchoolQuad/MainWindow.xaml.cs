@@ -11,10 +11,6 @@ namespace OldSchoolQuad
             InitializeComponent();
         }
 
-        private void SimpleOpenGlControl_OnInitScene(object sender, SimpleOpenGlEventArgs args)
-        {
-        }
-
         private void SimpleOpenGlControl_OnRenderScene(object sender, SimpleOpenGlEventArgs args)
         {
             var gl = args.OpenGl;
