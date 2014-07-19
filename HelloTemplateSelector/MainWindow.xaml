@@ -1,0 +1,24 @@
+﻿<Window x:Class="HelloTemplateSelector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helloTemplateSelector="clr-namespace:HelloTemplateSelector"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <DataTemplate x:Key="TemplateA">
+            <TextBlock Text="{Binding Name}" FontSize="30"></TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TemplateB">
+            <TextBlock Text="{Binding Content}" FontSize="15"></TextBlock>
+        </DataTemplate>
+
+        <helloTemplateSelector:MyItemTemplateSelector x:Key="MyListBoxItemTemplateSelector"
+                                      TemplateForItemA="{StaticResource TemplateA}" 
+                                      TemplateForItemB="{StaticResource TemplateB}" />
+    </Window.Resources>
+
+    <Grid>
+        <ListBox ItemsSource="{Binding MyItems}" 
+                 ItemTemplateSelector="{StaticResource MyListBoxItemTemplateSelector}" />
+    </Grid>
+</Window>
