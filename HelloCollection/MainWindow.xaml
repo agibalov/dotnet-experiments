@@ -1,0 +1,24 @@
+﻿<Window x:Class="HelloCollection.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Command="{Binding AddPersonCommand}">Add Person</Button>
+        <ListBox Grid.Row="1" ItemsSource="{Binding People}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBox}},Path=DataContext.DeletePersonCommand}" 
+                                CommandParameter="{Binding}"
+                                Margin="5,5,5,5">Delete</Button>
+                        <TextBlock Text="{Binding Name}" Margin="5,5,5,5" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
