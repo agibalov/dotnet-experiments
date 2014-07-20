@@ -1,0 +1,10 @@
+﻿<Window x:Class="HelloUserControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helloUserControl="clr-namespace:HelloUserControl"
+        Title="MainWindow" Height="350" Width="525">
+    <StackPanel Orientation="Vertical">
+        <helloUserControl:UserNameControl UserName="{Binding UserName1}" />
+        <helloUserControl:UserNameControl UserName="{Binding UserName2}" />
+    </StackPanel>
+</Window>
