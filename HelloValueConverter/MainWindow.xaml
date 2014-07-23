@@ -4,18 +4,58 @@
         xmlns:helloValueConverter="clr-namespace:HelloValueConverter"
         Title="MainWindow" Height="350" Width="525">
     
-    <Window.Resources>
-        <helloValueConverter:BoolToVisibilityValueConverter x:Key="MyBoolToVisibilityValueConverter" />
-    </Window.Resources>
-
-    <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal">
-            <Button Name="SetVisibilityToTrueButton" Click="SetVisibilityToTrueButton_OnClick">Make Visible</Button>
-            <Button Name="SetVisibilityToFalseButton" Click="SetVisibilityToFalseButton_OnClick">Make Invisible</Button>
-        </StackPanel>
-        <TextBlock Name="MyTextBlock" 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <StackPanel.Resources>
+                <helloValueConverter:BoolToVisibilityValueConverter x:Key="MyBoolToVisibilityValueConverter" />
+            </StackPanel.Resources>
+            
+            <TextBlock>Bool to visibility</TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="SetVisibilityToTrueButton" Click="SetVisibilityToTrueButton_OnClick">Make Visible</Button>
+                <Button Name="SetVisibilityToFalseButton" Click="SetVisibilityToFalseButton_OnClick">Make Invisible</Button>
+            </StackPanel>
+            <TextBlock Name="MyTextBlock" 
                    Visibility="{Binding Path=ShouldBeVisible, Converter={StaticResource MyBoolToVisibilityValueConverter}}">
             Hello there
-        </TextBlock>
-    </StackPanel>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <StackPanel.Resources>
+                <helloValueConverter:ValueEqualsParameterConverter x:Key="MyValueEqualsParameterConverter" />
+            </StackPanel.Resources>
+
+            <TextBlock>Enum mapping</TextBlock>
+
+            <RadioButton GroupName="Sex" IsChecked="{Binding Path=Sex, Converter={StaticResource MyValueEqualsParameterConverter}, ConverterParameter={x:Static helloValueConverter:Sex.NoIdea}}">No idea</RadioButton>
+            <RadioButton GroupName="Sex" IsChecked="{Binding Path=Sex, Converter={StaticResource MyValueEqualsParameterConverter}, ConverterParameter={x:Static helloValueConverter:Sex.Male}}">Male</RadioButton>
+            <RadioButton GroupName="Sex" IsChecked="{Binding Path=Sex, Converter={StaticResource MyValueEqualsParameterConverter}, ConverterParameter={x:Static helloValueConverter:Sex.Female}}">Female</RadioButton>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Active value:</TextBlock>
+                <TextBlock Text="{Binding Sex}" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Vertical">
+            <StackPanel.Resources>
+                <helloValueConverter:ValueEqualsParameterConverter x:Key="MyValueEqualsParameterConverter" />
+            </StackPanel.Resources>
+
+            <TextBlock>Bool mapping</TextBlock>
+
+            <RadioButton GroupName="YesNo" IsChecked="{Binding Path=YesNo, Converter={StaticResource MyValueEqualsParameterConverter}, ConverterParameter={x:Static helloValueConverter:AppViewModel.BoolTrue}}">Yes</RadioButton>
+            <RadioButton GroupName="YesNo" IsChecked="{Binding Path=YesNo, Converter={StaticResource MyValueEqualsParameterConverter}, ConverterParameter={x:Static helloValueConverter:AppViewModel.BoolFalse}}">No</RadioButton>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Active value:</TextBlock>
+                <TextBlock Text="{Binding YesNo}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </Window>
