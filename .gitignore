@@ -34,3 +34,4 @@ temp
 Build
 packages/*
 *.nupkg
+.nuget
