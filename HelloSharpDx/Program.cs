@@ -14,7 +14,83 @@ namespace HelloSharpDx
             // DrawSingleTriangleWithoutColors();
             // DrawSingleTriangleWithColors();
             // DrawTwoTrianglesWithColors();
-            DrawSingleTriangleWithPerspective();
+            // DrawSingleTriangleWithPerspective();
+            HelloPixelShader();
+        }
+
+        private static void HelloPixelShader()
+        {
+            var form = new RenderForm();
+
+            var direct3D = new Direct3D();
+            var presentParameters = new PresentParameters(form.ClientSize.Width, form.ClientSize.Height);
+            var device = new Device(
+                direct3D,
+                0,
+                DeviceType.Hardware,
+                form.Handle,
+                CreateFlags.HardwareVertexProcessing,
+                presentParameters);
+
+            var vertexBuffer = new VertexBuffer(
+                device,
+                Utilities.SizeOf<Vertex>() * 3,
+                Usage.WriteOnly,
+                VertexFormat.None,
+                Pool.Managed);
+            var dataStream = vertexBuffer.Lock(0, 0, LockFlags.None);
+            dataStream.WriteRange(new[]
+            {
+                new Vertex { Color = Color.Red, Position = new Vector4(-0.5f, -0.5f, 0.0f, 1.0f) },
+                new Vertex { Color = Color.Green, Position = new Vector4(-0.5f, 0.5f, 0.0f, 1.0f) },
+                new Vertex { Color = Color.Blue, Position = new Vector4(0.5f, 0.5f, 0.0f, 1.0f) },
+            });
+            vertexBuffer.Unlock();
+
+            var vertexElements = new[]
+            {
+                new VertexElement(0, 0, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Position, 0),
+                new VertexElement(0, (short)Utilities.SizeOf<Vector4>(), DeclarationType.Color, DeclarationMethod.Default, DeclarationUsage.Color, 0),
+                VertexElement.VertexDeclarationEnd
+            };
+            var vertexDeclaration = new VertexDeclaration(device, vertexElements);
+            device.SetStreamSource(0, vertexBuffer, 0, Utilities.SizeOf<Vertex>());
+            device.VertexDeclaration = vertexDeclaration;
+
+            device.SetRenderState(RenderState.Lighting, false);
+
+            // this will ignore original colors specified above
+            var effect = Effect.FromFile(device, "HelloPixelShader.fx", ShaderFlags.None);
+            var technique = effect.GetTechnique("FillWithGreenAndStrokeWithRedT");
+            
+            RenderLoop.Run(form, () =>
+            {
+                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.DimGray, 1f, 0);
+                device.BeginScene();
+
+                effect.Technique = technique;
+                effect.Begin();
+
+                // Draw a solid green triangle
+                effect.BeginPass(0);
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+                effect.EndPass();
+
+                // Draw a red triangle wireframe
+                effect.BeginPass(1);
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+                effect.EndPass();
+
+                effect.End();
+
+                device.EndScene();
+                device.Present();
+            });
+
+            effect.Dispose();
+            vertexBuffer.Dispose();
+            device.Dispose();
+            direct3D.Dispose();
         }
 
         private static void DrawSingleTriangleWithPerspective()
