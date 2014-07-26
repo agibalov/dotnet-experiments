@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using SharpDX;
 using SharpDX.Direct3D9;
 using SharpDX.Windows;
@@ -10,7 +11,72 @@ namespace HelloSharpDx
         [STAThread]
         static void Main()
         {
-            DrawSingleTriangleWithoutColors();
+            // DrawSingleTriangleWithoutColors();
+            DrawSingleTriangleWithColors();
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Vertex
+        {
+            public Vector4 Position;
+            public ColorBGRA Color;
+        }
+
+        private static void DrawSingleTriangleWithColors()
+        {
+            var form = new RenderForm();
+
+            var direct3D = new Direct3D();
+            var presentParameters = new PresentParameters(form.ClientSize.Width, form.ClientSize.Height);
+            var device = new Device(
+                direct3D,
+                0,
+                DeviceType.Hardware,
+                form.Handle,
+                CreateFlags.HardwareVertexProcessing,
+                presentParameters);
+
+            var vertexBuffer = new VertexBuffer(
+                device,
+                Utilities.SizeOf<Vertex>() * 3,
+                Usage.WriteOnly,
+                VertexFormat.None,
+                Pool.Managed);
+            var dataStream = vertexBuffer.Lock(0, 0, LockFlags.None);
+            dataStream.WriteRange(new[]
+            {
+                new Vertex { Color = Color.Red, Position = new Vector4(-0.5f, -0.5f, 0.0f, 1.0f) },
+                new Vertex { Color = Color.Green, Position = new Vector4(-0.5f, 0.5f, 0.0f, 1.0f) },
+                new Vertex { Color = Color.Blue, Position = new Vector4(0.5f, 0.5f, 0.0f, 1.0f) },
+            });
+            vertexBuffer.Unlock();
+
+            var vertexElements = new[]
+            {
+                new VertexElement(0, 0, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Position, 0),
+                new VertexElement(0, (short)Utilities.SizeOf<Vector4>(), DeclarationType.Color, DeclarationMethod.Default, DeclarationUsage.Color, 0),
+                VertexElement.VertexDeclarationEnd
+            };
+            var vertexDeclaration = new VertexDeclaration(device, vertexElements);
+            device.SetStreamSource(0, vertexBuffer, 0, Utilities.SizeOf<Vertex>());
+            device.VertexDeclaration = vertexDeclaration;
+
+            device.SetRenderState(RenderState.Lighting, false);
+
+            RenderLoop.Run(form, () =>
+            {
+                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.DimGray, 1f, 0);
+                device.BeginScene();
+                
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+
+                device.EndScene();
+                device.Present();
+            });
+
+            vertexBuffer.Dispose();
+            device.Dispose();
+            direct3D.Dispose();
         }
 
         private static void DrawSingleTriangleWithoutColors()
@@ -31,14 +97,14 @@ namespace HelloSharpDx
                 device,
                 Utilities.SizeOf<Vector4>() * 3,
                 Usage.WriteOnly,
-                VertexFormat.Position,
+                VertexFormat.None,
                 Pool.Managed);
             var dataStream = vertexBuffer.Lock(0, 0, LockFlags.None);
             dataStream.WriteRange(new[]
             {
-                new Vector4(-1/2.0f, -1/2.0f, 0, 1),
-                new Vector4(-1/2.0f, 1/2.0f, 0, 1),
-                new Vector4(1/2.0f, 1/2.0f, 0, 1) 
+                new Vector4(-0.5f, -0.5f, 0, 1),
+                new Vector4(-0.5f, 0.5f, 0, 1),
+                new Vector4(0.5f, 0.5f, 0, 1) 
             });
             vertexBuffer.Unlock();
 
