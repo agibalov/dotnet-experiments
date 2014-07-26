@@ -13,7 +13,76 @@ namespace HelloSharpDx
         {
             // DrawSingleTriangleWithoutColors();
             // DrawSingleTriangleWithColors();
-            DrawTwoTrianglesWithColors();
+            // DrawTwoTrianglesWithColors();
+            DrawSingleTriangleWithPerspective();
+        }
+
+        private static void DrawSingleTriangleWithPerspective()
+        {
+            var form = new RenderForm();
+
+            var direct3D = new Direct3D();
+            var presentParameters = new PresentParameters(form.ClientSize.Width, form.ClientSize.Height);
+            var device = new Device(
+                direct3D,
+                0,
+                DeviceType.Hardware,
+                form.Handle,
+                CreateFlags.HardwareVertexProcessing,
+                presentParameters);
+
+            var vertexBuffer = new VertexBuffer(
+                device,
+                Utilities.SizeOf<Vertex>() * 3,
+                Usage.WriteOnly,
+                VertexFormat.None,
+                Pool.Managed);
+            var dataStream = vertexBuffer.Lock(0, 0, LockFlags.None);
+            dataStream.WriteRange(new[]
+            {
+                new Vertex { Color = Color.Red, Position = new Vector4(-0.5f, -0.5f, 0.0f, 1.0f) },
+                new Vertex { Color = Color.Green, Position = new Vector4(-0.5f, 0.5f, 0.0f, 1.0f) },
+                new Vertex { Color = Color.Blue, Position = new Vector4(0.5f, 0.5f, 0.0f, 1.0f) },
+            });
+            vertexBuffer.Unlock();
+
+            var vertexElements = new[]
+            {
+                new VertexElement(0, 0, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Position, 0),
+                new VertexElement(0, (short)Utilities.SizeOf<Vector4>(), DeclarationType.Color, DeclarationMethod.Default, DeclarationUsage.Color, 0),
+                VertexElement.VertexDeclarationEnd
+            };
+            var vertexDeclaration = new VertexDeclaration(device, vertexElements);
+            device.SetStreamSource(0, vertexBuffer, 0, Utilities.SizeOf<Vertex>());
+            device.VertexDeclaration = vertexDeclaration;
+
+            device.SetRenderState(RenderState.Lighting, false);
+            device.SetRenderState(RenderState.CullMode, Cull.None);
+
+            var viewMatrix = Matrix.LookAtLH(new Vector3(0, 0, -1), new Vector3(0, 0, 0), new Vector3(0, 1, 0));
+            var projectionMatrix = Matrix.PerspectiveFovLH(MathUtil.DegreesToRadians(100), form.Width / (float)form.Height, 0.001f, 100f);
+
+            var rotation = 0.0f;
+            RenderLoop.Run(form, () =>
+            {
+                device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.DimGray, 1f, 0);
+                device.BeginScene();
+
+                device.SetTransform(TransformState.View, viewMatrix);
+                device.SetTransform(TransformState.Projection, projectionMatrix);
+                device.SetTransform(TransformState.World, Matrix.RotationY(MathUtil.DegreesToRadians(rotation)));
+
+                device.DrawPrimitives(PrimitiveType.TriangleList, 0, 1);
+
+                device.EndScene();
+                device.Present();
+
+                rotation += 0.01f;
+            });
+
+            vertexBuffer.Dispose();
+            device.Dispose();
+            direct3D.Dispose();
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -79,13 +148,14 @@ namespace HelloSharpDx
             {
                 device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.DimGray, 1f, 0);
                 device.BeginScene();
-
+                
                 device.DrawIndexedPrimitive(PrimitiveType.TriangleList, 0, 0, 6, 0, 2);
 
                 device.EndScene();
                 device.Present();
             });
 
+            indexBuffer.Dispose();
             vertexBuffer.Dispose();
             device.Dispose();
             direct3D.Dispose();
