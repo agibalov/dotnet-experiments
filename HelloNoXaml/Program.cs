@@ -41,8 +41,7 @@ namespace HelloNoXaml
                 {
                     FontSize = 20
                 };
-                var currentTimeBinding = new Binding("CurrentTime");
-                BindingOperations.SetBinding(textBlock, TextBlock.TextProperty, currentTimeBinding);
+                textBlock.SetBinding(TextBlock.TextProperty, "CurrentTime");
 
                 appWindow.Content = textBlock;
 
