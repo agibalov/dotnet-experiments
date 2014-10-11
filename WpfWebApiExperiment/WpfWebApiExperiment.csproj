@@ -101,14 +101,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\INavigationService.cs" />
+    <Compile Include="ViewModels\NoteScreenViewModel.cs" />
+    <Compile Include="Views\NoteScreenView.xaml.cs">
+      <DependentUpon>NoteScreenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WebApiClient\ApiClient.cs" />
     <Compile Include="WebApiServer\NinjectDependencyResolver.cs" />
     <Compile Include="WebApiServer\NinjectDependencyScope.cs" />
+    <Compile Include="WebApiServer\NoteRepository.cs" />
     <Compile Include="WebApi\NoteDTO.cs" />
-    <Compile Include="Views\NoteListView.xaml.cs">
-      <DependentUpon>NoteListView.xaml</DependentUpon>
+    <Compile Include="Views\NoteListScreenView.xaml.cs">
+      <DependentUpon>NoteListScreenView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\NoteListViewModel.cs" />
+    <Compile Include="ViewModels\NoteListScreenViewModel.cs" />
     <Compile Include="WebApiServer\NotesController.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
@@ -121,7 +127,11 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="WebApiServer\WebAppRunner.cs" />
     <Compile Include="WebApiServer\WebAppConfigurer.cs" />
-    <Page Include="Views\NoteListView.xaml">
+    <Page Include="Views\NoteListScreenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NoteScreenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -22,5 +22,14 @@ namespace WpfWebApiExperiment.WebApiClient
             var response = await _restClient.ExecuteTaskAsync<List<NoteDTO>>(request);
             return response.Data;
         }
+
+        public async Task<NoteDTO> GetNote(string id)
+        {
+            var request = new RestRequest("/Notes/{id}", Method.GET);
+            request.AddParameter("id", id);
+
+            var response = await _restClient.ExecuteTaskAsync<NoteDTO>(request);
+            return response.Data;
+        }
     }
 }

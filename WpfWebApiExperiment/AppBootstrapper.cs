@@ -30,7 +30,10 @@ namespace WpfWebApiExperiment
             _kernel.Bind<ApiClient>().ToSelf().InSingletonScope();
 
             _kernel.Bind<ShellViewModel>().ToSelf().InSingletonScope();
-            _kernel.Bind<NoteListViewModel>().ToSelf().InSingletonScope();
+            _kernel.Bind<INavigationService>().ToMethod(c => c.Kernel.Get<ShellViewModel>());
+
+            _kernel.Bind<NoteListScreenViewModel>().ToSelf().InSingletonScope();
+            _kernel.Bind<NoteScreenViewModel>().ToSelf();
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)

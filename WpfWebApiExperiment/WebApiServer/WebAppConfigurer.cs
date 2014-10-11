@@ -9,6 +9,7 @@ namespace WpfWebApiExperiment.WebApiServer
         public void Configuration(IAppBuilder appBuilder)
         {
             var kernel = new StandardKernel();
+            kernel.Bind<NoteRepository>().ToSelf().InSingletonScope();
 
             var httpConfiguration = new HttpConfiguration
             {

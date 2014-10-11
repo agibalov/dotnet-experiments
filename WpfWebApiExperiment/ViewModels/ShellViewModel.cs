@@ -1,9 +1,10 @@
 ﻿using Caliburn.Micro;
 using Ninject;
+using Ninject.Parameters;
 
 namespace WpfWebApiExperiment.ViewModels
 {
-    public class ShellViewModel : Conductor<object>
+    public class ShellViewModel : Conductor<object>, INavigationService
     {
         private readonly IKernel _kernel;
 
@@ -16,7 +17,7 @@ namespace WpfWebApiExperiment.ViewModels
         protected override void OnActivate()
         {
             Message = "I am ShellView";
-            ActivateItem(_kernel.Get<NoteListViewModel>());
+            NavigateToNoteList();
         }
 
         private string _message;
@@ -28,6 +29,16 @@ namespace WpfWebApiExperiment.ViewModels
                 _message = value;
                 NotifyOfPropertyChange(() => Message);
             }
+        }
+
+        public void NavigateToNoteList()
+        {
+            ActivateItem(_kernel.Get<NoteListScreenViewModel>());
+        }
+
+        public void NavigateToNote(string id)
+        {
+            ActivateItem(_kernel.Get<NoteScreenViewModel>(new ConstructorArgument("noteId", id)));
         }
     }
 }
