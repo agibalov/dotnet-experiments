@@ -101,6 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\ILongOperationExecutor.cs" />
     <Compile Include="ViewModels\INavigationService.cs" />
     <Compile Include="ViewModels\NoteScreenViewModel.cs" />
     <Compile Include="Views\NoteScreenView.xaml.cs">

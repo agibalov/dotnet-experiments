@@ -8,25 +8,25 @@ namespace WpfWebApiExperiment.ViewModels
     {
         private readonly ApiClient _apiClient;
         private readonly INavigationService _navigationService;
+        private readonly ILongOperationExecutor _longOperationExecutor;
         private readonly string _noteId;
 
         [Inject]
         public NoteScreenViewModel(
             ApiClient apiClient, 
             INavigationService navigationService, 
+            ILongOperationExecutor longOperationExecutor,
             string noteId)
         {
             _apiClient = apiClient;
             _navigationService = navigationService;
+            _longOperationExecutor = longOperationExecutor;
             _noteId = noteId;
         }
 
         protected override async void OnActivate()
         {
-            Message = "Loading...";
-
-            var note = await _apiClient.GetNote(_noteId);
-            Message = string.Format("Loaded {0}!", _noteId);
+            var note = await _longOperationExecutor.Execute(() => _apiClient.GetNote(_noteId));
 
             Id = note.Id;
             Title = note.Title;
@@ -36,17 +36,6 @@ namespace WpfWebApiExperiment.ViewModels
         public void GoBack()
         {
             _navigationService.NavigateToNoteList();
-        }
-
-        private string _message;
-        public string Message
-        {
-            get { return _message; }
-            set
-            {
-                _message = value;
-                NotifyOfPropertyChange(() => Message);
-            }
         }
 
         private string _id;

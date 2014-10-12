@@ -31,6 +31,7 @@ namespace WpfWebApiExperiment
 
             _kernel.Bind<ShellViewModel>().ToSelf().InSingletonScope();
             _kernel.Bind<INavigationService>().ToMethod(c => c.Kernel.Get<ShellViewModel>());
+            _kernel.Bind<ILongOperationExecutor>().ToMethod(c => c.Kernel.Get<ShellViewModel>());
 
             _kernel.Bind<NoteListScreenViewModel>().ToSelf().InSingletonScope();
             _kernel.Bind<NoteScreenViewModel>().ToSelf();

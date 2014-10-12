@@ -10,14 +10,17 @@ namespace WpfWebApiExperiment.ViewModels
     {
         private readonly ApiClient _apiClient;
         private readonly INavigationService _navigationService;
+        private readonly ILongOperationExecutor _longOperationExecutor;
 
         [Inject]
         public NoteListScreenViewModel(
             ApiClient apiClient, 
-            INavigationService navigationService)
+            INavigationService navigationService,
+            ILongOperationExecutor longOperationExecutor)
         {
             _apiClient = apiClient;
             _navigationService = navigationService;
+            _longOperationExecutor = longOperationExecutor;
 
             Notes = new ObservableCollection<NoteDTO>();
         }
@@ -26,10 +29,7 @@ namespace WpfWebApiExperiment.ViewModels
         {
             Notes.Clear();
 
-            Message = "Loading...";
-
-            var notes = await _apiClient.GetNotes();
-            Message = string.Format("Loaded {0} notes!", notes.Count);
+            var notes = await _longOperationExecutor.Execute(() => _apiClient.GetNotes());
             
             notes.ForEach(Notes.Add);
         }
@@ -40,16 +40,5 @@ namespace WpfWebApiExperiment.ViewModels
         }
 
         public ObservableCollection<NoteDTO> Notes { get; set; } 
-
-        private string _message;
-        public string Message
-        {
-            get { return _message; }
-            set
-            {
-                _message = value;
-                NotifyOfPropertyChange(() => Message);
-            }
-        }
     }
 }

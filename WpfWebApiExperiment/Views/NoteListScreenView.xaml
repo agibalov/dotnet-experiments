@@ -8,13 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" Text="{Binding Message}" />
-        <ListBox Grid.Row="1" ItemsSource="{Binding Notes}">
+        <ListBox ItemsSource="{Binding Notes}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
