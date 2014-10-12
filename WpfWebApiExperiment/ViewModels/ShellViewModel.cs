@@ -18,7 +18,6 @@ namespace WpfWebApiExperiment.ViewModels
 
         protected override void OnActivate()
         {
-            Message = "I am ShellView";
             NavigateToNoteList();
         }
 

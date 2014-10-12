@@ -8,7 +8,23 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <Grid>
-        <ListBox ItemsSource="{Binding Notes}">
+        <Grid.Resources>
+            <Style TargetType="ListBox" x:Key="NoteListBoxStyle" BasedOn="{StaticResource {x:Type ListBox}}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <TextBlock>Nothing to display so far</TextBlock>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        
+        <ListBox ItemsSource="{Binding Notes}" Style="{StaticResource NoteListBoxStyle}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
