@@ -25,7 +25,7 @@ namespace HelloUserControl
             }
         }
 
-        private static readonly DependencyProperty UserNameProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty UserNameProperty = DependencyProperty.Register(
             "UserName",
             typeof (string), 
             typeof (UserNameControl), 
