@@ -11,7 +11,7 @@
             <TextBlock FontSize="10">I am a dialog</TextBlock>
             <StackPanel Orientation="Horizontal">
                 <Rectangle Width="30" Height="30" Stroke="Magenta" Fill="DimGray" StrokeThickness="2" />
-                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" />
+                <TextBlock Text="{Binding Title, ElementName=Control}" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" />
             </StackPanel>
             <TextBlock FontSize="10">With body</TextBlock>
             <Border BorderThickness="2" BorderBrush="Red" Padding="10">

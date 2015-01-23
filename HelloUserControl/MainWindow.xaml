@@ -14,8 +14,8 @@
             <helloUserControl:DialogControl.Footer>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center">Dialog Footer Here</TextBlock>
-                    <Button>Cancel</Button>
-                    <Button>OK</Button>
+                    <Button Command="{Binding CancelCommand}">Cancel</Button>
+                    <Button Command="{Binding OkCommand}">OK</Button>
                 </StackPanel>
             </helloUserControl:DialogControl.Footer>
         </helloUserControl:DialogControl>
