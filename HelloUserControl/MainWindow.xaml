@@ -7,7 +7,7 @@
     <StackPanel Orientation="Vertical">
         <helloUserControl:UserNameControl UserName="{Binding UserName1}" />
         <helloUserControl:UserNameControl UserName="{Binding UserName2}" />
-        <helloUserControl:DialogControl Title="The Demo Dialog">
+        <helloUserControl:DialogControl Title="{Binding DialogTitle}">
             <helloUserControl:DialogControl.Body>
                 <TextBlock>Dialog Body Here</TextBlock>
             </helloUserControl:DialogControl.Body>
