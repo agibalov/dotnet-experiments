@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace WcfExperiment
 {
-    public class DummyCalculatorTest
+    public class BindingsTest
     {
         [Test]
         public void CanUseBasicHttpBinding()
@@ -15,8 +15,8 @@ namespace WcfExperiment
             try
             {
                 var channelFactory = new ChannelFactory<ICalculatorService>(new BasicHttpBinding(), "http://localhost:2302/");
-                var calculatoServiceClient = channelFactory.CreateChannel();
-                Assert.AreEqual(5, calculatoServiceClient.AddNumbers(2, 3));
+                var calculatorServiceClient = channelFactory.CreateChannel();
+                Assert.AreEqual(5, calculatorServiceClient.AddNumbers(2, 3));
             }
             finally
             {
@@ -34,29 +34,29 @@ namespace WcfExperiment
             try
             {
                 var channelFactory = new ChannelFactory<ICalculatorService>(new NetNamedPipeBinding(), "net.pipe://localhost/");
-                var calculatoServiceClient = channelFactory.CreateChannel();
-                Assert.AreEqual(5, calculatoServiceClient.AddNumbers(2, 3));
+                var calculatorServiceClient = channelFactory.CreateChannel();
+                Assert.AreEqual(5, calculatorServiceClient.AddNumbers(2, 3));
             }
             finally
             {
                 serviceHost.Close();
             }
         }
-    }
 
-    [ServiceContract]
-    public interface ICalculatorService
-    {
-        [OperationContract]
-        int AddNumbers(int a, int b);
-    }
-
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CalculatorService : ICalculatorService
-    {
-        public int AddNumbers(int a, int b)
+        [ServiceContract]
+        public interface ICalculatorService
         {
-            return a + b;
+            [OperationContract]
+            int AddNumbers(int a, int b);
+        }
+
+        [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+        public class CalculatorService : ICalculatorService
+        {
+            public int AddNumbers(int a, int b)
+            {
+                return a + b;
+            }
         }
     }
 }
