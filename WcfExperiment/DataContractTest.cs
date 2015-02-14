@@ -10,23 +10,21 @@ namespace WcfExperiment
         public void CanUseDataContract()
         {
             var calculatorService = new CalculatorService();
-            var serviceHost = new ServiceHost(calculatorService);
-            serviceHost.AddServiceEndpoint(typeof(ICalculatorService), new BasicHttpBinding(), "http://localhost:2302/");
-            serviceHost.Open();
-            try
+            using (var serviceHost = new ServiceHost(calculatorService))
             {
-                var channelFactory = new ChannelFactory<ICalculatorService>(new BasicHttpBinding(), "http://localhost:2302/");
-                var calculatoServiceClient = channelFactory.CreateChannel();
-                var response = calculatoServiceClient.AddNumbers(new AddNumbersRequest
+                serviceHost.AddServiceEndpoint(typeof (ICalculatorService), new BasicHttpBinding(), "http://localhost:2302/");
+                serviceHost.Open();
+
+                using (var channelFactory = new ChannelFactory<ICalculatorService>(new BasicHttpBinding(), "http://localhost:2302/"))
                 {
-                    A = 2,
-                    B = 3
-                });
-                Assert.AreEqual(5, response.Result);
-            }
-            finally
-            {
-                serviceHost.Close();
+                    var calculatoServiceClient = channelFactory.CreateChannel();
+                    var response = calculatoServiceClient.AddNumbers(new AddNumbersRequest
+                    {
+                        A = 2,
+                        B = 3
+                    });
+                    Assert.AreEqual(5, response.Result);
+                }
             }
         }
 

@@ -26,29 +26,27 @@ namespace WcfExperiment
             var customBinding = new CustomBinding(encoder, transport);
 
             var fileExchangeService = new FileExchangeService();
-            var serviceHost = new ServiceHost(fileExchangeService);
-            serviceHost.AddServiceEndpoint(typeof(IFileExchangeService), customBinding, "net.tcp://localhost:2302/");
-            serviceHost.Open();
-            try
+            using (var serviceHost = new ServiceHost(fileExchangeService))
             {
-                var channelFactory = new ChannelFactory<IFileExchangeService>(customBinding, "net.tcp://localhost:2302/");
-                var fileExchangeServiceClient = channelFactory.CreateChannel();
-                using (var tempFile = DataFileUtils.MakeDataFile(TestDataSizeInBytes))
-                using (var tempFileInputStream = tempFile.GetInputStream())
-                {
-                    var read = fileExchangeServiceClient.SendData(tempFileInputStream);
-                    Assert.AreEqual(TestDataSizeInBytes, read);
-                }
+                serviceHost.AddServiceEndpoint(typeof (IFileExchangeService), customBinding, "net.tcp://localhost:2302/");
+                serviceHost.Open();
 
-                using (var dataStream = fileExchangeServiceClient.ReceiveData(TestDataSizeInBytes))
+                using (var channelFactory = new ChannelFactory<IFileExchangeService>(customBinding, "net.tcp://localhost:2302/"))
                 {
-                    var read = StreamUtils.ReadAndCountBytes(dataStream);
-                    Assert.AreEqual(TestDataSizeInBytes, read);
+                    var fileExchangeServiceClient = channelFactory.CreateChannel();
+                    using (var tempFile = DataFileUtils.MakeDataFile(TestDataSizeInBytes))
+                    using (var tempFileInputStream = tempFile.GetInputStream())
+                    {
+                        var read = fileExchangeServiceClient.SendData(tempFileInputStream);
+                        Assert.AreEqual(TestDataSizeInBytes, read);
+                    }
+
+                    using (var dataStream = fileExchangeServiceClient.ReceiveData(TestDataSizeInBytes))
+                    {
+                        var read = StreamUtils.ReadAndCountBytes(dataStream);
+                        Assert.AreEqual(TestDataSizeInBytes, read);
+                    }
                 }
-            }
-            finally
-            {
-                serviceHost.Close();
             }
         }
 

@@ -11,31 +11,29 @@ namespace WcfExperiment
         public void CanGetAnExpectedFailure()
         {
             var failingService = new FailingService();
-            var serviceHost = new ServiceHost(failingService);
-            serviceHost.AddServiceEndpoint(typeof(IFailingService), new BasicHttpBinding(), "http://localhost:2302/");
-            serviceHost.Open();
-            try
+            using (var serviceHost = new ServiceHost(failingService))
             {
-                var channelFactory = new ChannelFactory<IFailingService>(new BasicHttpBinding(), "http://localhost:2302/");
-                var failingServiceClient = channelFactory.CreateChannel();
+                serviceHost.AddServiceEndpoint(typeof (IFailingService), new BasicHttpBinding(), "http://localhost:2302/");
+                serviceHost.Open();
 
-                try
+                using(var channelFactory = new ChannelFactory<IFailingService>(new BasicHttpBinding(), "http://localhost:2302/"))
                 {
-                    failingServiceClient.PleaseFailExpectedly();
-                    Assert.Fail();
+                    var failingServiceClient = channelFactory.CreateChannel();
+
+                    try
+                    {
+                        failingServiceClient.PleaseFailExpectedly();
+                        Assert.Fail();
+                    }
+                    catch (FaultException<MyFault> e)
+                    {
+                        Assert.AreEqual("omgwtfbbq", e.Detail.Message);
+                        Assert.AreEqual("Client", e.Code.Name);
+                        Assert.IsTrue(e.Code.IsPredefinedFault);
+                        Assert.IsFalse(e.Code.IsReceiverFault);
+                        Assert.IsTrue(e.Code.IsSenderFault);
+                    }
                 }
-                catch (FaultException<MyFault> e)
-                {
-                    Assert.AreEqual("omgwtfbbq", e.Detail.Message);
-                    Assert.AreEqual("Client", e.Code.Name);
-                    Assert.IsTrue(e.Code.IsPredefinedFault);
-                    Assert.IsFalse(e.Code.IsReceiverFault);
-                    Assert.IsTrue(e.Code.IsSenderFault);
-                }
-            }
-            finally
-            {
-                serviceHost.Close();
             }
         }
 
@@ -43,30 +41,28 @@ namespace WcfExperiment
         public void CanGetAnUnexpectedFailure()
         {
             var calculatorService = new FailingService();
-            var serviceHost = new ServiceHost(calculatorService);
-            serviceHost.AddServiceEndpoint(typeof(IFailingService), new BasicHttpBinding(), "http://localhost:2302/");
-            serviceHost.Open();
-            try
+            using (var serviceHost = new ServiceHost(calculatorService))
             {
-                var channelFactory = new ChannelFactory<IFailingService>(new BasicHttpBinding(), "http://localhost:2302/");
-                var calculatorServiceClient = channelFactory.CreateChannel();
+                serviceHost.AddServiceEndpoint(typeof (IFailingService), new BasicHttpBinding(), "http://localhost:2302/");
+                serviceHost.Open();
 
-                try
+                using (var channelFactory = new ChannelFactory<IFailingService>(new BasicHttpBinding(), "http://localhost:2302/"))
                 {
-                    calculatorServiceClient.PleaseFailUnexpectedly();
-                    Assert.Fail();
+                    var calculatorServiceClient = channelFactory.CreateChannel();
+
+                    try
+                    {
+                        calculatorServiceClient.PleaseFailUnexpectedly();
+                        Assert.Fail();
+                    }
+                    catch (FaultException e)
+                    {
+                        Assert.AreEqual("InternalServiceFault", e.Code.Name);
+                        Assert.IsFalse(e.Code.IsPredefinedFault);
+                        Assert.IsFalse(e.Code.IsReceiverFault);
+                        Assert.IsFalse(e.Code.IsSenderFault);
+                    }
                 }
-                catch (FaultException e)
-                {
-                    Assert.AreEqual("InternalServiceFault", e.Code.Name);
-                    Assert.IsFalse(e.Code.IsPredefinedFault);
-                    Assert.IsFalse(e.Code.IsReceiverFault);
-                    Assert.IsFalse(e.Code.IsSenderFault);
-                }
-            }
-            finally
-            {
-                serviceHost.Close();
             }
         }
 

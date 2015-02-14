@@ -9,18 +9,16 @@ namespace WcfExperiment
         public void CanUseBasicHttpBinding()
         {
             var calculatorService = new CalculatorService();
-            var serviceHost = new ServiceHost(calculatorService);
-            serviceHost.AddServiceEndpoint(typeof(ICalculatorService), new BasicHttpBinding(), "http://localhost:2302/");
-            serviceHost.Open();
-            try
+            using (var serviceHost = new ServiceHost(calculatorService))
             {
-                var channelFactory = new ChannelFactory<ICalculatorService>(new BasicHttpBinding(), "http://localhost:2302/");
-                var calculatorServiceClient = channelFactory.CreateChannel();
-                Assert.AreEqual(5, calculatorServiceClient.AddNumbers(2, 3));
-            }
-            finally
-            {
-                serviceHost.Close();
+                serviceHost.AddServiceEndpoint(typeof (ICalculatorService), new BasicHttpBinding(), "http://localhost:2302/");
+                serviceHost.Open();
+
+                using (var channelFactory = new ChannelFactory<ICalculatorService>(new BasicHttpBinding(), "http://localhost:2302/"))
+                {
+                    var calculatorServiceClient = channelFactory.CreateChannel();
+                    Assert.AreEqual(5, calculatorServiceClient.AddNumbers(2, 3));
+                }
             }
         }
 
@@ -28,18 +26,16 @@ namespace WcfExperiment
         public void CanUseNamedPipeBinding()
         {
             var calculatorService = new CalculatorService();
-            var serviceHost = new ServiceHost(calculatorService);
-            serviceHost.AddServiceEndpoint(typeof(ICalculatorService), new NetNamedPipeBinding(), "net.pipe://localhost/");
-            serviceHost.Open();
-            try
+            using (var serviceHost = new ServiceHost(calculatorService))
             {
-                var channelFactory = new ChannelFactory<ICalculatorService>(new NetNamedPipeBinding(), "net.pipe://localhost/");
-                var calculatorServiceClient = channelFactory.CreateChannel();
-                Assert.AreEqual(5, calculatorServiceClient.AddNumbers(2, 3));
-            }
-            finally
-            {
-                serviceHost.Close();
+                serviceHost.AddServiceEndpoint(typeof (ICalculatorService), new NetNamedPipeBinding(), "net.pipe://localhost/");
+                serviceHost.Open();
+
+                using (var channelFactory = new ChannelFactory<ICalculatorService>(new NetNamedPipeBinding(), "net.pipe://localhost/"))
+                {
+                    var calculatorServiceClient = channelFactory.CreateChannel();
+                    Assert.AreEqual(5, calculatorServiceClient.AddNumbers(2, 3));
+                }
             }
         }
 
