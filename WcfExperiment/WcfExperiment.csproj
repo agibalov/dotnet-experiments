@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DataContractTest.cs" />
     <Compile Include="BindingsTest.cs" />
+    <Compile Include="FaultContractTest.cs" />
     <Compile Include="ServiceContractTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
