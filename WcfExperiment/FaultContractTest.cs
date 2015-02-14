@@ -10,18 +10,18 @@ namespace WcfExperiment
         [Test]
         public void CanGetAnExpectedFailure()
         {
-            var calculatorService = new FailingService();
-            var serviceHost = new ServiceHost(calculatorService);
+            var failingService = new FailingService();
+            var serviceHost = new ServiceHost(failingService);
             serviceHost.AddServiceEndpoint(typeof(IFailingService), new BasicHttpBinding(), "http://localhost:2302/");
             serviceHost.Open();
             try
             {
                 var channelFactory = new ChannelFactory<IFailingService>(new BasicHttpBinding(), "http://localhost:2302/");
-                var calculatorServiceClient = channelFactory.CreateChannel();
+                var failingServiceClient = channelFactory.CreateChannel();
 
                 try
                 {
-                    calculatorServiceClient.PleaseFailExpectedly();
+                    failingServiceClient.PleaseFailExpectedly();
                     Assert.Fail();
                 }
                 catch (FaultException<MyFault> e)
