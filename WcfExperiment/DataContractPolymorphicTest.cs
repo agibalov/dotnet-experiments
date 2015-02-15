@@ -144,7 +144,7 @@ namespace WcfExperiment
 
                     return new OkResponse
                     {
-                        Result = divNumbersRequest.A/divNumbersRequest.B
+                        Result = divNumbersRequest.A / divNumbersRequest.B
                     };
                 }
                 
