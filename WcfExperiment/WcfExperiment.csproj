@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageContractTest.cs" />
     <Compile Include="DataContractTest.cs" />
     <Compile Include="BindingsTest.cs" />
     <Compile Include="FaultContractTest.cs" />
