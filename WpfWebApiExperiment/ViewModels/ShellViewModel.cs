@@ -42,12 +42,12 @@ namespace WpfWebApiExperiment.ViewModels
             ActivateItem(_kernel.Get<NoteScreenViewModel>(new ConstructorArgument("noteId", id)));
         }
 
-        public async Task<T> Execute<T>(Func<Task<T>> func)
+        public async Task<T> Execute<T>(Func<T> func)
         {
             Message = "Loading...";
             try
             {
-                return await func();
+                return await Task.Run(func);
             }
             finally
             {

@@ -16,7 +16,7 @@ namespace WpfWebApiExperimentTests
         public void WhenThereIsNoApiErrorNotesAreLoaded()
         {
             var apiClient = new Mock<IApiClient>();
-            apiClient.Setup(c => c.GetNotes()).ReturnsAsync(new List<NoteDTO>
+            apiClient.Setup(c => c.GetNotes()).Returns(new List<NoteDTO>
             {
                 new NoteDTO { Id = "123", Title = "Hi", Text = "Hello there" }
             });
@@ -24,8 +24,8 @@ namespace WpfWebApiExperimentTests
             var navigationService = new Mock<INavigationService>();
 
             var longOperationExecutor = new Mock<ILongOperationExecutor>();
-            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<Task<List<NoteDTO>>>>()))
-                .Returns((Func<Task<List<NoteDTO>>> f) => f());
+            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()))
+                .Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
 
             var noteListScreenViewModel = new NoteListScreenViewModel(
                 apiClient.Object, 
