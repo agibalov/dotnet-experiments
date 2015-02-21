@@ -20,7 +20,22 @@ namespace WpfWebApiExperiment.WebApiClient
         public List<NoteDTO> GetNotes()
         {
             var request = new RestRequest("/Notes", Method.GET);
-            var response = _restClient.Execute<List<NoteDTO>>(request);
+            var result = Execute<List<NoteDTO>>(request);
+            return result;
+        }
+
+        public NoteDTO GetNote(string id)
+        {
+            var request = new RestRequest("/Notes/{id}", Method.GET);
+            request.AddParameter("id", id);
+            var result = Execute<NoteDTO>(request);
+            return result;
+        }
+
+        private TResult Execute<TResult>(RestRequest restRequest)
+            where TResult : new()
+        {
+            var response = _restClient.Execute<TResult>(restRequest);
             if (response.ResponseStatus == ResponseStatus.Completed)
             {
                 if (response.StatusCode == HttpStatusCode.OK)
@@ -38,15 +53,6 @@ namespace WpfWebApiExperiment.WebApiClient
             }
 
             throw new Exception("Unknown ApiClient error, please review the code");
-        }
-
-        public NoteDTO GetNote(string id)
-        {
-            var request = new RestRequest("/Notes/{id}", Method.GET);
-            request.AddParameter("id", id);
-
-            var response = _restClient.Execute<NoteDTO>(request);
-            return response.Data;
         }
     }
 
