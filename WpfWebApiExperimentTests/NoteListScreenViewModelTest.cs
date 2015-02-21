@@ -32,6 +32,7 @@ namespace WpfWebApiExperimentTests
                 apiClient.Object, 
                 navigationService.Object, 
                 longOperationExecutor.Object);
+
             ((IActivate)noteListScreenViewModel).Activate();
 
             Assert.AreEqual(1, noteListScreenViewModel.Notes.Count);
@@ -58,6 +59,7 @@ namespace WpfWebApiExperimentTests
                 apiClient.Object,
                 navigationService.Object,
                 longOperationExecutor.Object);
+
             ((IActivate)noteListScreenViewModel).Activate();
 
             var targetNote = noteListScreenViewModel.Notes.First();
