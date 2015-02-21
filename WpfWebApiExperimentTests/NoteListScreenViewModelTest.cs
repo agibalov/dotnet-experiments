@@ -35,6 +35,8 @@ namespace WpfWebApiExperimentTests
             ((IActivate)noteListScreenViewModel).Activate();
 
             Assert.AreEqual(1, noteListScreenViewModel.Notes.Count);
+
+            apiClient.Verify(c => c.GetNotes(), Times.Once);
         }
 
         [Test]
