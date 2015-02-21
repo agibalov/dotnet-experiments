@@ -11,6 +11,8 @@ using WpfWebApiExperiment.WebApiClient;
 
 namespace WpfWebApiExperimentTests
 {
+    // TODO: how do I test "doing nothing" vs "loading" vs "loaded"?
+
     public class NoteListScreenViewModelTest
     {
         [Test]

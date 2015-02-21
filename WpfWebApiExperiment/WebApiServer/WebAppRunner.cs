@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Threading;
+using System.Web.Http;
+using Microsoft.Owin.Hosting;
+using Ninject;
+using Owin;
 
 namespace WpfWebApiExperiment.WebApiServer
 {
@@ -19,7 +23,7 @@ namespace WpfWebApiExperiment.WebApiServer
             _workerThread = new Thread(() =>
             {
                 const string baseUrl = "http://localhost:8080/";
-                using (Microsoft.Owin.Hosting.WebApp.Start<WebAppConfigurer>(baseUrl))
+                using (WebApp.Start(baseUrl, ConfigureAppBuilder))
                 {
                     _stopManualResetEvent.WaitOne();
                 }
@@ -37,6 +41,25 @@ namespace WpfWebApiExperiment.WebApiServer
             _stopManualResetEvent.Set();
             _stopManualResetEvent = null;
             _workerThread = null;
+        }
+
+        // TODO: make this reusable
+        private static void ConfigureAppBuilder(IAppBuilder appBuilder)
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<NoteRepository>().ToSelf().InSingletonScope();
+
+            var httpConfiguration = new HttpConfiguration
+            {
+                DependencyResolver = new NinjectDependencyResolver(kernel)
+            };
+
+            httpConfiguration.Routes.MapHttpRoute(
+                "DefaultApi",
+                "{controller}/{id}",
+                new { id = RouteParameter.Optional });
+
+            appBuilder.UseWebApi(httpConfiguration);
         }
     }
 }
