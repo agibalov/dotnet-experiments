@@ -108,6 +108,7 @@
       <DependentUpon>NoteScreenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WebApiClient\ApiClient.cs" />
+    <Compile Include="WebApiClient\IApiClient.cs" />
     <Compile Include="WebApiServer\NinjectDependencyResolver.cs" />
     <Compile Include="WebApiServer\NinjectDependencyScope.cs" />
     <Compile Include="WebApiServer\NoteRepository.cs" />

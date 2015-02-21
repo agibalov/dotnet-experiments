@@ -6,14 +6,14 @@ namespace WpfWebApiExperiment.ViewModels
 {
     public class NoteScreenViewModel : Screen
     {
-        private readonly ApiClient _apiClient;
+        private readonly IApiClient _apiClient;
         private readonly INavigationService _navigationService;
         private readonly ILongOperationExecutor _longOperationExecutor;
         private readonly string _noteId;
 
         [Inject]
         public NoteScreenViewModel(
-            ApiClient apiClient, 
+            IApiClient apiClient, 
             INavigationService navigationService, 
             ILongOperationExecutor longOperationExecutor,
             string noteId)

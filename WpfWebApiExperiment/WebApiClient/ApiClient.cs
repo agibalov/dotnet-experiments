@@ -6,7 +6,7 @@ using WpfWebApiExperiment.WebApi;
 
 namespace WpfWebApiExperiment.WebApiClient
 {
-    public class ApiClient
+    public class ApiClient : IApiClient
     {
         private readonly RestClient _restClient;
 
