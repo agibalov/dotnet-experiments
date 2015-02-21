@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using Moq;
@@ -12,7 +10,7 @@ using WpfWebApiExperiment.WebApiClient;
 
 namespace WpfWebApiExperimentTests
 {
-    public class DummyTest
+    public class NoteListScreenViewModelTest
     {
         [Test]
         public void WhenThereIsNoApiErrorNotesAreLoaded()
