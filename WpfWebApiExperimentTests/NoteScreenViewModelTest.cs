@@ -37,5 +37,30 @@ namespace WpfWebApiExperimentTests
 
             apiClient.Verify(c => c.GetNote("123"), Times.Once);
         }
+
+        [Test]
+        public void CanNavigateBack()
+        {
+            var apiClient = new Mock<IApiClient>();
+            apiClient.Setup(c => c.GetNote("123"))
+                .Returns(new NoteDTO { Id = "123", Title = "Hi", Text = "Hello there" });
+
+            var navigationService = new Mock<INavigationService>();
+            var longOperationExecutor = new Mock<ILongOperationExecutor>();
+            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<NoteDTO>>()))
+                .Returns((Func<NoteDTO> f) => Task.FromResult(f()));
+
+            var noteScreenViewModel = new NoteScreenViewModel(
+                apiClient.Object,
+                navigationService.Object,
+                longOperationExecutor.Object,
+                "123");
+
+            ((IActivate)noteScreenViewModel).Activate();
+
+            noteScreenViewModel.GoBack();
+
+            navigationService.Verify(s => s.NavigateToNoteList(), Times.Once);
+        }
     }
 }
