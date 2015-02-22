@@ -26,7 +26,7 @@ namespace WpfWebApiExperiment
         {
             _kernel.Bind<IWindowManager>().To<WindowManager>();
 
-            _kernel.Bind<RestClient>().ToConstant(new RestClient("http://localhost:8080/"));
+            _kernel.Bind<IRestClient>().ToConstant(new RestClient("http://localhost:8080/"));
             _kernel.Bind<IApiClient>().To<ApiClient>().InSingletonScope();
 
             _kernel.Bind<ShellViewModel>().ToSelf().InSingletonScope();

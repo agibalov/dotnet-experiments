@@ -9,10 +9,10 @@ namespace WpfWebApiExperiment.WebApiClient
 {
     public class ApiClient : IApiClient
     {
-        private readonly RestClient _restClient;
+        private readonly IRestClient _restClient;
 
         [Inject]
-        public ApiClient(RestClient restClient)
+        public ApiClient(IRestClient restClient)
         {
             _restClient = restClient;
         }
