@@ -31,6 +31,9 @@ namespace WpfWebApiExperimentTests
 
             var okState = (OkNoteListScreenViewModelState) newState;
             Assert.AreEqual(1, okState.Notes.Count);
+
+            apiClient.Verify(c => c.GetNotes(), Times.Once);
+            longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
         }
     }
 }
