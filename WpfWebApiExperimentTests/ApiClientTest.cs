@@ -13,7 +13,12 @@ namespace WpfWebApiExperimentTests
         [Test]
         public void ApiClientThrowsWhenRequestFailsBecauseOfTransportError()
         {
-            var restClient = MakeResponseStatusErrorRestClientMock();
+            var response = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
+            response.SetupProperty(r => r.ResponseStatus, ResponseStatus.Error);
+            response.SetupProperty(r => r.ErrorMessage, "Something bad has happened");
+
+            var restClient = new Mock<IRestClient>(MockBehavior.Strict);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(response.Object);
             var apiClient = new ApiClient(restClient.Object);
 
             try
@@ -26,12 +31,19 @@ namespace WpfWebApiExperimentTests
             }
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
+            response.VerifyGet(r => r.ResponseStatus, Times.AtLeastOnce);
+            response.VerifyGet(r => r.ErrorMessage, Times.Once);
         }
 
         [Test]
         public void ApiClientThrowsWhenRequestFailsBecauseOfNonOkResponse()
         {
-            var restClient = MakeInternalServerErrorRestClientMock();
+            var response = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
+            response.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
+            response.SetupProperty(r => r.StatusCode, HttpStatusCode.InternalServerError);
+
+            var restClient = new Mock<IRestClient>(MockBehavior.Strict);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(response.Object);
             var apiClient = new ApiClient(restClient.Object);
 
             try
@@ -44,63 +56,32 @@ namespace WpfWebApiExperimentTests
             }
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
+            response.VerifyGet(r => r.ResponseStatus, Times.Once);
+            response.VerifyGet(r => r.StatusCode, Times.Once);
         }
 
         [Test]
         public void ApiClientDoesNotThrowWhenResponseIsOk()
         {
-            var restClient = MakeOkRestClientMock(new List<NoteDTO>
+            var response = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
+            response.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
+            response.SetupProperty(r => r.StatusCode, HttpStatusCode.OK);
+            response.SetupProperty(r => r.Data, new List<NoteDTO>
             {
                 new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}
             });
+
+            var restClient = new Mock<IRestClient>(MockBehavior.Strict);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(response.Object);
             var apiClient = new ApiClient(restClient.Object);
 
             var notes = apiClient.GetNotes();
             Assert.AreEqual(1, notes.Count);
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
-        }
-
-        // TODO: should I mock the responses to make sure that ApiClient only accesses the fields I expect it to access?
-        private static Mock<IRestClient> MakeResponseStatusErrorRestClientMock()
-        {
-            var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()))
-                .Returns(new RestResponse<List<NoteDTO>>
-                {
-                    ResponseStatus = ResponseStatus.Error
-                });
-
-            return restClient;
-        }
-
-        // TODO: should I mock the responses to make sure that ApiClient only accesses the fields I expect it to access?
-        private static Mock<IRestClient> MakeInternalServerErrorRestClientMock()
-        {
-            var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()))
-                .Returns(new RestResponse<List<NoteDTO>>
-                {
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode = HttpStatusCode.InternalServerError
-                });
-
-            return restClient;
-        }
-
-        // TODO: should I mock the responses to make sure that ApiClient only accesses the fields I expect it to access?
-        private static Mock<IRestClient> MakeOkRestClientMock(List<NoteDTO> notes)
-        {
-            var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()))
-                .Returns(new RestResponse<List<NoteDTO>>
-                {
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode = HttpStatusCode.OK,
-                    Data = notes
-                });
-
-            return restClient;
+            response.VerifyGet(r => r.ResponseStatus, Times.Once);
+            response.VerifyGet(r => r.StatusCode, Times.Once);
+            response.VerifyGet(r => r.Data, Times.Once);
         }
     }
 }
