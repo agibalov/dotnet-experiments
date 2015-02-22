@@ -36,9 +36,12 @@ namespace WpfWebApiExperiment.WebApiClient
             where TResult : new()
         {
             var response = _restClient.Execute<TResult>(restRequest);
-            if (response.ResponseStatus == ResponseStatus.Completed)
+            
+            var responseStatus = response.ResponseStatus;
+            if (responseStatus == ResponseStatus.Completed)
             {
-                if (response.StatusCode == HttpStatusCode.OK)
+                var httpStatusCode = response.StatusCode;
+                if (httpStatusCode == HttpStatusCode.OK)
                 {
                     return response.Data;
                 }
@@ -47,7 +50,7 @@ namespace WpfWebApiExperiment.WebApiClient
             }
 
             // for example, connectivity error
-            if (response.ResponseStatus == ResponseStatus.Error)
+            if (responseStatus == ResponseStatus.Error)
             {
                 throw new ApiClientException(response.ErrorMessage);
             }

@@ -18,7 +18,8 @@ namespace WpfWebApiExperimentTests
             response.SetupProperty(r => r.ErrorMessage, "Something bad has happened");
 
             var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(response.Object);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.Is<IRestRequest>(r =>
+                r.Method == Method.GET && r.Resource == "/Notes"))).Returns(response.Object);
             var apiClient = new ApiClient(restClient.Object);
 
             try
@@ -43,7 +44,8 @@ namespace WpfWebApiExperimentTests
             response.SetupProperty(r => r.StatusCode, HttpStatusCode.InternalServerError);
 
             var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(response.Object);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.Is<IRestRequest>(r =>
+                r.Method == Method.GET && r.Resource == "/Notes"))).Returns(response.Object);
             var apiClient = new ApiClient(restClient.Object);
 
             try
@@ -72,7 +74,8 @@ namespace WpfWebApiExperimentTests
             });
 
             var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(response.Object);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.Is<IRestRequest>(r => 
+                r.Method == Method.GET && r.Resource == "/Notes"))).Returns(response.Object);
             var apiClient = new ApiClient(restClient.Object);
 
             var notes = apiClient.GetNotes();
