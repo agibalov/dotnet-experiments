@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiClientTest.cs" />
+    <Compile Include="LongOperationExecutorTest.cs" />
     <Compile Include="NoteListScreenViewModelTest.cs" />
     <Compile Include="NoteScreenViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

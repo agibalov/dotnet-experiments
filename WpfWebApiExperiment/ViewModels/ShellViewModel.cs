@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Ninject;
 using Ninject.Parameters;
 
 namespace WpfWebApiExperiment.ViewModels
 {
-    public class ShellViewModel : Conductor<object>, INavigationService, ILongOperationExecutor
+    public class ShellViewModel : Conductor<object>, INavigationService, ILongOperationListener
     {
         private readonly IKernel _kernel;
 
@@ -42,17 +40,14 @@ namespace WpfWebApiExperiment.ViewModels
             ActivateItem(_kernel.Get<NoteScreenViewModel>(new ConstructorArgument("noteId", id)));
         }
 
-        public async Task<T> Execute<T>(Func<T> func)
+        public void OnOperationStarted()
         {
             Message = "Loading...";
-            try
-            {
-                return await Task.Run(func);
-            }
-            finally
-            {
-                Message = "Done!";
-            }
+        }
+
+        public void OnOperationFinished()
+        {
+            Message = "Done!";
         }
     }
 }
