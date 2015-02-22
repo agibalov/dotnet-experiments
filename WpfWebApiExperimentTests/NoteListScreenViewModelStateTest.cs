@@ -13,7 +13,7 @@ namespace WpfWebApiExperimentTests
     public class NoteListScreenViewModelStateTest
     {
         [Test]
-        public async void DefaultStateCanLoadNotesAndSwitchToOkState()
+        public async Task DefaultStateCanLoadNotesAndSwitchToOkState()
         {
             var apiClient = new Mock<IApiClient>(MockBehavior.Strict);
             apiClient.Setup(c => c.GetNotes()).Returns(new List<NoteDTO>
@@ -31,6 +31,27 @@ namespace WpfWebApiExperimentTests
 
             var okState = (OkNoteListScreenViewModelState) newState;
             Assert.AreEqual(1, okState.Notes.Count);
+
+            apiClient.Verify(c => c.GetNotes(), Times.Once);
+            longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
+        }
+
+        [Test]
+        public async Task DefaultStateSwitchesToErrorStateWhenItCantLoadNotes()
+        {
+            var apiClient = new Mock<IApiClient>(MockBehavior.Strict);
+            apiClient.Setup(c => c.GetNotes()).Throws(new ApiException("something bad"));
+
+            var longOperationExecutor = new Mock<ILongOperationExecutor>();
+            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()))
+                .Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
+
+            var state = new DefaultNoteListScreenViewModelState();
+            var newState = await state.HandleScreenActivated(apiClient.Object, longOperationExecutor.Object);
+            Assert.IsInstanceOf<ErrorNoteListScreenViewModelState>(newState);
+
+            var errorState = (ErrorNoteListScreenViewModelState)newState;
+            Assert.IsNotNullOrEmpty(errorState.ErrorMessage);
 
             apiClient.Verify(c => c.GetNotes(), Times.Once);
             longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
