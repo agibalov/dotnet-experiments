@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace WpfWebApiExperiment.ViewModels
+namespace WpfWebApiExperiment.Services
 {
     public interface ILongOperationExecutor
     {

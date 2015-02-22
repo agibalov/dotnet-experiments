@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Ninject;
 
-namespace WpfWebApiExperiment.ViewModels
+namespace WpfWebApiExperiment.Services
 {
     public class LongOperationExecutor : ILongOperationExecutor
     {

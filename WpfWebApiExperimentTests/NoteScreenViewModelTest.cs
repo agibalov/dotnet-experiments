@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using Moq;
 using NUnit.Framework;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.ViewModels;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;

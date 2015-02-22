@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
 

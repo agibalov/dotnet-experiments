@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.ViewModels;
 
 namespace WpfWebApiExperimentTests

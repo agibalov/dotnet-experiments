@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.WebApi;
 
 namespace WpfWebApiExperiment.ViewModels.NoteListScreen

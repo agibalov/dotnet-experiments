@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Caliburn.Micro;
 using Ninject;
 using RestSharp;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.ViewModels;
 using WpfWebApiExperiment.ViewModels.NoteListScreen;
 using WpfWebApiExperiment.WebApiClient;

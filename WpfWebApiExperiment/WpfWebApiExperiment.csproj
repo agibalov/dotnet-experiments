@@ -109,11 +109,11 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\NoteListScreen\DefaultNoteListScreenViewModelState.cs" />
     <Compile Include="ViewModels\NoteListScreen\ErrorNoteListScreenViewModelState.cs" />
-    <Compile Include="ViewModels\ILongOperationExecutor.cs" />
-    <Compile Include="ViewModels\ILongOperationListener.cs" />
-    <Compile Include="ViewModels\INavigationService.cs" />
+    <Compile Include="Services\ILongOperationExecutor.cs" />
+    <Compile Include="Services\ILongOperationListener.cs" />
+    <Compile Include="Services\INavigationService.cs" />
     <Compile Include="ViewModels\NoteListScreen\INoteListScreenViewModelState.cs" />
-    <Compile Include="ViewModels\LongOperationExecutor.cs" />
+    <Compile Include="Services\LongOperationExecutor.cs" />
     <Compile Include="ViewModels\NoteListScreen\NoteListScreenViewModelStateBase.cs" />
     <Compile Include="ViewModels\NoteScreenViewModel.cs" />
     <Compile Include="ViewModels\NoteListScreen\OkNoteListScreenViewModelState.cs" />

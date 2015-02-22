@@ -1,4 +1,4 @@
-﻿namespace WpfWebApiExperiment.ViewModels
+﻿namespace WpfWebApiExperiment.Services
 {
     public interface ILongOperationListener
     {

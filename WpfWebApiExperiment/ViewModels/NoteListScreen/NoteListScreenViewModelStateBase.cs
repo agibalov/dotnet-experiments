@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using WpfWebApiExperiment.Annotations;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
 

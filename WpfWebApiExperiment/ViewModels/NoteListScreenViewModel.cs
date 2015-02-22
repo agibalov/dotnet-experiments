@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Ninject;
+using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.ViewModels.NoteListScreen;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
