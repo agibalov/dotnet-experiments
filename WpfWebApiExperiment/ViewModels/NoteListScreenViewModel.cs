@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Ninject;
 using WpfWebApiExperiment.WebApi;
@@ -28,10 +30,30 @@ namespace WpfWebApiExperiment.ViewModels
         protected override async void OnActivate()
         {
             Notes.Clear();
-
-            var notes = await _longOperationExecutor.Execute(() => _apiClient.GetNotes());
-            
-            notes.ForEach(Notes.Add);
+            List<NoteDTO> notes = null;
+            try
+            {
+                notes = await _longOperationExecutor.Execute(() => _apiClient.GetNotes());
+            }
+            catch (ApiException e) // "internal server error" or "not found"
+            {
+                ErrorMessage = "ApiException error";
+            }
+            catch (ApiClientException e) // connectivity error
+            {
+                ErrorMessage = "ApiClientException error";
+            }
+            catch (Exception e) // something very weird
+            {
+                ErrorMessage = "Absolutely unexpected error";
+            }
+            finally
+            {
+                if (notes != null)
+                {
+                    notes.ForEach(Notes.Add);
+                }
+            }
         }
 
         public void ViewNote(NoteDTO note)
@@ -39,6 +61,18 @@ namespace WpfWebApiExperiment.ViewModels
             _navigationService.NavigateToNote(note.Id);
         }
 
-        public ObservableCollection<NoteDTO> Notes { get; set; } 
+        public ObservableCollection<NoteDTO> Notes { get; set; }
+
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                if (value == _errorMessage) return;
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => ErrorMessage);
+            }
+        }
     }
 }

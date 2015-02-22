@@ -43,6 +43,29 @@ namespace WpfWebApiExperimentTests
         }
 
         [Test]
+        public void WhenThereIsApiErrorTheMessageIsDisplayed()
+        {
+            var apiClient = new Mock<IApiClient>(MockBehavior.Strict);
+            apiClient.Setup(c => c.GetNotes()).Throws(new ApiException("something bad"));
+
+            var navigationService = new Mock<INavigationService>(MockBehavior.Strict);
+            
+            var longOperationExecutor = new Mock<ILongOperationExecutor>(MockBehavior.Strict);
+            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()))
+                .Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
+
+            var noteListScreenViewModel = new NoteListScreenViewModel(
+                apiClient.Object,
+                navigationService.Object,
+                longOperationExecutor.Object);
+
+            ((IActivate)noteListScreenViewModel).Activate();
+
+            Assert.IsEmpty(noteListScreenViewModel.Notes);
+            Assert.IsNotNullOrEmpty(noteListScreenViewModel.ErrorMessage);
+        }
+
+        [Test]
         public void CanNavigateToNote()
         {
             var apiClient = new Mock<IApiClient>();
