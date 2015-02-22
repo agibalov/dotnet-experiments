@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Ninject;
+using WpfWebApiExperiment.ViewModels.NoteListScreen;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
 
@@ -13,7 +11,7 @@ namespace WpfWebApiExperiment.ViewModels
         private readonly IApiClient _apiClient;
         private readonly INavigationService _navigationService;
         private readonly ILongOperationExecutor _longOperationExecutor;
-
+        
         [Inject]
         public NoteListScreenViewModel(
             IApiClient apiClient, 
@@ -24,54 +22,36 @@ namespace WpfWebApiExperiment.ViewModels
             _navigationService = navigationService;
             _longOperationExecutor = longOperationExecutor;
 
-            Notes = new ObservableCollection<NoteDTO>();
+            State = new DefaultNoteListScreenViewModelState();
         }
 
         protected override async void OnActivate()
         {
-            Notes.Clear();
-            List<NoteDTO> notes = null;
-            try
+            var newState = await _state.HandleScreenActivated(_apiClient, _longOperationExecutor);
+            if (newState != null)
             {
-                notes = await _longOperationExecutor.Execute(() => _apiClient.GetNotes());
-            }
-            catch (ApiException e) // "internal server error" or "not found"
-            {
-                ErrorMessage = "ApiException error";
-            }
-            catch (ApiClientException e) // connectivity error
-            {
-                ErrorMessage = "ApiClientException error";
-            }
-            catch (Exception e) // something very weird
-            {
-                ErrorMessage = "Absolutely unexpected error";
-            }
-            finally
-            {
-                if (notes != null)
-                {
-                    notes.ForEach(Notes.Add);
-                }
+                State = newState;
             }
         }
 
         public void ViewNote(NoteDTO note)
         {
-            _navigationService.NavigateToNote(note.Id);
+            var newState = State.HandleViewNote(note, _navigationService);
+            if (newState != null)
+            {
+                State = newState;
+            }
         }
 
-        public ObservableCollection<NoteDTO> Notes { get; set; }
-
-        private string _errorMessage;
-        public string ErrorMessage
+        private INoteListScreenViewModelState _state;
+        public INoteListScreenViewModelState State
         {
-            get { return _errorMessage; }
+            get { return _state; }
             set
             {
-                if (value == _errorMessage) return;
-                _errorMessage = value;
-                NotifyOfPropertyChange(() => ErrorMessage);
+                if (Equals(value, _state)) return;
+                _state = value;
+                NotifyOfPropertyChange(() => State);
             }
         }
     }

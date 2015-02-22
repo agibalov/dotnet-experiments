@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using Ninject;
 using RestSharp;
 using WpfWebApiExperiment.ViewModels;
+using WpfWebApiExperiment.ViewModels.NoteListScreen;
 using WpfWebApiExperiment.WebApiClient;
 
 namespace WpfWebApiExperiment
@@ -34,7 +35,7 @@ namespace WpfWebApiExperiment
             _kernel.Bind<ILongOperationExecutor>().To<LongOperationExecutor>();
             _kernel.Bind<ILongOperationListener>().ToMethod(c => c.Kernel.Get<ShellViewModel>());
 
-            _kernel.Bind<NoteListScreenViewModel>().ToSelf().InSingletonScope();
+            _kernel.Bind<NoteListScreenViewModel>().ToSelf();
             _kernel.Bind<NoteScreenViewModel>().ToSelf();
         }
 

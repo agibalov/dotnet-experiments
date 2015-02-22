@@ -4,35 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:noteListScreen="clr-namespace:WpfWebApiExperiment.ViewModels.NoteListScreen"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     
-    <Grid>
-        <Grid.Resources>
-            <Style TargetType="ListBox" x:Key="NoteListBoxStyle" BasedOn="{StaticResource {x:Type ListBox}}">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}" Value="0">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate>
-                                    <TextBlock>Nothing to display so far</TextBlock>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Resources>
-        
-        <ListBox ItemsSource="{Binding Notes}" Style="{StaticResource NoteListBoxStyle}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Button cal:Message.Attach="ViewNote($dataContext)">View</Button>
-                        <TextBlock Text="{Binding Title}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type noteListScreen:DefaultNoteListScreenViewModelState}">
+            <TextBlock>Default template: loading data</TextBlock>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type noteListScreen:OkNoteListScreenViewModelState}">
+            <ListBox ItemsSource="{Binding Notes}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button cal:Message.Attach="ViewNote($dataContext)">View</Button>
+                            <TextBlock Text="{Binding Title}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type noteListScreen:ErrorNoteListScreenViewModelState}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock>Error</TextBlock>
+                <TextBlock Text="{Binding ErrorMessage}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <UserControl.Template>
+        <ControlTemplate TargetType="{x:Type UserControl}">
+            <ContentPresenter Content="{Binding State}" />
+        </ControlTemplate>
+    </UserControl.Template>
 </UserControl>

@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Ninject;
 using Ninject.Parameters;
+using WpfWebApiExperiment.ViewModels.NoteListScreen;
 
 namespace WpfWebApiExperiment.ViewModels
 {
