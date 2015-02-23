@@ -7,10 +7,10 @@ namespace WpfWebApiExperiment.WebApiClient
     public class ApiExecutor : IApiExecutor
     {
         private readonly ILongOperationExecutor _longOperationExecutor;
-        private readonly ApiClient _apiClient;
+        private readonly IApiClient _apiClient;
 
         [Inject]
-        public ApiExecutor(ILongOperationExecutor longOperationExecutor, ApiClient apiClient)
+        public ApiExecutor(ILongOperationExecutor longOperationExecutor, IApiClient apiClient)
         {
             _longOperationExecutor = longOperationExecutor;
             _apiClient = apiClient;
