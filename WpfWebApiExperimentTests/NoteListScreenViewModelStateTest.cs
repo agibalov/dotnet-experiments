@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -55,6 +56,22 @@ namespace WpfWebApiExperimentTests
 
             apiClient.Verify(c => c.GetNotes(), Times.Once);
             longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
+        }
+
+        [Test]
+        public void OkStateAllowsForNavigatingToASingleNote()
+        {
+            var state = new OkNoteListScreenViewModelState(new List<NoteDTO>
+            {
+                new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}
+            });
+
+            var navigationService = new Mock<INavigationService>(MockBehavior.Strict);
+            navigationService.Setup(s => s.NavigateToNote("123"));
+
+            state.HandleViewNote(state.Notes.First(), navigationService.Object);
+
+            navigationService.Verify(s => s.NavigateToNote("123"), Times.Once);
         }
     }
 }
