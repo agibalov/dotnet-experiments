@@ -7,7 +7,7 @@ namespace WpfWebApiExperiment.ViewModels.NoteListScreen
 {
     public interface INoteListScreenViewModelState
     {
-        Task<INoteListScreenViewModelState> HandleScreenActivated(IApiClient apiClient, ILongOperationExecutor longOperationExecutor);
+        Task<INoteListScreenViewModelState> HandleScreenActivated(IApiExecutor apiExecutor);
         INoteListScreenViewModelState HandleViewNote(NoteDTO note, INavigationService navigationService);
     }
 }

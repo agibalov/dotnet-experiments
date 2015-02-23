@@ -107,11 +107,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="WebApiClient\ApiExecutor.cs" />
     <Compile Include="ViewModels\NoteListScreen\DefaultNoteListScreenViewModelState.cs" />
     <Compile Include="ViewModels\NoteListScreen\ErrorNoteListScreenViewModelState.cs" />
     <Compile Include="Services\ILongOperationExecutor.cs" />
     <Compile Include="Services\ILongOperationListener.cs" />
     <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="WebApiClient\GetNoteApiRequest.cs" />
+    <Compile Include="WebApiClient\GetNotesApiRequest.cs" />
+    <Compile Include="WebApiClient\IApiExecutor.cs" />
+    <Compile Include="WebApiClient\IApiRequest.cs" />
     <Compile Include="ViewModels\NoteListScreen\INoteListScreenViewModelState.cs" />
     <Compile Include="Services\LongOperationExecutor.cs" />
     <Compile Include="ViewModels\NoteListScreen\NoteListScreenViewModelStateBase.cs" />

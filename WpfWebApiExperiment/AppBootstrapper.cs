@@ -30,6 +30,7 @@ namespace WpfWebApiExperiment
 
             _kernel.Bind<IRestClient>().ToConstant(new RestClient("http://localhost:8080/"));
             _kernel.Bind<IApiClient>().To<ApiClient>().InSingletonScope();
+            _kernel.Bind<IApiExecutor>().To<ApiExecutor>().InSingletonScope();
 
             _kernel.Bind<ShellViewModel>().ToSelf().InSingletonScope();
             _kernel.Bind<INavigationService>().ToMethod(c => c.Kernel.Get<ShellViewModel>());

@@ -11,7 +11,7 @@ namespace WpfWebApiExperiment.ViewModels.NoteListScreen
 {
     public abstract class NoteListScreenViewModelStateBase : INoteListScreenViewModelState, INotifyPropertyChanged
     {
-        public virtual Task<INoteListScreenViewModelState> HandleScreenActivated(IApiClient apiClient, ILongOperationExecutor longOperationExecutor)
+        public virtual Task<INoteListScreenViewModelState> HandleScreenActivated(IApiExecutor apiExecutor)
         {
             throw new InvalidOperationException();
         }

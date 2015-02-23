@@ -7,27 +7,24 @@ namespace WpfWebApiExperiment.ViewModels
 {
     public class NoteScreenViewModel : Screen
     {
-        private readonly IApiClient _apiClient;
+        private readonly IApiExecutor _apiExecutor;
         private readonly INavigationService _navigationService;
-        private readonly ILongOperationExecutor _longOperationExecutor;
         private readonly string _noteId;
 
         [Inject]
         public NoteScreenViewModel(
-            IApiClient apiClient, 
-            INavigationService navigationService, 
-            ILongOperationExecutor longOperationExecutor,
+            IApiExecutor apiExecutor, 
+            INavigationService navigationService,
             string noteId)
         {
-            _apiClient = apiClient;
+            _apiExecutor = apiExecutor;
             _navigationService = navigationService;
-            _longOperationExecutor = longOperationExecutor;
             _noteId = noteId;
         }
 
         protected override async void OnActivate()
         {
-            var note = await _longOperationExecutor.Execute(() => _apiClient.GetNote(_noteId));
+            var note = await _apiExecutor.Execute(new GetNoteApiRequest {Id = _noteId});
 
             Id = note.Id;
             Title = note.Title;

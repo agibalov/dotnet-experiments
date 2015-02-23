@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using Ninject;
 using RestSharp;
-using WpfWebApiExperiment.WebApi;
 
 namespace WpfWebApiExperiment.WebApiClient
 {
@@ -17,22 +15,7 @@ namespace WpfWebApiExperiment.WebApiClient
             _restClient = restClient;
         }
 
-        public List<NoteDTO> GetNotes()
-        {
-            var request = new RestRequest("/Notes", Method.GET);
-            var result = Execute<List<NoteDTO>>(request);
-            return result;
-        }
-
-        public NoteDTO GetNote(string id)
-        {
-            var request = new RestRequest("/Notes/{id}", Method.GET);
-            request.AddParameter("id", id);
-            var result = Execute<NoteDTO>(request);
-            return result;
-        }
-
-        private TResult Execute<TResult>(RestRequest restRequest)
+        public TResult Execute<TResult>(IRestRequest restRequest)
             where TResult : new()
         {
             var response = _restClient.Execute<TResult>(restRequest);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Caliburn.Micro;
 using Moq;
 using NUnit.Framework;
@@ -15,19 +14,15 @@ namespace WpfWebApiExperimentTests
         [Test]
         public void WhenThereIsNoApiErrorNoteIsLoaded()
         {
-            var apiClient = new Mock<IApiClient>();
-            apiClient.Setup(c => c.GetNote("123"))
-                .Returns(new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"});
+            var apiExecutor = new Mock<IApiExecutor>(MockBehavior.Strict);
+            apiExecutor.Setup(e => e.Execute(It.Is<GetNoteApiRequest>(r => r.Id == "123")))
+                .Returns(Task.FromResult(new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}));
 
             var navigationService = new Mock<INavigationService>();
-            var longOperationExecutor = new Mock<ILongOperationExecutor>();
-            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<NoteDTO>>()))
-                .Returns((Func<NoteDTO> f) => Task.FromResult(f()));
 
             var noteScreenViewModel = new NoteScreenViewModel(
-                apiClient.Object, 
+                apiExecutor.Object, 
                 navigationService.Object,
-                longOperationExecutor.Object, 
                 "123");
 
             ((IActivate)noteScreenViewModel).Activate();
@@ -36,25 +31,22 @@ namespace WpfWebApiExperimentTests
             Assert.AreEqual("Hi", noteScreenViewModel.Title);
             Assert.AreEqual("Hello there", noteScreenViewModel.Text);
 
-            apiClient.Verify(c => c.GetNote("123"), Times.Once);
+            apiExecutor.Verify(c => c.Execute(It.Is<GetNoteApiRequest>(r => r.Id == "123")), Times.Once);
         }
 
         [Test]
         public void CanNavigateBack()
         {
-            var apiClient = new Mock<IApiClient>();
-            apiClient.Setup(c => c.GetNote("123"))
-                .Returns(new NoteDTO { Id = "123", Title = "Hi", Text = "Hello there" });
+            var apiExecutor = new Mock<IApiExecutor>(MockBehavior.Strict);
+            apiExecutor.Setup(e => e.Execute(It.Is<GetNoteApiRequest>(r => r.Id == "123")))
+                .Returns(Task.FromResult(new NoteDTO { Id = "123", Title = "Hi", Text = "Hello there" }));
 
-            var navigationService = new Mock<INavigationService>();
-            var longOperationExecutor = new Mock<ILongOperationExecutor>();
-            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<NoteDTO>>()))
-                .Returns((Func<NoteDTO> f) => Task.FromResult(f()));
+            var navigationService = new Mock<INavigationService>(MockBehavior.Strict);
+            navigationService.Setup(s => s.NavigateToNoteList());
 
             var noteScreenViewModel = new NoteScreenViewModel(
-                apiClient.Object,
+                apiExecutor.Object,
                 navigationService.Object,
-                longOperationExecutor.Object,
                 "123");
 
             ((IActivate)noteScreenViewModel).Activate();

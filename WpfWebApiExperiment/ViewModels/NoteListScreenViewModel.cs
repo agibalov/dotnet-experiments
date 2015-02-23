@@ -9,26 +9,23 @@ namespace WpfWebApiExperiment.ViewModels
 {
     public class NoteListScreenViewModel : Screen
     {
-        private readonly IApiClient _apiClient;
+        private readonly IApiExecutor _apiExecutor;
         private readonly INavigationService _navigationService;
-        private readonly ILongOperationExecutor _longOperationExecutor;
         
         [Inject]
         public NoteListScreenViewModel(
-            IApiClient apiClient, 
-            INavigationService navigationService,
-            ILongOperationExecutor longOperationExecutor)
+            IApiExecutor apiExecutor,
+            INavigationService navigationService)
         {
-            _apiClient = apiClient;
+            _apiExecutor = apiExecutor;
             _navigationService = navigationService;
-            _longOperationExecutor = longOperationExecutor;
 
             State = new DefaultNoteListScreenViewModelState();
         }
 
         protected override async void OnActivate()
         {
-            var newState = await _state.HandleScreenActivated(_apiClient, _longOperationExecutor);
+            var newState = await _state.HandleScreenActivated(_apiExecutor);
             if (newState != null)
             {
                 State = newState;

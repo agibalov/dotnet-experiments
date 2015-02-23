@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
 
@@ -9,11 +8,11 @@ namespace WpfWebApiExperiment.ViewModels.NoteListScreen
 {
     public class DefaultNoteListScreenViewModelState : NoteListScreenViewModelStateBase
     {
-        public override async Task<INoteListScreenViewModelState> HandleScreenActivated(IApiClient apiClient, ILongOperationExecutor longOperationExecutor)
+        public override async Task<INoteListScreenViewModelState> HandleScreenActivated(IApiExecutor apiExecutor)
         {
             try
             {
-                List<NoteDTO> notes = await longOperationExecutor.Execute(apiClient.GetNotes);
+                List<NoteDTO> notes = await apiExecutor.Execute(new GetNotesApiRequest());
                 return new OkNoteListScreenViewModelState(notes);
             }
             catch (ApiException e) // "internal server error" or "not found"

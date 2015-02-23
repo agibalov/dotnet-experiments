@@ -13,18 +13,20 @@ namespace WpfWebApiExperimentTests
         [Test]
         public void ApiClientThrowsWhenRequestFailsBecauseOfTransportError()
         {
-            var response = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
-            response.SetupProperty(r => r.ResponseStatus, ResponseStatus.Error);
-            response.SetupProperty(r => r.ErrorMessage, "Something bad has happened");
+            var restRequest = new Mock<IRestRequest>(MockBehavior.Strict);
+            
+            var restResponse = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
+            restResponse.SetupProperty(r => r.ResponseStatus, ResponseStatus.Error);
+            restResponse.SetupProperty(r => r.ErrorMessage, "Something bad has happened");
 
             var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.Is<IRestRequest>(r =>
-                r.Method == Method.GET && r.Resource == "/Notes"))).Returns(response.Object);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(restResponse.Object);
+
             var apiClient = new ApiClient(restClient.Object);
 
             try
             {
-                apiClient.GetNotes();
+                apiClient.Execute<List<NoteDTO>>(restRequest.Object);
                 Assert.Fail();
             }
             catch (ApiClientException)
@@ -32,25 +34,27 @@ namespace WpfWebApiExperimentTests
             }
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
-            response.VerifyGet(r => r.ResponseStatus, Times.AtLeastOnce);
-            response.VerifyGet(r => r.ErrorMessage, Times.Once);
+            restResponse.VerifyGet(r => r.ResponseStatus, Times.Once);
+            restResponse.VerifyGet(r => r.ErrorMessage, Times.Once);
         }
 
         [Test]
         public void ApiClientThrowsWhenRequestFailsBecauseOfNonOkResponse()
         {
-            var response = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
-            response.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
-            response.SetupProperty(r => r.StatusCode, HttpStatusCode.InternalServerError);
+            var restRequest = new Mock<IRestRequest>(MockBehavior.Strict);
+
+            var restResponse = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
+            restResponse.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
+            restResponse.SetupProperty(r => r.StatusCode, HttpStatusCode.InternalServerError);
 
             var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.Is<IRestRequest>(r =>
-                r.Method == Method.GET && r.Resource == "/Notes"))).Returns(response.Object);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(restResponse.Object);
+
             var apiClient = new ApiClient(restClient.Object);
 
             try
             {
-                apiClient.GetNotes();
+                apiClient.Execute<List<NoteDTO>>(restRequest.Object);
                 Assert.Fail();
             }
             catch (ApiException)
@@ -58,33 +62,35 @@ namespace WpfWebApiExperimentTests
             }
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
-            response.VerifyGet(r => r.ResponseStatus, Times.Once);
-            response.VerifyGet(r => r.StatusCode, Times.Once);
+            restResponse.VerifyGet(r => r.ResponseStatus, Times.Once);
+            restResponse.VerifyGet(r => r.StatusCode, Times.Once);
         }
 
         [Test]
         public void ApiClientDoesNotThrowWhenResponseIsOk()
         {
-            var response = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
-            response.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
-            response.SetupProperty(r => r.StatusCode, HttpStatusCode.OK);
-            response.SetupProperty(r => r.Data, new List<NoteDTO>
+            var restRequest = new Mock<IRestRequest>(MockBehavior.Strict);
+
+            var restResponse = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
+            restResponse.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
+            restResponse.SetupProperty(r => r.StatusCode, HttpStatusCode.OK);
+            restResponse.SetupProperty(r => r.Data, new List<NoteDTO>
             {
                 new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}
             });
 
             var restClient = new Mock<IRestClient>(MockBehavior.Strict);
-            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.Is<IRestRequest>(r => 
-                r.Method == Method.GET && r.Resource == "/Notes"))).Returns(response.Object);
+            restClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(restResponse.Object);
+
             var apiClient = new ApiClient(restClient.Object);
 
-            var notes = apiClient.GetNotes();
+            var notes = apiClient.Execute<List<NoteDTO>>(restRequest.Object);
             Assert.AreEqual(1, notes.Count);
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
-            response.VerifyGet(r => r.ResponseStatus, Times.Once);
-            response.VerifyGet(r => r.StatusCode, Times.Once);
-            response.VerifyGet(r => r.Data, Times.Once);
+            restResponse.VerifyGet(r => r.ResponseStatus, Times.Once);
+            restResponse.VerifyGet(r => r.StatusCode, Times.Once);
+            restResponse.VerifyGet(r => r.Data, Times.Once);
         }
     }
 }

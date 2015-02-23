@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -16,46 +15,36 @@ namespace WpfWebApiExperimentTests
         [Test]
         public async Task DefaultStateCanLoadNotesAndSwitchToOkState()
         {
-            var apiClient = new Mock<IApiClient>(MockBehavior.Strict);
-            apiClient.Setup(c => c.GetNotes()).Returns(new List<NoteDTO>
+            var apiExecutor = new Mock<IApiExecutor>(MockBehavior.Strict);
+            apiExecutor.Setup(e => e.Execute(It.IsAny<GetNotesApiRequest>())).Returns(Task.FromResult(new List<NoteDTO>
             {
-                new NoteDTO { Id = "123", Title = "Hi", Text = "Hello there" }
-            });
-
-            var longOperationExecutor = new Mock<ILongOperationExecutor>();
-            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()))
-                .Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
+                new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}
+            }));
 
             var state = new DefaultNoteListScreenViewModelState();
-            var newState = await state.HandleScreenActivated(apiClient.Object, longOperationExecutor.Object);
+            var newState = await state.HandleScreenActivated(apiExecutor.Object);
             Assert.IsInstanceOf<OkNoteListScreenViewModelState>(newState);
 
             var okState = (OkNoteListScreenViewModelState) newState;
             Assert.AreEqual(1, okState.Notes.Count);
 
-            apiClient.Verify(c => c.GetNotes(), Times.Once);
-            longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
+            apiExecutor.Verify(e => e.Execute(It.IsAny<GetNotesApiRequest>()), Times.Once);
         }
 
         [Test]
         public async Task DefaultStateSwitchesToErrorStateWhenItCantLoadNotes()
         {
-            var apiClient = new Mock<IApiClient>(MockBehavior.Strict);
-            apiClient.Setup(c => c.GetNotes()).Throws(new ApiException("something bad"));
-
-            var longOperationExecutor = new Mock<ILongOperationExecutor>();
-            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()))
-                .Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
+            var apiExecutor = new Mock<IApiExecutor>(MockBehavior.Strict);
+            apiExecutor.Setup(e => e.Execute(It.IsAny<GetNotesApiRequest>())).Throws(new ApiException("something bad"));
 
             var state = new DefaultNoteListScreenViewModelState();
-            var newState = await state.HandleScreenActivated(apiClient.Object, longOperationExecutor.Object);
+            var newState = await state.HandleScreenActivated(apiExecutor.Object);
             Assert.IsInstanceOf<ErrorNoteListScreenViewModelState>(newState);
 
             var errorState = (ErrorNoteListScreenViewModelState)newState;
             Assert.IsNotNullOrEmpty(errorState.ErrorMessage);
 
-            apiClient.Verify(c => c.GetNotes(), Times.Once);
-            longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
+            apiExecutor.Verify(e => e.Execute(It.IsAny<GetNotesApiRequest>()), Times.Once);
         }
 
         [Test]
