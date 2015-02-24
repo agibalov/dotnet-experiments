@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.ViewModels;
+using WpfWebApiExperiment.ViewModels.NoteScreen;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
 
@@ -18,7 +19,7 @@ namespace WpfWebApiExperimentTests
             apiExecutor.Setup(e => e.Execute(It.Is<GetNoteApiRequest>(r => r.Id == "123")))
                 .Returns(Task.FromResult(new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}));
 
-            var navigationService = new Mock<INavigationService>();
+            var navigationService = new Mock<INavigationService>(MockBehavior.Strict);
 
             var noteScreenViewModel = new NoteScreenViewModel(
                 apiExecutor.Object, 
@@ -27,9 +28,13 @@ namespace WpfWebApiExperimentTests
 
             ((IActivate)noteScreenViewModel).Activate();
 
-            Assert.AreEqual("123", noteScreenViewModel.Id);
-            Assert.AreEqual("Hi", noteScreenViewModel.Title);
-            Assert.AreEqual("Hello there", noteScreenViewModel.Text);
+            var state = noteScreenViewModel.State;
+            Assert.IsInstanceOf<OkNoteScreenViewModelState>(state);
+
+            var okState = (OkNoteScreenViewModelState) state;
+            Assert.AreEqual("123", okState.Id);
+            Assert.AreEqual("Hi", okState.Title);
+            Assert.AreEqual("Hello there", okState.Text);
 
             apiExecutor.Verify(c => c.Execute(It.Is<GetNoteApiRequest>(r => r.Id == "123")), Times.Once);
         }

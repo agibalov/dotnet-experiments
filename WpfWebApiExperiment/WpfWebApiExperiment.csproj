@@ -107,6 +107,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\NoteScreen\DefaultNoteScreenViewModelState.cs" />
+    <Compile Include="ViewModels\NoteScreen\ErrorNoteScreenViewModelState.cs" />
+    <Compile Include="ViewModels\NoteScreen\INoteScreenViewModelState.cs" />
+    <Compile Include="ViewModels\NoteScreen\NoteScreenViewModelStateBase.cs" />
+    <Compile Include="ViewModels\NoteScreen\OkNoteScreenViewModelState.cs" />
     <Compile Include="WebApiClient\ApiExecutor.cs" />
     <Compile Include="ViewModels\NoteListScreen\DefaultNoteListScreenViewModelState.cs" />
     <Compile Include="ViewModels\NoteListScreen\ErrorNoteListScreenViewModelState.cs" />

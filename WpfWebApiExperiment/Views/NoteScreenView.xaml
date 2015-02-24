@@ -4,18 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:noteScreen="clr-namespace:WpfWebApiExperiment.ViewModels.NoteScreen"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Vertical">
-        <Button cal:Message.Attach="GoBack()">Back</Button>
-        
-        <TextBlock>Id:</TextBlock>
-        <TextBlock Text="{Binding Id}" />
-        
-        <TextBlock>Title:</TextBlock>
-        <TextBlock Text="{Binding Title}" />
-        
-        <TextBlock>Text:</TextBlock>
-        <TextBlock Text="{Binding Text}" />
-    </StackPanel>
+    
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type noteScreen:DefaultNoteScreenViewModelState}">
+            <TextBlock>Default template: loading data</TextBlock>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type noteScreen:OkNoteScreenViewModelState}">
+            <StackPanel Orientation="Vertical">
+                <Button cal:Message.Attach="GoBack()">Back</Button>
+
+                <TextBlock>Id:</TextBlock>
+                <TextBlock Text="{Binding Id}" />
+
+                <TextBlock>Title:</TextBlock>
+                <TextBlock Text="{Binding Title}" />
+
+                <TextBlock>Text:</TextBlock>
+                <TextBlock Text="{Binding Text}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type noteScreen:ErrorNoteScreenViewModelState}">
+            <StackPanel Orientation="Vertical">
+                <Button cal:Message.Attach="GoBack()">Back</Button>
+                <TextBlock>There was an error</TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.Template>
+        <ControlTemplate TargetType="{x:Type UserControl}">
+            <ContentPresenter Content="{Binding State}" />
+        </ControlTemplate>
+    </UserControl.Template>
 </UserControl>

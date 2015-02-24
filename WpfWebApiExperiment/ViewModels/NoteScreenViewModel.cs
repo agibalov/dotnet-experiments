@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Ninject;
 using WpfWebApiExperiment.Services;
+using WpfWebApiExperiment.ViewModels.NoteScreen;
 using WpfWebApiExperiment.WebApiClient;
 
 namespace WpfWebApiExperiment.ViewModels
@@ -9,7 +10,6 @@ namespace WpfWebApiExperiment.ViewModels
     {
         private readonly IApiExecutor _apiExecutor;
         private readonly INavigationService _navigationService;
-        private readonly string _noteId;
 
         [Inject]
         public NoteScreenViewModel(
@@ -19,53 +19,36 @@ namespace WpfWebApiExperiment.ViewModels
         {
             _apiExecutor = apiExecutor;
             _navigationService = navigationService;
-            _noteId = noteId;
+            _state = new DefaultNoteScreenViewModelState(noteId);
         }
 
         protected override async void OnActivate()
         {
-            var note = await _apiExecutor.Execute(new GetNoteApiRequest {Id = _noteId});
-
-            Id = note.Id;
-            Title = note.Title;
-            Text = note.Text;
+            var newState = await _state.HandleScreenActivated(_apiExecutor);
+            if (newState != null)
+            {
+                State = newState;
+            }
         }
 
         public void GoBack()
         {
-            _navigationService.NavigateToNoteList();
-        }
-
-        private string _id;
-        public string Id
-        {
-            get { return _id; }
-            set
+            var newState = _state.HandleGoBack(_navigationService);
+            if (newState != null)
             {
-                _id = value;
-                NotifyOfPropertyChange(() => Id);
+                State = newState;
             }
         }
 
-        private string _title;
-        public string Title
+        private INoteScreenViewModelState _state;
+        public INoteScreenViewModelState State
         {
-            get { return _title; }
+            get { return _state; }
             set
             {
-                _title = value;
-                NotifyOfPropertyChange(() => Title);
-            }
-        }
-
-        private string _text;
-        public string Text
-        {
-            get { return _text; }
-            set
-            {
-                _text = value;
-                NotifyOfPropertyChange(() => Text);
+                if (Equals(value, _state)) return;
+                _state = value;
+                NotifyOfPropertyChange(() => State);
             }
         }
     }

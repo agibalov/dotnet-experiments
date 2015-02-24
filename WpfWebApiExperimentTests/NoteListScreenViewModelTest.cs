@@ -80,9 +80,9 @@ namespace WpfWebApiExperimentTests
 
             ((IActivate)noteListScreenViewModel).Activate();
 
-            var noteListScreenViewModelState = noteListScreenViewModel.State;
-            Assert.IsInstanceOf<OkNoteListScreenViewModelState>(noteListScreenViewModelState);
-            var okState = (OkNoteListScreenViewModelState)noteListScreenViewModelState;
+            var state = noteListScreenViewModel.State;
+            Assert.IsInstanceOf<OkNoteListScreenViewModelState>(state);
+            var okState = (OkNoteListScreenViewModelState)state;
             Assert.AreEqual(1, okState.Notes.Count);
 
             var targetNote = okState.Notes.First();

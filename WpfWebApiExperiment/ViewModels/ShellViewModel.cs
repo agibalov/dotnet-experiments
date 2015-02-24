@@ -2,7 +2,6 @@
 using Ninject;
 using Ninject.Parameters;
 using WpfWebApiExperiment.Services;
-using WpfWebApiExperiment.ViewModels.NoteListScreen;
 
 namespace WpfWebApiExperiment.ViewModels
 {
