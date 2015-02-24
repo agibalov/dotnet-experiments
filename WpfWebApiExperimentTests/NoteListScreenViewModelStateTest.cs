@@ -62,5 +62,12 @@ namespace WpfWebApiExperimentTests
 
             navigationService.Verify(s => s.NavigateToNote("123"), Times.Once);
         }
+
+        [Test]
+        public void ErrorStateHasAnErrorMessage()
+        {
+            var state = new ErrorNoteListScreenViewModelState("something bad");
+            Assert.AreEqual("something bad", state.ErrorMessage);
+        }
     }
 }
