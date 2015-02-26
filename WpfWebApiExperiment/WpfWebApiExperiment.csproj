@@ -112,12 +112,15 @@
     <Compile Include="ViewModels\NoteScreen\INoteScreenViewModelState.cs" />
     <Compile Include="ViewModels\NoteScreen\NoteScreenViewModelStateBase.cs" />
     <Compile Include="ViewModels\NoteScreen\OkNoteScreenViewModelState.cs" />
+    <Compile Include="WebApiClient\ApiException.cs" />
     <Compile Include="WebApiClient\ApiExecutor.cs" />
     <Compile Include="ViewModels\NoteListScreen\DefaultNoteListScreenViewModelState.cs" />
     <Compile Include="ViewModels\NoteListScreen\ErrorNoteListScreenViewModelState.cs" />
     <Compile Include="Services\ILongOperationExecutor.cs" />
     <Compile Include="Services\ILongOperationListener.cs" />
     <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="WebApiClient\CantHandleResponse.cs" />
+    <Compile Include="WebApiClient\ConnectivityApiException.cs" />
     <Compile Include="WebApiClient\GetNoteApiRequest.cs" />
     <Compile Include="WebApiClient\GetNotesApiRequest.cs" />
     <Compile Include="WebApiClient\IApiExecutor.cs" />
@@ -132,6 +135,7 @@
     </Compile>
     <Compile Include="WebApiClient\ApiClient.cs" />
     <Compile Include="WebApiClient\IApiClient.cs" />
+    <Compile Include="WebApiClient\NoteNotFoundException.cs" />
     <Compile Include="WebApiServer\NinjectDependencyResolver.cs" />
     <Compile Include="WebApiServer\NinjectDependencyScope.cs" />
     <Compile Include="WebApiServer\NoteRepository.cs" />

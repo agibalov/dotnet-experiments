@@ -1,10 +1,8 @@
-﻿using RestSharp;
-
-namespace WpfWebApiExperiment.WebApiClient
+﻿namespace WpfWebApiExperiment.WebApiClient
 {
     public interface IApiClient
     {
-        TResult Execute<TResult>(IRestRequest restRequest)
+        TResult Execute<TResult>(IApiRequest<TResult> apiRequest)
             where TResult : new();
     }
 }

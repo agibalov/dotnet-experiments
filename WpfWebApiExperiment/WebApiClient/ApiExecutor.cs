@@ -21,8 +21,7 @@ namespace WpfWebApiExperiment.WebApiClient
         {
             return await _longOperationExecutor.Execute(() =>
             {
-                var restRequest = request.MakeRequest();
-                var result = _apiClient.Execute<TResponse>(restRequest);
+                var result = _apiClient.Execute(request);
                 return result;
             });
         }

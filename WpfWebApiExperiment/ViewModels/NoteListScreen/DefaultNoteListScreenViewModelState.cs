@@ -15,15 +15,15 @@ namespace WpfWebApiExperiment.ViewModels.NoteListScreen
                 List<NoteDTO> notes = await apiExecutor.Execute(new GetNotesApiRequest());
                 return new OkNoteListScreenViewModelState(notes);
             }
-            catch (ApiException e) // "internal server error" or "not found"
+            catch (ConnectivityApiException)
+            {
+                return new ErrorNoteListScreenViewModelState("ConnectivityApiException error");
+            }
+            catch (ApiException)
             {
                 return new ErrorNoteListScreenViewModelState("ApiException error");
             }
-            catch (ApiClientException e) // connectivity error
-            {
-                return new ErrorNoteListScreenViewModelState("ApiClientException error");
-            }
-            catch (Exception e) // something very weird
+            catch (Exception)
             {
                 return new ErrorNoteListScreenViewModelState("Absolutely unexpected error");
             }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Ninject;
 using RestSharp;
 
@@ -15,46 +14,32 @@ namespace WpfWebApiExperiment.WebApiClient
             _restClient = restClient;
         }
 
-        public TResult Execute<TResult>(IRestRequest restRequest)
+        public TResult Execute<TResult>(IApiRequest<TResult> apiRequest)
             where TResult : new()
         {
+            var restRequest = apiRequest.MakeRequest();
             var response = _restClient.Execute<TResult>(restRequest);
             
             var responseStatus = response.ResponseStatus;
             if (responseStatus == ResponseStatus.Completed)
             {
-                var httpStatusCode = response.StatusCode;
-                if (httpStatusCode == HttpStatusCode.OK)
+                try
                 {
-                    return response.Data;
+                    var result = apiRequest.HandleResponse(response);
+                    return result;
                 }
-
-                throw new ApiException("Unexpected StatusCode, please review the code");
+                catch (CantHandleResponse)
+                {
+                    throw new ApiException("Don't know how to handle " + response.StatusCode);
+                }
             }
 
-            // for example, connectivity error
             if (responseStatus == ResponseStatus.Error)
             {
-                throw new ApiClientException(response.ErrorMessage);
+                throw new ConnectivityApiException(response.ErrorMessage);
             }
 
             throw new Exception("Unknown ApiClient error, please review the code");
-        }
-    }
-
-    public class ApiClientException : Exception
-    {
-        public ApiClientException(string message)
-            : base(message)
-        {
-        }
-    }
-
-    public class ApiException : ApiClientException
-    {
-        public ApiException(string message) 
-            : base(message)
-        {
         }
     }
 }

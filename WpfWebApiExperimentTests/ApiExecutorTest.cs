@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using RestSharp;
 using WpfWebApiExperiment.Services;
 using WpfWebApiExperiment.WebApi;
 using WpfWebApiExperiment.WebApiClient;
@@ -16,10 +15,11 @@ namespace WpfWebApiExperimentTests
         public async Task ApiExecutorReturnsTheResultWhenThereIsNoError()
         {
             var longOperationExecutor = new Mock<ILongOperationExecutor>(MockBehavior.Strict);
-            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>())).Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
+            longOperationExecutor.Setup(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()))
+                .Returns((Func<List<NoteDTO>> f) => Task.FromResult(f()));
             
             var apiClient = new Mock<IApiClient>(MockBehavior.Strict);
-            apiClient.Setup(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>())).Returns(new List<NoteDTO>
+            apiClient.Setup(c => c.Execute(It.IsAny<GetNotesApiRequest>())).Returns(new List<NoteDTO>
             {
                 new NoteDTO {Id = "123", Title = "Hi", Text = "Hello there"}
             });
@@ -30,7 +30,7 @@ namespace WpfWebApiExperimentTests
             Assert.AreEqual(1, notes.Count);
 
             longOperationExecutor.Verify(e => e.Execute(It.IsAny<Func<List<NoteDTO>>>()), Times.Once);
-            apiClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
+            apiClient.Verify(c => c.Execute(It.IsAny<GetNotesApiRequest>()), Times.Once);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace WpfWebApiExperimentTests
         [Test]
         public void ApiClientThrowsWhenRequestFailsBecauseOfTransportError()
         {
-            var restRequest = new Mock<IRestRequest>(MockBehavior.Strict);
+            //var apiRequest = new Mock<IApiRequest<List<NoteDTO>>>(MockBehavior.Strict);
             
             var restResponse = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
             restResponse.SetupProperty(r => r.ResponseStatus, ResponseStatus.Error);
@@ -26,10 +26,10 @@ namespace WpfWebApiExperimentTests
 
             try
             {
-                apiClient.Execute<List<NoteDTO>>(restRequest.Object);
+                apiClient.Execute(new GetNotesApiRequest());
                 Assert.Fail();
             }
-            catch (ApiClientException)
+            catch (ConnectivityApiException)
             {
             }
 
@@ -41,8 +41,6 @@ namespace WpfWebApiExperimentTests
         [Test]
         public void ApiClientThrowsWhenRequestFailsBecauseOfNonOkResponse()
         {
-            var restRequest = new Mock<IRestRequest>(MockBehavior.Strict);
-
             var restResponse = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
             restResponse.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
             restResponse.SetupProperty(r => r.StatusCode, HttpStatusCode.InternalServerError);
@@ -54,7 +52,7 @@ namespace WpfWebApiExperimentTests
 
             try
             {
-                apiClient.Execute<List<NoteDTO>>(restRequest.Object);
+                apiClient.Execute(new GetNotesApiRequest());
                 Assert.Fail();
             }
             catch (ApiException)
@@ -62,15 +60,13 @@ namespace WpfWebApiExperimentTests
             }
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
-            restResponse.VerifyGet(r => r.ResponseStatus, Times.Once);
-            restResponse.VerifyGet(r => r.StatusCode, Times.Once);
+            restResponse.VerifyGet(r => r.ResponseStatus, Times.AtLeastOnce);
+            restResponse.VerifyGet(r => r.StatusCode, Times.AtLeastOnce);
         }
 
         [Test]
         public void ApiClientDoesNotThrowWhenResponseIsOk()
         {
-            var restRequest = new Mock<IRestRequest>(MockBehavior.Strict);
-
             var restResponse = new Mock<IRestResponse<List<NoteDTO>>>(MockBehavior.Strict);
             restResponse.SetupProperty(r => r.ResponseStatus, ResponseStatus.Completed);
             restResponse.SetupProperty(r => r.StatusCode, HttpStatusCode.OK);
@@ -84,11 +80,11 @@ namespace WpfWebApiExperimentTests
 
             var apiClient = new ApiClient(restClient.Object);
 
-            var notes = apiClient.Execute<List<NoteDTO>>(restRequest.Object);
+            var notes = apiClient.Execute(new GetNotesApiRequest());
             Assert.AreEqual(1, notes.Count);
 
             restClient.Verify(c => c.Execute<List<NoteDTO>>(It.IsAny<IRestRequest>()), Times.Once);
-            restResponse.VerifyGet(r => r.ResponseStatus, Times.Once);
+            restResponse.VerifyGet(r => r.ResponseStatus, Times.AtLeastOnce);
             restResponse.VerifyGet(r => r.StatusCode, Times.Once);
             restResponse.VerifyGet(r => r.Data, Times.Once);
         }

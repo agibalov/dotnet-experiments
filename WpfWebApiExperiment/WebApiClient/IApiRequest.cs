@@ -6,5 +6,6 @@ namespace WpfWebApiExperiment.WebApiClient
         where TResponse : new()
     {
         IRestRequest MakeRequest();
+        TResponse HandleResponse(IRestResponse<TResponse> restResponse);
     }
 }
