@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:HelloMarkupExtension"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <TextBlock Text="{local:Sum A=2,B=3}" />
-    </Grid>
+    <StackPanel>
+        <TextBlock Text="{local:Sum A=2,B=3}"></TextBlock>
+        <local:MakeButton Binding="{Binding CurrentTime}" />
+    </StackPanel>
 </Window>
