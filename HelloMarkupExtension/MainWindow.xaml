@@ -6,5 +6,14 @@
     <StackPanel>
         <TextBlock Text="{local:Sum A=2,B=3}"></TextBlock>
         <local:MakeButton Binding="{Binding CurrentTime}" />
+        <StackPanel Orientation="Horizontal">
+            <Button Name="DoShowButton">Show</Button>
+            <Button Name="DoHideButton">Hide</Button>
+            <local:Inject>
+                <local:Inject.Target>
+                    <local:MyUserControl Background="Aqua" Visibility="{Binding ShouldDisplay, Converter={StaticResource MyConverter}}" />
+                </local:Inject.Target>
+            </local:Inject>
+        </StackPanel>
     </StackPanel>
 </Window>

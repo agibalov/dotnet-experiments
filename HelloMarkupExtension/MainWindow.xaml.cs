@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 using HelloMarkupExtension.Annotations;
+using Ninject;
 
 namespace HelloMarkupExtension
 {
@@ -30,6 +32,9 @@ namespace HelloMarkupExtension
                     Thread.Sleep(500);
                 }
             }){IsBackground = true}.Start();
+
+            DoShowButton.Click += (sender, args) => vm.ShouldDisplay = true;
+            DoHideButton.Click += (sender, args) => vm.ShouldDisplay = false;
         }
     }
 
@@ -61,7 +66,6 @@ namespace HelloMarkupExtension
     public class ViewModel : INotifyPropertyChanged
     {
         private string _currentTime;
-
         public string CurrentTime
         {
             get { return _currentTime; }
@@ -73,6 +77,18 @@ namespace HelloMarkupExtension
             }
         }
 
+        private bool _shouldDisplay;
+        public bool ShouldDisplay
+        {
+            get { return _shouldDisplay; }
+            set
+            {
+                if (value == _shouldDisplay) return;
+                _shouldDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -80,6 +96,40 @@ namespace HelloMarkupExtension
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class InjectExtension : MarkupExtension
+    {
+        public object Target { get; set; }
+
+        private readonly IKernel _kernel;
+
+        public InjectExtension()
+        {
+            _kernel = NinjectServiceLocator.Kernel;
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            _kernel.Inject(Target);
+            return Target;
+        }
+    }
+
+    public class BoolToVisibilityConverter : IValueConverter
+    {
+        [Inject]
+        private BoolToVisibilityConverterService ConverterService { get; set; }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ConverterService.MakeVisibilityFromBool((bool)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
