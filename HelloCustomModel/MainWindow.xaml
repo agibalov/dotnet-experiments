@@ -1,0 +1,26 @@
+﻿<Window x:Class="HelloCustomModel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helloCustomModel="clr-namespace:HelloCustomModel"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding FancyThings.Count}"></TextBlock>
+        <Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Name="AddAnItem">Add an item</Button>
+        <helloCustomModel:FancyThingsUserControl x:Name="Fancy1" Grid.Column="0" Grid.Row="1" DataContext="{Binding}" FancyThings="{Binding FancyThings}" />
+
+        <helloCustomModel:FancyThingsUserControl x:Name="Fancy2" Grid.Column="1" Grid.Row="1">
+            <helloCustomModel:FancyThingsUserControl.FancyThings>
+                <helloCustomModel:FancyThing FancinessDescription="Omg" />
+                <helloCustomModel:FancyThing FancinessDescription="Wtf" />
+            </helloCustomModel:FancyThingsUserControl.FancyThings>
+        </helloCustomModel:FancyThingsUserControl>
+    </Grid>
+</Window>
