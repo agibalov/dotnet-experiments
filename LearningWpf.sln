@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloMarkupExtension", "Hel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloCustomModel", "HelloCustomModel\HelloCustomModel.csproj", "{EC2E5CB6-4B1E-48AF-814A-A960AF874C70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloProgrammaticXaml", "HelloProgrammaticXaml\HelloProgrammaticXaml.csproj", "{3DB5B23D-3C68-4D0B-B898-B6E7FD288ACE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{EC2E5CB6-4B1E-48AF-814A-A960AF874C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC2E5CB6-4B1E-48AF-814A-A960AF874C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC2E5CB6-4B1E-48AF-814A-A960AF874C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DB5B23D-3C68-4D0B-B898-B6E7FD288ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DB5B23D-3C68-4D0B-B898-B6E7FD288ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DB5B23D-3C68-4D0B-B898-B6E7FD288ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DB5B23D-3C68-4D0B-B898-B6E7FD288ACE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
