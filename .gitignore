@@ -26,6 +26,7 @@ obj/
 [Tt]est[Rr]esult*
 *.exe
 !*migrate.exe
+!NuGet.exe
 *.pdb
 _ReSharper*/
 *.resharper
