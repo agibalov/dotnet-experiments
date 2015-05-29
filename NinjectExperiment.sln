@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjectExperiment", "NinjectExperiment\NinjectExperiment.csproj", "{86A2B5BE-DBED-472B-95EC-A411B709EF31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjectExtensionsConventionsTests", "NinjectExtensionsConventionsTests\NinjectExtensionsConventionsTests.csproj", "{8F9E01E6-7DCF-44B6-B9B9-90CB983C64C8}"
@@ -8,6 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjectExtensionsInterceptionTests", "NinjectExtensionsInterceptionTests\NinjectExtensionsInterceptionTests.csproj", "{8642DC28-1942-4D37-88EE-A111F6F82881}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NinjectExtensionsChildKernelTests", "NinjectExtensionsChildKernelTests\NinjectExtensionsChildKernelTests.csproj", "{1203C863-DC0B-4148-B35C-7461E134FB12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C1D5D3FF-06DF-448E-8A0A-98C62F44C4C6}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
