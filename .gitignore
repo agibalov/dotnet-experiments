@@ -32,3 +32,5 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 App_Data
 temp
+**/packages/*
+!**/packages/repositories.config
