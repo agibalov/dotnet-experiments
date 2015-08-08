@@ -7,14 +7,15 @@ namespace NancyExperiment
     {
         static void Main(string[] args)
         {
-            var nancyHost = new NancyHost(new Uri("http://localhost:2302"));
-            nancyHost.Start();
+            using (var nancyHost = new NancyHost(new Uri("http://localhost:2302")))
+            {
+                nancyHost.Start();
 
-            Console.WriteLine("Listening at http://localhost:2302");
-            Console.WriteLine("Press any key to quit");
+                Console.WriteLine("Listening at http://localhost:2302");
+                Console.WriteLine("Press enter to exit");
 
-            Console.ReadKey();
-            nancyHost.Stop();
+                Console.ReadLine();
+            }
         }
     }
 }
