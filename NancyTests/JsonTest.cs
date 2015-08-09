@@ -86,6 +86,14 @@ namespace NancyTests
             {
                 get { return new[] { new ModuleRegistration(typeof(JsonModule)) }; }
             }
+
+            protected override IRootPathProvider RootPathProvider
+            {
+                get
+                {
+                    return new FileSystemRootPathProvider();
+                }
+            }
         }
     }
 }

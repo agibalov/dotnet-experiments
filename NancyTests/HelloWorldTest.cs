@@ -31,6 +31,14 @@ namespace NancyTests
             {
                 get { return new[] {new ModuleRegistration(typeof (HelloWorldModule))}; }
             }
+
+            protected override IRootPathProvider RootPathProvider
+            {
+                get
+                {
+                    return new FileSystemRootPathProvider();
+                }
+            }
         }
 
         public class HelloWorldModule : NancyModule
