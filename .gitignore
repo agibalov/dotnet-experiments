@@ -35,3 +35,5 @@ App_Data
 temp
 **/packages/*
 !**/packages/repositories.config
+packages/
+!packages/repositories.config

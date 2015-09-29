@@ -59,6 +59,7 @@
     <Compile Include="HardcoreBootstrappingTests.cs" />
     <Compile Include="MultipleBindingTests.cs" />
     <Compile Include="ScopeTests.cs" />
+    <Compile Include="SelectiveInjectionTests.cs" />
     <Compile Include="TrivialDependencyScenarioTests.cs" />
     <Compile Include="TrivialProviderTests.cs" />
     <Compile Include="TrivialScenarioTests.cs" />
