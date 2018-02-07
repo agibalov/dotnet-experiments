@@ -1,0 +1,31 @@
+﻿<Window x:Class="Helix3dSharpDxExperiment.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helix3DSharpDxExperiment="clr-namespace:Helix3dSharpDxExperiment"
+        xmlns:hx="http://helixtoolkit.codeplex.com/wpf/SharpDX"
+        Title="MainWindow" Height="350" Width="525">
+    <Window.DataContext>
+        <helix3DSharpDxExperiment:AppViewModel />
+    </Window.DataContext>
+    <Grid>
+        <hx:Viewport3DX Camera="{Binding Camera}" 
+                        RenderTechnique="{x:Static hx:Techniques.RenderColors}" 
+                        ShowCameraTarget="False" 
+                        ShowCoordinateSystem="False" 
+                        ShowCameraInfo="False"
+                        ShowFieldOfView="False"
+                        ShowViewCube="False"
+                        ShowFrameRate="True" 
+                        CameraRotationMode="Trackball">
+            <hx:Viewport3DX.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="hx:ViewportCommands.Rotate" />
+                <MouseBinding Gesture="MiddleClick" Command="hx:ViewportCommands.Zoom" />
+                <MouseBinding Gesture="RightClick" Command="hx:ViewportCommands.Pan" />
+            </hx:Viewport3DX.InputBindings>
+
+            <hx:AmbientLight3D Color="{Binding WhiteLight}" />
+            <hx:DirectionalLight3D Color="{Binding WhiteLight}" Direction = "0,0,1" />
+            <hx:MeshGeometryModel3D Geometry="{Binding Model}" Material="{x:Static hx:PhongMaterials.White}" />
+        </hx:Viewport3DX>
+    </Grid>
+</Window>
