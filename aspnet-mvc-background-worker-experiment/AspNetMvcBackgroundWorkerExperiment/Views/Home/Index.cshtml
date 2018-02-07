@@ -1,0 +1,40 @@
+﻿<html ng-app>
+    <head>
+        <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+        
+        <script type="text/javascript">
+            function MyController($scope, $http, $timeout) {
+                $scope.Count = -1;
+                $scope.IsRunning = false;
+                $scope.Log = [];
+
+                $scope.Start = function() {
+                    $http.post("@Url.HttpRouteUrl("DefaultApi", new { controller = "MyApi", action = "Start" })");
+                };
+                
+                $scope.Stop = function () {
+                    $http.post("@Url.HttpRouteUrl("DefaultApi", new { controller = "MyApi", action = "Stop" })");
+                };
+
+                (function tick() {
+                    $http.get("@Url.HttpRouteUrl("DefaultApi", new { controller = "MyApi", action = "GetStatus" })").success(function (data) {
+                        $scope.Count = data.Count;
+                        $scope.IsRunning = data.IsRunning;
+                        $scope.Log = data.Log;
+
+                        $timeout(tick, 2000);
+                    });
+                })();
+            }
+        </script>
+    </head>
+    
+    <body ng-controller="MyController">
+        <p>There are {{Count}}.</p>
+        <button ng-click="Start()" ng-show="!IsRunning">Start</button>
+        <button ng-click="Stop()" ng-show="IsRunning">Stop</button>
+        <ul>
+            <li ng-repeat="line in Log">{{line}}</li>
+        </ul>
+    </body>
+</html>
