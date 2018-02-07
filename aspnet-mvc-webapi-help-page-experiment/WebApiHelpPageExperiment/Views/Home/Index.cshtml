@@ -1,0 +1,66 @@
+﻿@model WebApiHelpPageExperiment.Infrastructure.ApiModel
+
+<div class="row">
+    <div class="page-header">
+        <h1>Help <small>for my web api</small></h1>
+    </div>    
+    <p class="lead">
+        This is my custom-built help page for dummy ASP.NET MVC Web API. This doesn't require 
+        having <code>Microsoft ASP.NET Web API Help Page</code> installed.
+    </p>
+    <hr/>
+</div>
+<div class="row">
+    @foreach (var method in Model.Methods)
+    {
+        <div class="page-header">
+            <h3>@method.Name <span class="label label-info">@method.HttpVerb</span> <small>@method.RelativeUrl</small></h3>
+        </div>
+        <dl class="dl-horizontal">
+            <dt>What it does</dt>
+            <dd>@method.Description</dd>
+            <dt>Parameters</dt>
+            <dd>
+                <ul class="unstyled">
+                    @foreach (var parameter in method.Parameters)
+                    {
+                        <li>
+                            <h5>@parameter.ParameterName <span class="label label-inverse">@parameter.Source</span></h5>
+                            <p>@parameter.Description</p>
+                            <p>
+                                @if (!parameter.Sample.Contains(Environment.NewLine))
+                                {
+                                    @:Should be something like <code>@parameter.Sample</code>
+                                }
+                                else
+                                {
+                                    @:Should be something like 
+                                    <pre>
+@parameter.Sample</pre>
+                                }
+                            </p>
+                            <hr/>
+                        </li>
+                    }
+                </ul>
+            </dd>
+            <dt>Returns</dt>
+            <dd>
+                @if (!method.ReturnSample.Contains(Environment.NewLine))
+                {
+                    @:Something like <code>@method.ReturnSample</code>
+                }
+                else
+                {
+                    @:Something like:
+                    <pre>
+@method.ReturnSample</pre>
+                }        
+            </dd>
+        </dl>
+        <hr/>
+    }
+</div>
+<div class="row">
+    built by <a href="http://loki2302.me" target="_blank">loki2302</a>
+</div>
