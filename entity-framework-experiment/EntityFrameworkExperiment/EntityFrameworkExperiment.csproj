@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E890A05F-BD13-46AC-B890-2061172D9B60}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EntityFrameworkExperiment</RootNamespace>
+    <AssemblyName>EntityFrameworkExperiment</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAL\EntityConfigurations\CommentConfiguration.cs" />
+    <Compile Include="DAL\EntityConfigurations\PostConfiguration.cs" />
+    <Compile Include="DAL\EntityConfigurations\SessionConfiguration.cs" />
+    <Compile Include="DAL\EntityConfigurations\UserConfiguration.cs" />
+    <Compile Include="DTO\BriefPostDTO.cs" />
+    <Compile Include="DTO\CommentDTO.cs" />
+    <Compile Include="Exceptions\NoSuchCommentException.cs" />
+    <Compile Include="Mappers\CommentToCommentDTOMapper.cs" />
+    <Compile Include="Mappers\PostToBriefPostDTOMapper.cs" />
+    <Compile Include="TransactionScripts\CreateCommentTransactionScript.cs" />
+    <Compile Include="DAL\Entities\Comment.cs" />
+    <Compile Include="TransactionScripts\DeleteCommentTransactionScript.cs" />
+    <Compile Include="DTO\UserDetailsDTO.cs" />
+    <Compile Include="Exceptions\NoPermissionsException.cs" />
+    <Compile Include="DTO\Page.cs" />
+    <Compile Include="DTO\ActiveUserDTO.cs" />
+    <Compile Include="TransactionScripts\GetMostActiveUsersTransactionScript.cs" />
+    <Compile Include="TransactionScripts\GetPostsTransactionScript.cs" />
+    <Compile Include="TransactionScripts\AuthenticateTransactionScript.cs" />
+    <Compile Include="AuthenticationService.cs" />
+    <Compile Include="Exceptions\BlogServiceException.cs" />
+    <Compile Include="TransactionScripts\CreatePostTransactionScript.cs" />
+    <Compile Include="TransactionScripts\CreateUserTransactionScript.cs" />
+    <Compile Include="DAL\BlogContext.cs" />
+    <Compile Include="BloggingService.cs" />
+    <Compile Include="DAL\Entities\Post.cs" />
+    <Compile Include="DAL\Entities\Session.cs" />
+    <Compile Include="DAL\Entities\User.cs" />
+    <Compile Include="DTO\PostDTO.cs" />
+    <Compile Include="DTO\ServiceError.cs" />
+    <Compile Include="DTO\ServiceResult.cs" />
+    <Compile Include="DTO\SessionDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
+    <Compile Include="TransactionScripts\DeletePostTransactionScript.cs" />
+    <Compile Include="TransactionScripts\GetPostTransactionScript.cs" />
+    <Compile Include="Exceptions\InvalidPasswordException.cs" />
+    <Compile Include="Exceptions\InvalidSessionException.cs" />
+    <Compile Include="Exceptions\NoSuchPostException.cs" />
+    <Compile Include="Exceptions\NoSuchUserException.cs" />
+    <Compile Include="Mappers\PostToPostDTOMapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Mappers\SessionToSessionDTOMapper.cs" />
+    <Compile Include="Exceptions\UserNameAlreadyRegisteredException.cs" />
+    <Compile Include="Mappers\UserToUserDTOMapper.cs" />
+    <Compile Include="TransactionScripts\GetUserDetailsTransactionScript.cs" />
+    <Compile Include="TransactionScripts\UpdatePostTransactionScript.cs" />
+    <Compile Include="TransactionScripts\UpdateCommentTransactionScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
