@@ -1,0 +1,23 @@
+﻿<Window x:Class="HelloUserControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helloUserControl="clr-namespace:HelloUserControl"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <StackPanel Orientation="Vertical">
+        <helloUserControl:UserNameControl UserName="{Binding UserName1}" />
+        <helloUserControl:UserNameControl UserName="{Binding UserName2}" />
+        <helloUserControl:DialogControl Title="{Binding DialogTitle}">
+            <helloUserControl:DialogControl.Body>
+                <TextBlock>Dialog Body Here</TextBlock>
+            </helloUserControl:DialogControl.Body>
+            <helloUserControl:DialogControl.Footer>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">Dialog Footer Here</TextBlock>
+                    <Button Command="{Binding CancelCommand}">Cancel</Button>
+                    <Button Command="{Binding OkCommand}">OK</Button>
+                </StackPanel>
+            </helloUserControl:DialogControl.Footer>
+        </helloUserControl:DialogControl>
+    </StackPanel>
+</Window>
